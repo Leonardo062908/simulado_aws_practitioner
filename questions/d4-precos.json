@@ -1,0 +1,682 @@
+[
+  {
+    "id": "d4-001",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa executa trabalhos de processamento em lote que podem ser interrompidos e reiniciados a qualquer momento, sem prazo rígido de conclusão. Qual opção de compra do Amazon EC2 é a MAIS econômica?",
+    "options": [
+      { "key": "A", "text": "Instâncias On-Demand", "explanation": "Incorreta. Não exigem compromisso, mas custam mais que as Spot para cargas tolerantes a interrupção." },
+      { "key": "B", "text": "Instâncias Reservadas", "explanation": "Incorreta. Exigem compromisso de 1 ou 3 anos e são indicadas para uso estável e contínuo." },
+      { "key": "C", "text": "Instâncias Spot", "explanation": "Correta. Usam a capacidade ociosa do EC2 com grandes descontos em relação ao On-Demand; como podem ser interrompidas pela AWS, são ideais para cargas flexíveis e tolerantes a falhas." },
+      { "key": "D", "text": "Dedicated Hosts", "explanation": "Incorreta. São servidores físicos dedicados, indicados para licenciamento e conformidade, e custam mais." }
+    ],
+    "correct": ["C"],
+    "trigger": "'pode ser interrompido' + 'flexível' + 'mais econômico' → Instâncias Spot",
+    "reference": "Instâncias Spot do Amazon EC2 — https://aws.amazon.com/ec2/spot/"
+  },
+  {
+    "id": "d4-002",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma aplicação de produção roda 24 horas por dia, todos os dias, em instâncias de uma família fixa em uma única Região, e continuará assim pelos próximos 3 anos. Qual opção de compra oferece desconto significativo para esse uso?",
+    "options": [
+      { "key": "A", "text": "Instâncias Reservadas", "explanation": "Correta. Em troca de um compromisso de 1 ou 3 anos, as Instâncias Reservadas oferecem desconto significativo em relação ao On-Demand para uso estável e previsível." },
+      { "key": "B", "text": "Instâncias Spot", "explanation": "Incorreta. Podem ser interrompidas, o que não serve para uma aplicação de produção que precisa rodar continuamente." },
+      { "key": "C", "text": "Instâncias On-Demand", "explanation": "Incorreta. Não têm desconto; são indicadas para uso de curto prazo ou imprevisível." },
+      { "key": "D", "text": "Dedicated Instances", "explanation": "Incorreta. Garantem hardware dedicado a um único cliente, com custo maior; não são uma opção de desconto." }
+    ],
+    "correct": ["A"],
+    "trigger": "'uso estável 24/7' + 'compromisso de 1 ou 3 anos' → Instâncias Reservadas (ou Savings Plans)",
+    "reference": "Instâncias Reservadas do Amazon EC2 — https://aws.amazon.com/ec2/pricing/reserved-instances/"
+  },
+  {
+    "id": "d4-003",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa quer um desconto em troca de um compromisso de gasto por hora durante 1 ou 3 anos, que se aplique automaticamente ao uso do EC2 em qualquer família de instâncias e Região e também ao AWS Fargate e ao AWS Lambda. Qual opção atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Compute Savings Plans", "explanation": "Correta. Os Compute Savings Plans dão desconto em troca de um compromisso de gasto por hora e se aplicam ao EC2 independentemente de família, tamanho, AZ, Região, sistema operacional ou locação, além de Fargate e Lambda." },
+      { "key": "B", "text": "EC2 Instance Savings Plans", "explanation": "Incorreta. Dão desconto maior, mas ficam presos a uma família de instâncias em uma Região e não cobrem Fargate nem Lambda." },
+      { "key": "C", "text": "Instâncias Reservadas Standard", "explanation": "Incorreta. Estão vinculadas a atributos da instância e não se aplicam a Fargate nem a Lambda." },
+      { "key": "D", "text": "Instâncias Spot", "explanation": "Incorreta. Não envolvem compromisso; usam capacidade ociosa que pode ser interrompida." }
+    ],
+    "correct": ["A"],
+    "trigger": "'compromisso de gasto por hora' + 'qualquer família/Região' + 'Fargate e Lambda' → Compute Savings Plans",
+    "reference": "Savings Plans — https://aws.amazon.com/savingsplans/"
+  },
+  {
+    "id": "d4-004",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma equipe vai executar um teste de carga de duas semanas, com uso imprevisível e que não pode ser interrompido no meio. As instâncias não serão mantidas depois do teste. Qual opção de compra é a mais adequada?",
+    "options": [
+      { "key": "A", "text": "Instâncias Spot", "explanation": "Incorreta. Poderiam ser interrompidas pela AWS durante o teste." },
+      { "key": "B", "text": "Instâncias On-Demand", "explanation": "Correta. On-Demand cobra pelo uso, sem compromisso de longo prazo e sem interrupção pela AWS; é ideal para cargas de curto prazo e imprevisíveis." },
+      { "key": "C", "text": "Instâncias Reservadas de 1 ano", "explanation": "Incorreta. Exigiriam pagar por um ano inteiro para usar apenas duas semanas." },
+      { "key": "D", "text": "Compute Savings Plans de 3 anos", "explanation": "Incorreta. Exigem compromisso de gasto por vários anos, desnecessário para um teste curto." }
+    ],
+    "correct": ["B"],
+    "trigger": "'curto prazo' + 'imprevisível' + 'não pode ser interrompido' → On-Demand",
+    "reference": "Preços do Amazon EC2 — https://aws.amazon.com/ec2/pricing/"
+  },
+  {
+    "id": "d4-005",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa quer trazer para a AWS licenças de software cobradas por soquete e por núcleo físico do servidor, e precisa de visibilidade sobre os soquetes e núcleos do hardware usado. Qual opção do Amazon EC2 atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Dedicated Instances", "explanation": "Incorreta. Rodam em hardware dedicado a um único cliente, mas não dão visibilidade nem controle sobre soquetes, núcleos e posicionamento no host." },
+      { "key": "B", "text": "Dedicated Hosts", "explanation": "Correta. Um Dedicated Host é um servidor físico inteiro dedicado ao cliente, com visibilidade de soquetes e núcleos, o que permite usar licenças por soquete/núcleo (BYOL) e atender a requisitos de conformidade." },
+      { "key": "C", "text": "Instâncias Spot", "explanation": "Incorreta. Usam capacidade compartilhada e interrompível, sem visibilidade do hardware." },
+      { "key": "D", "text": "Instâncias On-Demand com locação padrão", "explanation": "Incorreta. Rodam em hardware compartilhado, sem visibilidade de soquetes e núcleos." }
+    ],
+    "correct": ["B"],
+    "trigger": "'licenças por soquete/núcleo' / 'visibilidade do servidor físico' → Dedicated Hosts",
+    "reference": "Hosts dedicados do Amazon EC2 — https://aws.amazon.com/ec2/dedicated-hosts/"
+  },
+  {
+    "id": "d4-006",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "multiple",
+    "question": "Uma política de conformidade exige que as instâncias Amazon EC2 de uma empresa não compartilhem hardware físico com outros clientes da AWS. Quais opções atendem a esse requisito? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Dedicated Hosts", "explanation": "Correta. O servidor físico inteiro fica dedicado ao cliente." },
+      { "key": "B", "text": "Instâncias Spot com locação padrão", "explanation": "Incorreta. Rodam em hardware compartilhado e podem ser interrompidas." },
+      { "key": "C", "text": "Dedicated Instances", "explanation": "Correta. Rodam em hardware dedicado a um único cliente (podem dividi-lo apenas com outras instâncias da mesma conta)." },
+      { "key": "D", "text": "Savings Plans", "explanation": "Incorreta. São um modelo de desconto por compromisso; sozinhos não definem que o hardware seja dedicado." },
+      { "key": "E", "text": "On-Demand Capacity Reservations com locação padrão", "explanation": "Incorreta. Reservam capacidade em uma AZ, mas, com locação padrão, a instância roda em hardware compartilhado." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'não compartilhar hardware com outros clientes' → Dedicated Hosts ou Dedicated Instances",
+    "reference": "Hosts dedicados — https://aws.amazon.com/ec2/dedicated-hosts/ · Instâncias dedicadas — https://aws.amazon.com/ec2/pricing/dedicated-instances/"
+  },
+  {
+    "id": "d4-007",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa precisa garantir capacidade de instâncias Amazon EC2 em uma Zona de Disponibilidade específica durante um evento de duas semanas, sem assumir compromisso de 1 ou 3 anos. Qual opção atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Instâncias Reservadas regionais", "explanation": "Incorreta. Dão desconto, mas RIs regionais não reservam capacidade, e ainda exigem compromisso de 1 ou 3 anos." },
+      { "key": "B", "text": "Instâncias Spot", "explanation": "Incorreta. Não garantem capacidade e podem ser interrompidas." },
+      { "key": "C", "text": "On-Demand Capacity Reservations (Reservas de Capacidade sob demanda)", "explanation": "Correta. Reservam capacidade em uma AZ específica pelo tempo necessário, sem compromisso de longo prazo; são cobradas pela taxa On-Demand, usadas ou não." },
+      { "key": "D", "text": "Compute Savings Plans", "explanation": "Incorreta. Dão desconto em troca de compromisso de gasto, mas não reservam capacidade." }
+    ],
+    "correct": ["C"],
+    "trigger": "'garantir capacidade em uma AZ' + 'sem compromisso de longo prazo' → On-Demand Capacity Reservation",
+    "reference": "Reservas de Capacidade sob demanda — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html"
+  },
+  {
+    "id": "d4-008",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Qual afirmação sobre as Instâncias Spot do Amazon EC2 está correta?",
+    "options": [
+      { "key": "A", "text": "A AWS pode interromper a instância quando precisar da capacidade de volta, com um aviso de dois minutos", "explanation": "Correta. Por usar capacidade ociosa com desconto, a instância Spot pode ser recuperada pela AWS; o aviso de interrupção chega dois minutos antes." },
+      { "key": "B", "text": "Têm preço fixo garantido por 3 anos", "explanation": "Incorreta. O preço Spot varia conforme a oferta e a demanda; não há preço fixo por contrato." },
+      { "key": "C", "text": "Garantem capacidade reservada em uma AZ", "explanation": "Incorreta. Quem reserva capacidade são as Reservas de Capacidade sob demanda (e as RIs zonais)." },
+      { "key": "D", "text": "Exigem pagamento antecipado integral", "explanation": "Incorreta. Não há pagamento antecipado; paga-se pelo uso." }
+    ],
+    "correct": ["A"],
+    "trigger": "'Spot' → desconto alto, mas pode ser interrompida (aviso de 2 minutos)",
+    "reference": "Instâncias Spot do Amazon EC2 — https://aws.amazon.com/ec2/spot/"
+  },
+  {
+    "id": "d4-009",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "multiple",
+    "question": "Quais cargas de trabalho são boas candidatas para Instâncias Spot? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Renderização de vídeos em lote que pode ser retomada se uma instância for interrompida", "explanation": "Correta. Trabalhos em lote tolerantes a falhas aproveitam bem o desconto da Spot." },
+      { "key": "B", "text": "Banco de dados de produção que precisa ficar disponível o tempo todo", "explanation": "Incorreta. Interrupções causariam indisponibilidade e riscos aos dados." },
+      { "key": "C", "text": "Testes automatizados de CI que podem ser executados novamente", "explanation": "Correta. Cargas sem estado, flexíveis e repetíveis são ideais para Spot." },
+      { "key": "D", "text": "Aplicação crítica com acordo rígido de disponibilidade", "explanation": "Incorreta. Interrupções violariam o acordo de disponibilidade." },
+      { "key": "E", "text": "Servidor de licenças que precisa rodar continuamente", "explanation": "Incorreta. Precisa de execução contínua, incompatível com interrupções." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'tolerante a interrupção' / 'lote' / 'sem estado' / 'pode repetir' → Spot · 'precisa rodar sempre' → On-Demand, RI ou Savings Plans",
+    "reference": "Instâncias Spot do Amazon EC2 — https://aws.amazon.com/ec2/spot/"
+  },
+  {
+    "id": "d4-010",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa quer o desconto de Instâncias Reservadas de 3 anos, mas prevê que precisará trocar a família e o sistema operacional das instâncias durante o período. Qual opção atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Instâncias Reservadas Standard", "explanation": "Incorreta. Permitem algumas modificações (como AZ e tamanho dentro da mesma família), mas não a troca de família de instâncias." },
+      { "key": "B", "text": "Instâncias Reservadas Conversíveis", "explanation": "Correta. As RIs Conversíveis podem ser trocadas por outras com atributos diferentes, como família, sistema operacional e locação, em troca de um desconto um pouco menor que o das Standard." },
+      { "key": "C", "text": "Instâncias Spot", "explanation": "Incorreta. Não são reservas e podem ser interrompidas." },
+      { "key": "D", "text": "Dedicated Hosts On-Demand", "explanation": "Incorreta. São servidores físicos dedicados, sem o desconto de reserva." }
+    ],
+    "correct": ["B"],
+    "trigger": "'reserva com flexibilidade para trocar família ou SO' → RI Conversível",
+    "reference": "Instâncias Reservadas do Amazon EC2 — https://aws.amazon.com/ec2/pricing/reserved-instances/"
+  },
+  {
+    "id": "d4-011",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa vai comprar Instâncias Reservadas para uma carga de trabalho estável. Qual combinação de prazo e forma de pagamento oferece o MAIOR desconto?",
+    "options": [
+      { "key": "A", "text": "1 ano, sem pagamento antecipado (No Upfront)", "explanation": "Incorreta. Prazo menor e nenhum pagamento antecipado resultam no menor desconto entre as opções." },
+      { "key": "B", "text": "3 anos, sem pagamento antecipado (No Upfront)", "explanation": "Incorreta. O prazo maior aumenta o desconto, mas pagar tudo adiantado aumenta ainda mais." },
+      { "key": "C", "text": "1 ano, pagamento antecipado total (All Upfront)", "explanation": "Incorreta. Pagar adiantado ajuda, mas o prazo de 1 ano dá menos desconto que o de 3 anos." },
+      { "key": "D", "text": "3 anos, pagamento antecipado total (All Upfront)", "explanation": "Correta. Quanto maior o prazo e quanto mais se paga adiantado, maior o desconto; 3 anos com All Upfront é a combinação de maior economia." }
+    ],
+    "correct": ["D"],
+    "trigger": "'MAIOR desconto em RI' → 3 anos + All Upfront",
+    "reference": "Instâncias Reservadas do Amazon EC2 — https://aws.amazon.com/ec2/pricing/reserved-instances/"
+  },
+  {
+    "id": "d4-012",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "single",
+    "question": "Uma empresa sabe que continuará usando a mesma família de instâncias EC2 em uma única Região pelos próximos 3 anos, mas quer liberdade para trocar o tamanho e o sistema operacional das instâncias. Ela quer o MAIOR desconto possível entre os Savings Plans. Qual opção deve escolher?",
+    "options": [
+      { "key": "A", "text": "EC2 Instance Savings Plans", "explanation": "Correta. Oferecem o maior desconto entre os Savings Plans, em troca de compromisso com uma família de instâncias em uma Região; dentro dela, é possível mudar tamanho, AZ, sistema operacional e locação." },
+      { "key": "B", "text": "Compute Savings Plans", "explanation": "Incorreta. São mais flexíveis (qualquer família e Região, além de Fargate e Lambda), mas com desconto um pouco menor." },
+      { "key": "C", "text": "Instâncias Spot", "explanation": "Incorreta. Não são um plano de compromisso e podem ser interrompidas." },
+      { "key": "D", "text": "On-Demand Capacity Reservations", "explanation": "Incorreta. Reservam capacidade, mas são cobradas pela taxa On-Demand." }
+    ],
+    "correct": ["A"],
+    "trigger": "'família fixa em uma Região' + 'maior desconto entre Savings Plans' → EC2 Instance Savings Plans",
+    "reference": "Savings Plans — https://aws.amazon.com/savingsplans/"
+  },
+  {
+    "id": "d4-013",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "O gerente financeiro quer visualizar em gráficos os gastos com a AWS dos últimos meses, filtrar por serviço e por conta e ver uma previsão dos gastos para os próximos meses. Qual ferramenta deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima o custo de arquiteturas planejadas; não mostra o histórico de gastos da conta." },
+      { "key": "B", "text": "AWS Budgets", "explanation": "Incorreta. Define orçamentos e envia alertas; a análise visual do histórico com filtros é feita no Cost Explorer." },
+      { "key": "C", "text": "AWS Cost Explorer", "explanation": "Correta. O Cost Explorer permite visualizar, entender e analisar custos e uso ao longo do tempo, com filtros e agrupamentos, além de previsões." },
+      { "key": "D", "text": "AWS Cost and Usage Report", "explanation": "Incorreta. Entrega os dados mais detalhados em arquivos no S3 para análise com outras ferramentas; não é a interface de gráficos interativos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'visualizar/analisar gastos passados em gráficos' + 'previsão' → Cost Explorer",
+    "reference": "AWS Cost Explorer — https://aws.amazon.com/aws-cost-management/aws-cost-explorer/"
+  },
+  {
+    "id": "d4-014",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa quer receber um alerta por e-mail quando o gasto mensal com a AWS ultrapassar, ou estiver previsto para ultrapassar, um valor definido. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Budgets", "explanation": "Correta. O AWS Budgets permite definir orçamentos de custo e uso e enviar alertas quando os valores reais ou previstos ultrapassam os limites; também pode executar ações automáticas." },
+      { "key": "B", "text": "AWS Cost Explorer", "explanation": "Incorreta. É uma ferramenta de visualização e análise; o mecanismo de orçamento com alertas é o AWS Budgets." },
+      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos antes da implantação." },
+      { "key": "D", "text": "AWS Cost and Usage Report", "explanation": "Incorreta. Fornece dados detalhados de custo e uso; não envia alertas." }
+    ],
+    "correct": ["A"],
+    "trigger": "'alerta quando ultrapassar ou estiver previsto para ultrapassar um valor' → AWS Budgets",
+    "reference": "AWS Budgets — https://aws.amazon.com/aws-cost-management/aws-budgets/"
+  },
+  {
+    "id": "d4-015",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Antes de migrar, uma empresa quer estimar quanto custará por mês uma arquitetura com instâncias Amazon EC2, um banco Amazon RDS e armazenamento no Amazon S3, que ainda não foi criada. Qual ferramenta deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Cost Explorer", "explanation": "Incorreta. Analisa custos e uso de recursos que já existem na conta." },
+      { "key": "B", "text": "AWS Pricing Calculator", "explanation": "Correta. A Pricing Calculator estima o custo de uma arquitetura planejada, serviço a serviço, antes de qualquer recurso ser criado." },
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Monitora gastos em relação a orçamentos definidos." },
+      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda otimizações para recursos que já existem." }
+    ],
+    "correct": ["B"],
+    "trigger": "'estimar o custo antes de criar' → AWS Pricing Calculator",
+    "reference": "AWS Pricing Calculator — https://calculator.aws/"
+  },
+  {
+    "id": "d4-016",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "A equipe de FinOps precisa do conjunto de dados de custo e uso mais detalhado disponível (por recurso e por hora, incluindo tags), entregue periodicamente em um bucket do Amazon S3 para análise com o Amazon Athena. Qual opção atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Cost and Usage Report (CUR)", "explanation": "Correta. O CUR é a fonte mais completa e granular de dados de custo e uso, entregue em arquivos no S3 e consultável com ferramentas como Athena e QuickSight." },
+      { "key": "B", "text": "AWS Cost Explorer", "explanation": "Incorreta. Oferece gráficos e filtros com dados agregados; não entrega os dados brutos mais granulares no S3." },
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos e envia alertas." },
+      { "key": "D", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos de arquiteturas planejadas." }
+    ],
+    "correct": ["A"],
+    "trigger": "'dados mais detalhados/granulares' + 'entregues no S3' + 'Athena' → Cost and Usage Report",
+    "reference": "AWS Cost and Usage Report — https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html"
+  },
+  {
+    "id": "d4-017",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Vários projetos compartilham a mesma conta AWS, e a empresa precisa saber quanto cada projeto gasta. Qual recurso permite organizar e acompanhar os custos por projeto?",
+    "options": [
+      { "key": "A", "text": "Tags de alocação de custos", "explanation": "Correta. Marcando os recursos com tags (por exemplo, Projeto=Alfa) e ativando-as como tags de alocação de custos, é possível filtrar e agrupar os custos por projeto no Cost Explorer e nos relatórios de faturamento." },
+      { "key": "B", "text": "Uma VPC para cada projeto", "explanation": "Incorreta. Separar redes não separa a cobrança por projeto." },
+      { "key": "C", "text": "Grupos do IAM por projeto", "explanation": "Incorreta. Grupos organizam permissões de usuários; não atribuem custos de recursos." },
+      { "key": "D", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos futuros; não atribui gastos reais a projetos." }
+    ],
+    "correct": ["A"],
+    "trigger": "'atribuir custos por projeto/centro de custo na mesma conta' → tags de alocação de custos",
+    "reference": "Tags de alocação de custos — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"
+  },
+  {
+    "id": "d4-018",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa aplicou a tag 'CentroDeCusto' em todos os recursos, mas ela não aparece como opção de agrupamento no AWS Cost Explorer. Qual é a causa mais provável?",
+    "options": [
+      { "key": "A", "text": "Tags não funcionam com o Cost Explorer", "explanation": "Incorreta. O Cost Explorer permite agrupar e filtrar por tags de alocação de custos." },
+      { "key": "B", "text": "A tag precisa ser ativada como tag de alocação de custos no console de Faturamento e Gerenciamento de Custos", "explanation": "Correta. Tags definidas pelo usuário só aparecem nas ferramentas de custos depois de ativadas como tags de alocação de custos." },
+      { "key": "C", "text": "Somente o plano de suporte Enterprise permite usar tags de custo", "explanation": "Incorreta. Tags de alocação de custos estão disponíveis independentemente do plano de suporte." },
+      { "key": "D", "text": "Tags só podem ser aplicadas a buckets do Amazon S3", "explanation": "Incorreta. A maioria dos recursos da AWS aceita tags." }
+    ],
+    "correct": ["B"],
+    "trigger": "'tag não aparece no Cost Explorer' → ativar como tag de alocação de custos no console de Faturamento",
+    "reference": "Tags de alocação de custos — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"
+  },
+  {
+    "id": "d4-019",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "multiple",
+    "question": "Uma empresa quer atribuir os custos da AWS a cada departamento. Quais abordagens ajudam nisso? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Usar contas AWS separadas por departamento no AWS Organizations", "explanation": "Correta. Com contas separadas, os custos de cada departamento aparecem por conta na fatura consolidada." },
+      { "key": "B", "text": "Criar um security group para cada departamento", "explanation": "Incorreta. Security groups controlam tráfego de rede, não cobrança." },
+      { "key": "C", "text": "Aplicar e ativar tags de alocação de custos com o nome do departamento", "explanation": "Correta. As tags permitem agrupar os custos por departamento nas ferramentas de custos." },
+      { "key": "D", "text": "Usar uma Região diferente para cada departamento", "explanation": "Incorreta. A Região deve ser escolhida por latência, conformidade, serviços disponíveis e preço; usá-la para separar custos não é uma prática de alocação de custos." },
+      { "key": "E", "text": "Criar uma função do IAM para cada departamento", "explanation": "Incorreta. Roles controlam permissões, não atribuem custos." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'atribuir custos por departamento' → contas separadas (Organizations) e/ou tags de alocação de custos",
+    "reference": "Tags de alocação de custos — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html · Faturamento consolidado — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html"
+  },
+  {
+    "id": "d4-020",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "multiple",
+    "question": "Quais são benefícios do faturamento consolidado do AWS Organizations? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Uma única fatura para todas as contas da organização", "explanation": "Correta. A conta de gerenciamento paga uma fatura única, com o detalhamento por conta." },
+      { "key": "B", "text": "Plano de suporte Enterprise incluído sem custo", "explanation": "Incorreta. Planos de suporte são contratados e cobrados à parte." },
+      { "key": "C", "text": "Soma do uso de todas as contas para alcançar faixas de desconto por volume", "explanation": "Correta. O uso combinado das contas ajuda a atingir faixas de preço menores (por exemplo, no S3) e permite compartilhar descontos de Instâncias Reservadas e Savings Plans." },
+      { "key": "D", "text": "Fim das cobranças de transferência de dados entre as contas", "explanation": "Incorreta. Transferências de dados continuam sendo cobradas conforme as regras de preço." },
+      { "key": "E", "text": "Possibilidade de ultrapassar as cotas de serviço de cada conta", "explanation": "Incorreta. Cotas de serviço não mudam com o faturamento consolidado." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'faturamento consolidado' → fatura única + descontos por volume combinados + compartilhamento de RIs e Savings Plans",
+    "reference": "Faturamento consolidado — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html"
+  },
+  {
+    "id": "d4-021",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa tem 15 contas AWS e quer gerenciá-las de forma centralizada, organizá-las em unidades organizacionais (OUs), aplicar políticas e pagar uma única fatura. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS IAM Identity Center", "explanation": "Incorreta. Centraliza o acesso de usuários a várias contas, mas não organiza as contas nem consolida o faturamento." },
+      { "key": "B", "text": "AWS Organizations", "explanation": "Correta. O Organizations gerencia várias contas de forma centralizada, com OUs, políticas (como SCPs) e faturamento consolidado sem custo adicional." },
+      { "key": "C", "text": "AWS Cost Explorer", "explanation": "Incorreta. Analisa custos; não gerencia contas." },
+      { "key": "D", "text": "AWS Resource Access Manager", "explanation": "Incorreta. Compartilha recursos entre contas; não consolida o faturamento." }
+    ],
+    "correct": ["B"],
+    "trigger": "'várias contas' + 'OUs e políticas' + 'fatura única' → AWS Organizations",
+    "reference": "AWS Organizations — https://aws.amazon.com/organizations/"
+  },
+  {
+    "id": "d4-022",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa comprou Instâncias Reservadas na conta A. Depois, a carga de trabalho correspondente passou a rodar na conta B, da mesma organização, com faturamento consolidado. O que acontece com o desconto?",
+    "options": [
+      { "key": "A", "text": "O desconto é perdido, pois as RIs valem somente na conta que as comprou", "explanation": "Incorreta. Com o faturamento consolidado, o desconto pode ser aplicado a outras contas da organização." },
+      { "key": "B", "text": "É preciso abrir um caso de suporte para transferir as RIs", "explanation": "Incorreta. A aplicação do desconto entre contas é automática." },
+      { "key": "C", "text": "O desconto pode ser aplicado automaticamente ao uso correspondente na conta B, desde que o compartilhamento de descontos não esteja desativado", "explanation": "Correta. Por padrão, os descontos de RIs e Savings Plans são compartilhados entre as contas da organização; a conta de gerenciamento pode desativar esse compartilhamento." },
+      { "key": "D", "text": "O desconto vale apenas para a conta de gerenciamento", "explanation": "Incorreta. Os descontos podem beneficiar qualquer conta da organização com uso correspondente." }
+    ],
+    "correct": ["C"],
+    "trigger": "'RI comprada em uma conta, uso em outra da organização' → desconto compartilhado (faturamento consolidado)",
+    "reference": "Faturamento consolidado — https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html"
+  },
+  {
+    "id": "d4-023",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Em geral, qual tipo de transferência de dados NÃO é cobrado pela AWS?",
+    "options": [
+      { "key": "A", "text": "Transferência de dados da internet para a AWS (entrada)", "explanation": "Correta. Em geral, a entrada de dados da internet para a AWS não é cobrada; a saída para a internet e as transferências entre Regiões, por exemplo, são cobradas." },
+      { "key": "B", "text": "Transferência de dados da AWS para a internet (saída)", "explanation": "Incorreta. A saída de dados para a internet é cobrada por GB (além de eventuais cotas gratuitas)." },
+      { "key": "C", "text": "Transferência de dados entre Regiões da AWS", "explanation": "Incorreta. É cobrada." },
+      { "key": "D", "text": "Transferência de dados entre Zonas de Disponibilidade", "explanation": "Incorreta. Em geral, é cobrada." }
+    ],
+    "correct": ["A"],
+    "trigger": "'transferência não cobrada' → entrada de dados da internet · saída e entre Regiões → cobradas",
+    "reference": "Preços do Amazon EC2 (transferência de dados) — https://aws.amazon.com/ec2/pricing/on-demand/"
+  },
+  {
+    "id": "d4-024",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa quer recomendações baseadas em machine learning, a partir do histórico de utilização, para dimensionar corretamente instâncias Amazon EC2, volumes Amazon EBS e funções AWS Lambda. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Compute Optimizer", "explanation": "Correta. O Compute Optimizer analisa métricas de utilização e recomenda tipos e tamanhos ideais para recursos como EC2, Auto Scaling, EBS, Lambda e ECS no Fargate." },
+      { "key": "B", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos de arquiteturas planejadas; não analisa a utilização real." },
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos." },
+      { "key": "D", "text": "AWS Health Dashboard", "explanation": "Incorreta. Informa eventos da AWS que afetam a conta." }
+    ],
+    "correct": ["A"],
+    "trigger": "'recomendações de dimensionamento com base na utilização' (EC2, EBS, Lambda) → AWS Compute Optimizer",
+    "reference": "AWS Compute Optimizer — https://aws.amazon.com/compute-optimizer/"
+  },
+  {
+    "id": "d4-025",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa quer ser avisada automaticamente quando houver um gasto fora do padrão, por exemplo, um aumento repentino de custos em um serviço, sem precisar definir valores fixos de orçamento. Qual recurso atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Cost Anomaly Detection", "explanation": "Correta. Usa machine learning para monitorar continuamente os gastos, detectar padrões incomuns e enviar alertas com a análise da causa." },
+      { "key": "B", "text": "AWS Budgets", "explanation": "Incorreta. Alerta com base em limites definidos pelo usuário, não na detecção de padrões anômalos." },
+      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos antes da implantação." },
+      { "key": "D", "text": "AWS Cost and Usage Report", "explanation": "Incorreta. Fornece dados detalhados, mas não detecta anomalias nem envia alertas." }
+    ],
+    "correct": ["A"],
+    "trigger": "'gasto fora do padrão' / 'anomalia' + 'sem limite fixo' → AWS Cost Anomaly Detection",
+    "reference": "AWS Cost Anomaly Detection — https://aws.amazon.com/aws-cost-management/aws-cost-anomaly-detection/"
+  },
+  {
+    "id": "d4-026",
+    "domain": 4,
+    "topic": "Custos e faturamento",
+    "type": "single",
+    "question": "Uma empresa armazena cada vez mais dados no Amazon S3 Standard e percebe que o preço por GB diminui à medida que o volume mensal armazenado cresce. Qual princípio de preços da AWS isso ilustra?",
+    "options": [
+      { "key": "A", "text": "Pagar menos ao usar mais (descontos por volume em faixas)", "explanation": "Correta. Alguns serviços, como o S3, têm preços em faixas: quanto maior o volume, menor o preço por unidade." },
+      { "key": "B", "text": "Economizar ao se comprometer (reservas)", "explanation": "Incorreta. Trata de descontos por compromisso de uso, como RIs e Savings Plans; aqui não há compromisso." },
+      { "key": "C", "text": "Pagar conforme o uso", "explanation": "Incorreta. É o modelo geral de cobrança, mas não explica a redução do preço unitário com o volume." },
+      { "key": "D", "text": "Instâncias Spot", "explanation": "Incorreta. É uma opção de compra de capacidade do EC2, sem relação com o S3." }
+    ],
+    "correct": ["A"],
+    "trigger": "'preço por unidade cai conforme o volume cresce' → pagar menos ao usar mais",
+    "reference": "Como funciona a definição de preço da AWS — https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/how-aws-pricing-works.html"
+  },
+  {
+    "id": "d4-027",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa no plano AWS Basic Support tem uma dúvida sobre a cobrança da fatura. O que ela pode fazer sem contratar outro plano?",
+    "options": [
+      { "key": "A", "text": "Nada; dúvidas de cobrança exigem o plano Business", "explanation": "Incorreta. O atendimento sobre conta e faturamento está incluído em todos os planos, inclusive no Basic." },
+      { "key": "B", "text": "Abrir um caso técnico com um engenheiro de suporte de nuvem", "explanation": "Incorreta. O Basic não inclui casos de suporte técnico." },
+      { "key": "C", "text": "Abrir um caso de atendimento ao cliente sobre conta e faturamento", "explanation": "Correta. O Basic inclui atendimento ao cliente para conta e faturamento, além de documentação, whitepapers, AWS re:Post, verificações principais do Trusted Advisor e o AWS Health Dashboard." },
+      { "key": "D", "text": "Acionar o seu Technical Account Manager (TAM)", "explanation": "Incorreta. TAM existe apenas nos planos Enterprise On-Ramp e Enterprise." }
+    ],
+    "correct": ["C"],
+    "trigger": "'plano Basic' → conta e faturamento, documentação, re:Post, verificações principais do Trusted Advisor, Health Dashboard; sem casos técnicos",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-028",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma startup em fase de testes precisa abrir casos técnicos com a AWS por e-mail, em horário comercial, e quer o plano de suporte de MENOR custo que ofereça isso. Qual plano deve escolher?",
+    "options": [
+      { "key": "A", "text": "Basic", "explanation": "Incorreta. Não inclui casos de suporte técnico." },
+      { "key": "B", "text": "Developer", "explanation": "Correta. O Developer é o plano de menor custo com acesso por e-mail, em horário comercial, a associados de suporte de nuvem, indicado para testes e experimentação." },
+      { "key": "C", "text": "Business", "explanation": "Incorreta. Oferece acesso 24 horas por dia por telefone, chat e e-mail, mas custa mais do que o necessário." },
+      { "key": "D", "text": "Enterprise On-Ramp", "explanation": "Incorreta. É voltado a cargas de trabalho de produção e críticas, com custo bem maior." }
+    ],
+    "correct": ["B"],
+    "trigger": "'testes/experimentação' + 'e-mail em horário comercial' + 'menor custo com suporte técnico' → Developer",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-029",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa executa cargas de trabalho de produção e precisa de acesso 24 horas por dia a engenheiros de suporte por telefone, chat e e-mail, com resposta em menos de 1 hora quando um sistema de produção estiver fora do ar. Qual é o plano de MENOR custo que atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Developer", "explanation": "Incorreta. Oferece apenas e-mail em horário comercial, sem a categoria 'sistema de produção fora do ar'." },
+      { "key": "B", "text": "Business", "explanation": "Correta. O Business oferece acesso 24/7 por telefone, chat e e-mail e resposta em menos de 1 hora para sistema de produção fora do ar." },
+      { "key": "C", "text": "Enterprise On-Ramp", "explanation": "Incorreta. Também atende, mas custa mais; acrescenta, por exemplo, resposta em menos de 30 minutos para sistemas críticos e acesso a um pool de TAMs." },
+      { "key": "D", "text": "Enterprise", "explanation": "Incorreta. Atende, mas é o plano mais caro." }
+    ],
+    "correct": ["B"],
+    "trigger": "'produção fora do ar < 1 hora' + '24/7 por telefone/chat' + 'menor custo' → Business",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-030",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa quer resposta em menos de 30 minutos quando um sistema crítico para o negócio estiver fora do ar e orientação de um pool de Technical Account Managers (TAMs), pelo menor custo possível. Qual plano de suporte atende?",
+    "options": [
+      { "key": "A", "text": "Business", "explanation": "Incorreta. Não oferece TAM, e seu menor tempo de resposta é de menos de 1 hora (sistema de produção fora do ar)." },
+      { "key": "B", "text": "Enterprise On-Ramp", "explanation": "Correta. O Enterprise On-Ramp oferece resposta em menos de 30 minutos para sistema crítico fora do ar e acesso a um pool de TAMs." },
+      { "key": "C", "text": "Enterprise", "explanation": "Incorreta. Atende e vai além (TAM designado, resposta em menos de 15 minutos), mas custa mais." },
+      { "key": "D", "text": "Developer", "explanation": "Incorreta. É voltado a testes, com suporte por e-mail em horário comercial." }
+    ],
+    "correct": ["B"],
+    "trigger": "'< 30 min para sistema crítico' + 'pool de TAMs' → Enterprise On-Ramp",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-031",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma grande empresa com cargas de trabalho críticas quer um Technical Account Manager (TAM) designado exclusivamente para ela e resposta em menos de 15 minutos quando um sistema crítico para o negócio estiver fora do ar. Qual plano de suporte atende a esses requisitos?",
+    "options": [
+      { "key": "A", "text": "Enterprise On-Ramp", "explanation": "Incorreta. Oferece um pool de TAMs (não designado) e resposta em menos de 30 minutos para sistema crítico." },
+      { "key": "B", "text": "Business", "explanation": "Incorreta. Não inclui TAM." },
+      { "key": "C", "text": "Developer", "explanation": "Incorreta. É voltado a testes, sem TAM." },
+      { "key": "D", "text": "Enterprise", "explanation": "Correta. O Enterprise inclui TAM designado e resposta em menos de 15 minutos para sistema crítico fora do ar, entre outros recursos." }
+    ],
+    "correct": ["D"],
+    "trigger": "'TAM designado' + '< 15 min para sistema crítico' → Enterprise",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-032",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Qual é o plano de suporte de MENOR custo que dá acesso ao conjunto completo de verificações do AWS Trusted Advisor?",
+    "options": [
+      { "key": "A", "text": "Basic", "explanation": "Incorreta. Inclui apenas as verificações principais (core), como as de segurança essenciais e as de cotas de serviço." },
+      { "key": "B", "text": "Developer", "explanation": "Incorreta. Também inclui apenas as verificações principais do Trusted Advisor." },
+      { "key": "C", "text": "Business", "explanation": "Correta. A partir do Business (e também no Enterprise On-Ramp e no Enterprise), o cliente tem acesso ao conjunto completo de verificações do Trusted Advisor." },
+      { "key": "D", "text": "Enterprise", "explanation": "Incorreta. Inclui todas as verificações, mas não é o plano de menor custo." }
+    ],
+    "correct": ["C"],
+    "trigger": "'todas as verificações do Trusted Advisor' + 'menor custo' → Business",
+    "reference": "AWS Trusted Advisor — https://aws.amazon.com/premiumsupport/technology/trusted-advisor/"
+  },
+  {
+    "id": "d4-033",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "multiple",
+    "question": "Quais planos do AWS Support incluem acesso a um Technical Account Manager (TAM)? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Enterprise On-Ramp", "explanation": "Correta. Oferece acesso a um pool de TAMs." },
+      { "key": "B", "text": "Business", "explanation": "Incorreta. Não inclui TAM." },
+      { "key": "C", "text": "Developer", "explanation": "Incorreta. Não inclui TAM." },
+      { "key": "D", "text": "Enterprise", "explanation": "Correta. Oferece um TAM designado." },
+      { "key": "E", "text": "Basic", "explanation": "Incorreta. Não inclui TAM nem casos técnicos." }
+    ],
+    "correct": ["A", "D"],
+    "trigger": "'TAM' → Enterprise On-Ramp (pool de TAMs) e Enterprise (TAM designado)",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-034",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa no plano Enterprise precisa de ajuda especializada com questões de faturamento e de contas. Qual equipe do AWS Support é dedicada a esse tipo de questão?",
+    "options": [
+      { "key": "A", "text": "Equipe de Concierge Support", "explanation": "Correta. A equipe de Concierge, incluída nos planos Enterprise On-Ramp e Enterprise, é especializada em faturamento e contas." },
+      { "key": "B", "text": "Technical Account Manager (TAM)", "explanation": "Incorreta. O TAM oferece orientação técnica e arquitetural; não é a equipe dedicada a faturamento." },
+      { "key": "C", "text": "Equipe de Trust & Safety da AWS", "explanation": "Incorreta. Trata de denúncias de abuso envolvendo recursos da AWS." },
+      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. É a equipe de consultoria da AWS para projetos, como migração e modernização." }
+    ],
+    "correct": ["A"],
+    "trigger": "'faturamento e contas' + 'Enterprise / Enterprise On-Ramp' → equipe de Concierge",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-035",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa sem experiência em nuvem quer contratar uma consultoria parceira da AWS para planejar e executar a migração de seus sistemas. Onde ela deve procurar?",
+    "options": [
+      { "key": "A", "text": "AWS Marketplace", "explanation": "Incorreta. É um catálogo para encontrar, comprar e implantar software de terceiros, não o canal para contratar consultorias de migração." },
+      { "key": "B", "text": "AWS Partner Network (APN)", "explanation": "Correta. A APN reúne empresas parceiras da AWS, como consultorias e integradores de sistemas, que podem ser encontradas e contratadas para projetos como migração." },
+      { "key": "C", "text": "AWS re:Post", "explanation": "Incorreta. É uma comunidade de perguntas e respostas, não um canal para contratar consultoria." },
+      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda otimizações automáticas na conta." }
+    ],
+    "correct": ["B"],
+    "trigger": "'contratar parceiro / consultoria / integrador' → AWS Partner Network (APN)",
+    "reference": "AWS Partner Network — https://aws.amazon.com/partners/"
+  },
+  {
+    "id": "d4-036",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa quer encontrar, comprar e implantar rapidamente um firewall de próxima geração de um fornecedor terceirizado, com a cobrança incluída na própria fatura da AWS. Onde ela encontra essa solução?",
+    "options": [
+      { "key": "A", "text": "AWS Marketplace", "explanation": "Correta. O Marketplace é um catálogo digital com produtos de fornecedores independentes, implantáveis na AWS e cobrados na fatura da AWS." },
+      { "key": "B", "text": "AWS Partner Network (APN)", "explanation": "Incorreta. A APN é o programa de parceiros; o catálogo para comprar e implantar software com cobrança na fatura é o Marketplace." },
+      { "key": "C", "text": "AWS Artifact", "explanation": "Incorreta. Fornece relatórios e acordos de conformidade da AWS." },
+      { "key": "D", "text": "AWS Service Catalog", "explanation": "Incorreta. Permite que a própria empresa crie um catálogo interno de produtos de TI aprovados; não é uma loja de software de terceiros." }
+    ],
+    "correct": ["A"],
+    "trigger": "'comprar software de terceiros' + 'cobrado na fatura da AWS' → AWS Marketplace",
+    "reference": "AWS Marketplace — https://aws.amazon.com/marketplace/"
+  },
+  {
+    "id": "d4-037",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Um desenvolvedor quer fazer uma pergunta técnica e receber respostas da comunidade, inclusive de especialistas da AWS, em um serviço gratuito de perguntas e respostas que substituiu os antigos fóruns da AWS. Qual recurso deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS re:Post", "explanation": "Correta. O re:Post é a comunidade de perguntas e respostas da AWS, aberta a todos, com respostas da comunidade e de especialistas." },
+      { "key": "B", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Faz verificações automáticas na conta; não é um fórum de perguntas." },
+      { "key": "C", "text": "AWS Marketplace", "explanation": "Incorreta. É um catálogo de software." },
+      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. É uma equipe de consultoria contratada para projetos." }
+    ],
+    "correct": ["A"],
+    "trigger": "'comunidade de perguntas e respostas' / 'fóruns' → AWS re:Post",
+    "reference": "AWS re:Post — https://repost.aws/"
+  },
+  {
+    "id": "d4-038",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma empresa percebe que endereços IP pertencentes à AWS estão fazendo varreduras de portas e enviando spam contra os seus servidores. A quem ela deve denunciar esse abuso?",
+    "options": [
+      { "key": "A", "text": "À equipe de Trust & Safety da AWS", "explanation": "Correta. A equipe de Trust & Safety recebe e investiga denúncias de abuso envolvendo recursos da AWS, como spam, varredura de portas e ataques DDoS." },
+      { "key": "B", "text": "Ao seu Technical Account Manager", "explanation": "Incorreta. O TAM orienta clientes Enterprise sobre a própria conta; denúncias de abuso vão para a equipe de Trust & Safety." },
+      { "key": "C", "text": "À equipe de Concierge Support", "explanation": "Incorreta. Cuida de questões de faturamento e contas." },
+      { "key": "D", "text": "À Shield Response Team", "explanation": "Incorreta. Apoia clientes do Shield Advanced durante ataques DDoS aos próprios recursos; não é o canal de denúncias de abuso." }
+    ],
+    "correct": ["A"],
+    "trigger": "'denunciar abuso vindo de IPs/recursos da AWS' (spam, varredura de portas, DDoS) → AWS Trust & Safety",
+    "reference": "Como denunciar abuso de recursos da AWS — https://repost.aws/knowledge-center/report-aws-abuse"
+  },
+  {
+    "id": "d4-039",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "single",
+    "question": "Uma equipe procura estratégias, guias e padrões testados pela AWS e por parceiros para acelerar projetos de migração e modernização. Qual recurso oferece esse conteúdo?",
+    "options": [
+      { "key": "A", "text": "AWS Prescriptive Guidance", "explanation": "Correta. O Prescriptive Guidance reúne estratégias, guias e padrões testados para migração, modernização e otimização, criados pela AWS e por parceiros." },
+      { "key": "B", "text": "AWS Artifact", "explanation": "Incorreta. Fornece relatórios e acordos de conformidade." },
+      { "key": "C", "text": "AWS Health Dashboard", "explanation": "Incorreta. Informa eventos da AWS que afetam a conta." },
+      { "key": "D", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos." }
+    ],
+    "correct": ["A"],
+    "trigger": "'estratégias, guias e padrões testados' → AWS Prescriptive Guidance",
+    "reference": "AWS Prescriptive Guidance — https://aws.amazon.com/prescriptive-guidance/"
+  },
+  {
+    "id": "d4-040",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "multiple",
+    "question": "Quais recursos estão disponíveis no plano AWS Basic Support, sem custo adicional? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS re:Post", "explanation": "Correta. A comunidade de perguntas e respostas está disponível para todos os clientes." },
+      { "key": "B", "text": "Casos de suporte técnico com engenheiros de suporte de nuvem", "explanation": "Incorreta. Casos técnicos começam no plano Developer." },
+      { "key": "C", "text": "AWS Health Dashboard", "explanation": "Correta. Todos os clientes têm acesso à visão personalizada da saúde dos serviços da AWS que afetam a conta." },
+      { "key": "D", "text": "Technical Account Manager (TAM)", "explanation": "Incorreta. Disponível apenas nos planos Enterprise On-Ramp e Enterprise." },
+      { "key": "E", "text": "Conjunto completo de verificações do Trusted Advisor", "explanation": "Incorreta. O Basic tem apenas as verificações principais; o conjunto completo começa no plano Business." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'plano Basic' → atendimento de conta/faturamento, documentação, re:Post, Health Dashboard, verificações principais do Trusted Advisor",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  },
+  {
+    "id": "d4-041",
+    "domain": 4,
+    "topic": "Opções de compra da EC2",
+    "type": "multiple",
+    "question": "Quais opções de compra do Amazon EC2 envolvem um compromisso de uso de 1 ou 3 anos em troca de desconto? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Instâncias Reservadas", "explanation": "Correta. Exigem compromisso de 1 ou 3 anos com determinados atributos de instância, em troca de desconto." },
+      { "key": "B", "text": "Instâncias On-Demand", "explanation": "Incorreta. Não exigem compromisso; paga-se pelo uso." },
+      { "key": "C", "text": "Savings Plans", "explanation": "Correta. Exigem compromisso de gasto por hora durante 1 ou 3 anos, em troca de desconto." },
+      { "key": "D", "text": "Instâncias Spot", "explanation": "Incorreta. Não exigem compromisso; o desconto vem do uso de capacidade ociosa, que pode ser interrompida." },
+      { "key": "E", "text": "On-Demand Capacity Reservations", "explanation": "Incorreta. Não exigem compromisso de 1 ou 3 anos nem dão desconto: reservam capacidade em uma AZ e são cobradas pela taxa On-Demand enquanto estão ativas." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'compromisso de 1 ou 3 anos' → Instâncias Reservadas ou Savings Plans · 'sem compromisso' → On-Demand, Spot, Capacity Reservations",
+    "reference": "Preços do Amazon EC2 — https://aws.amazon.com/ec2/pricing/"
+  },
+  {
+    "id": "d4-042",
+    "domain": 4,
+    "topic": "Suporte e recursos",
+    "type": "multiple",
+    "question": "Quais recursos estão incluídos no plano AWS Business Support? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Acesso 24 horas por dia, 7 dias por semana, a engenheiros de suporte de nuvem por telefone, chat e e-mail", "explanation": "Correta. O Business oferece suporte técnico 24/7 por telefone, chat e e-mail." },
+      { "key": "B", "text": "Technical Account Manager (TAM) designado", "explanation": "Incorreta. O TAM designado é exclusivo do plano Enterprise." },
+      { "key": "C", "text": "Conjunto completo de verificações do AWS Trusted Advisor", "explanation": "Correta. O Business é o plano de menor custo com acesso a todas as verificações do Trusted Advisor." },
+      { "key": "D", "text": "Equipe de Concierge Support", "explanation": "Incorreta. A equipe de Concierge está nos planos Enterprise On-Ramp e Enterprise." },
+      { "key": "E", "text": "Resposta em menos de 15 minutos para sistema crítico fora do ar", "explanation": "Incorreta. Esse tempo de resposta é do plano Enterprise; no Business, o menor tempo é de menos de 1 hora (sistema de produção fora do ar)." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'plano Business' → 24/7 por telefone/chat/e-mail, todas as verificações do Trusted Advisor, < 1 h para produção fora do ar",
+    "reference": "Planos do AWS Support — https://aws.amazon.com/premiumsupport/plans/"
+  }
+]

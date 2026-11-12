@@ -1,0 +1,1215 @@
+[
+  {
+    "id": "d3-001",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Uma empresa precisa conectar rapidamente seu data center a uma VPC com uma conexão criptografada, usando o link de internet que já possui e com baixo custo inicial. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Direct Connect", "explanation": "Incorreta. É uma conexão física dedicada e privada; exige provisionamento em um local do Direct Connect ou com um parceiro e não usa a internet existente." },
+      { "key": "B", "text": "AWS Site-to-Site VPN", "explanation": "Correta. Cria túneis IPsec criptografados pela internet entre a rede local e a VPC, com configuração rápida e baixo custo inicial." },
+      { "key": "C", "text": "AWS Client VPN", "explanation": "Incorreta. Conecta dispositivos de usuários individuais (notebooks), não a rede inteira do data center." },
+      { "key": "D", "text": "Amazon CloudFront", "explanation": "Incorreta. É uma rede de entrega de conteúdo (CDN); não conecta redes privadas." }
+    ],
+    "correct": ["B"],
+    "trigger": "'rede local ↔ VPC' + 'pela internet' + 'criptografado e rápido' → Site-to-Site VPN",
+    "reference": "AWS Site-to-Site VPN — https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
+  },
+  {
+    "id": "d3-002",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Uma empresa transfere grandes volumes de dados diariamente entre o data center e a AWS e precisa de desempenho de rede consistente, com uma conexão privada que não passe pela internet pública. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Site-to-Site VPN", "explanation": "Incorreta. A VPN trafega pela internet pública, cujo desempenho varia." },
+      { "key": "B", "text": "AWS Global Accelerator", "explanation": "Incorreta. Melhora o caminho dos usuários da internet até aplicações na AWS; não é uma conexão privada com o data center." },
+      { "key": "C", "text": "AWS Direct Connect", "explanation": "Correta. O Direct Connect é uma conexão de rede dedicada e privada entre as instalações do cliente e a AWS, com desempenho mais consistente e potencial redução dos custos de transferência de dados." },
+      { "key": "D", "text": "Amazon Route 53", "explanation": "Incorreta. É um serviço de DNS." }
+    ],
+    "correct": ["C"],
+    "trigger": "'dedicada/privada' + 'desempenho consistente' + 'sem passar pela internet' → Direct Connect",
+    "reference": "AWS Direct Connect — https://aws.amazon.com/directconnect/"
+  },
+  {
+    "id": "d3-003",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Funcionários em home office precisam acessar, de seus notebooks, aplicações internas que estão em uma VPC e na rede local da empresa, por uma conexão segura. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Client VPN", "explanation": "Correta. O Client VPN é um serviço de VPN gerenciado para que usuários individuais se conectem com segurança, de qualquer lugar, a recursos na AWS e na rede local." },
+      { "key": "B", "text": "AWS Site-to-Site VPN", "explanation": "Incorreta. Conecta redes inteiras (data center ↔ VPC), não dispositivos de usuários individuais." },
+      { "key": "C", "text": "AWS Direct Connect", "explanation": "Incorreta. É uma conexão física dedicada entre instalações e a AWS, não para notebooks de funcionários remotos." },
+      { "key": "D", "text": "AWS PrivateLink", "explanation": "Incorreta. Expõe serviços de forma privada entre VPCs; não é uma VPN para usuários." }
+    ],
+    "correct": ["A"],
+    "trigger": "'usuários remotos / notebooks' + 'acesso seguro à VPC' → Client VPN",
+    "reference": "AWS Client VPN — https://aws.amazon.com/vpn/client-vpn/"
+  },
+  {
+    "id": "d3-004",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Uma empresa tem 40 VPCs em várias contas e vários escritórios conectados por VPN. Manter conexões entre todas essas redes ficou complexo. Qual serviço simplifica a interconexão usando um modelo hub-and-spoke?",
+    "options": [
+      { "key": "A", "text": "VPC peering", "explanation": "Incorreta. O peering conecta duas VPCs por vez e não é transitivo; com 40 VPCs seria preciso uma malha enorme de conexões." },
+      { "key": "B", "text": "AWS Transit Gateway", "explanation": "Correta. O Transit Gateway funciona como um hub central que conecta VPCs e redes locais (VPN e Direct Connect), simplificando o roteamento entre muitas redes." },
+      { "key": "C", "text": "Virtual private gateway", "explanation": "Incorreta. É o lado da AWS de uma VPN para uma única VPC; não interconecta dezenas de VPCs." },
+      { "key": "D", "text": "NAT gateway", "explanation": "Incorreta. Permite que instâncias privadas acessem a internet; não interconecta redes." }
+    ],
+    "correct": ["B"],
+    "trigger": "'muitas VPCs e redes locais' + 'hub central' → Transit Gateway",
+    "reference": "AWS Transit Gateway — https://aws.amazon.com/transit-gateway/"
+  },
+  {
+    "id": "d3-005",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Uma empresa de SaaS quer oferecer seu serviço, hospedado em uma VPC, a clientes que o acessarão a partir das VPCs deles por endereços IP privados, sem expor o tráfego à internet e sem conectar as redes inteiras. Qual recurso atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "VPC peering", "explanation": "Incorreta. O peering conecta as redes inteiras das duas VPCs (e não aceita CIDRs sobrepostos); o requisito é expor apenas um serviço." },
+      { "key": "B", "text": "Internet gateway", "explanation": "Incorreta. Exporia o serviço pela internet." },
+      { "key": "C", "text": "AWS PrivateLink (VPC endpoint de interface)", "explanation": "Correta. O PrivateLink expõe um serviço específico por meio de endpoints com IPs privados nas VPCs dos consumidores, sem internet, NAT ou peering." },
+      { "key": "D", "text": "AWS Direct Connect", "explanation": "Incorreta. Conecta instalações físicas à AWS; não expõe serviços entre VPCs de clientes." }
+    ],
+    "correct": ["C"],
+    "trigger": "'acessar um serviço específico de forma privada entre VPCs' (sem internet, sem conectar redes) → PrivateLink",
+    "reference": "AWS PrivateLink — https://aws.amazon.com/privatelink/"
+  },
+  {
+    "id": "d3-006",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Instâncias em uma sub-rede precisam receber tráfego da internet por meio de endereços IP públicos. Qual componente deve ser anexado à VPC e usado na tabela de rotas dessa sub-rede para torná-la pública?",
+    "options": [
+      { "key": "A", "text": "NAT gateway", "explanation": "Incorreta. Permite apenas que instâncias em sub-redes privadas iniciem conexões de saída para a internet; não aceita conexões iniciadas a partir da internet." },
+      { "key": "B", "text": "Internet gateway", "explanation": "Correta. O internet gateway permite a comunicação entre a VPC e a internet; uma sub-rede com rota para ele é uma sub-rede pública." },
+      { "key": "C", "text": "Virtual private gateway", "explanation": "Incorreta. É o lado da AWS de uma conexão VPN ou Direct Connect com a rede local." },
+      { "key": "D", "text": "VPC endpoint de gateway", "explanation": "Incorreta. Dá acesso privado a serviços como S3 e DynamoDB, não à internet." }
+    ],
+    "correct": ["B"],
+    "trigger": "'sub-rede pública' / 'receber tráfego da internet' → internet gateway",
+    "reference": "Internet gateways — https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
+  },
+  {
+    "id": "d3-007",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Servidores de banco de dados em uma sub-rede privada precisam baixar atualizações de software da internet, mas não podem aceitar conexões iniciadas a partir da internet. Qual componente atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Rota direta da sub-rede privada para o internet gateway", "explanation": "Incorreta. Rotear a sub-rede diretamente para o internet gateway a tornaria pública." },
+      { "key": "B", "text": "Virtual private gateway", "explanation": "Incorreta. Conecta a VPC à rede local por VPN, não à internet." },
+      { "key": "C", "text": "NAT gateway", "explanation": "Correta. O NAT gateway, colocado em uma sub-rede pública, permite que instâncias privadas iniciem conexões de saída para a internet e bloqueia conexões de entrada iniciadas de fora." },
+      { "key": "D", "text": "AWS Direct Connect", "explanation": "Incorreta. É conectividade dedicada com o data center, não acesso de saída à internet." }
+    ],
+    "correct": ["C"],
+    "trigger": "'sub-rede privada' + 'saída para a internet' + 'sem entrada' → NAT gateway",
+    "reference": "NAT gateways — https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+  },
+  {
+    "id": "d3-008",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Ao configurar uma AWS Site-to-Site VPN para uma única VPC, qual componente representa o lado da AWS da conexão e é anexado à VPC?",
+    "options": [
+      { "key": "A", "text": "Customer gateway", "explanation": "Incorreta. O customer gateway representa o dispositivo ou software do lado do cliente (rede local)." },
+      { "key": "B", "text": "Internet gateway", "explanation": "Incorreta. Conecta a VPC à internet; não termina túneis VPN." },
+      { "key": "C", "text": "NAT gateway", "explanation": "Incorreta. Permite saída para a internet a partir de sub-redes privadas." },
+      { "key": "D", "text": "Virtual private gateway", "explanation": "Correta. O virtual private gateway é o concentrador de VPN do lado da AWS, anexado à VPC (o Transit Gateway também pode cumprir esse papel quando há muitas redes)." }
+    ],
+    "correct": ["D"],
+    "trigger": "'lado da AWS da VPN, anexado à VPC' → virtual private gateway · 'lado do cliente' → customer gateway",
+    "reference": "AWS Site-to-Site VPN — https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
+  },
+  {
+    "id": "d3-009",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "multiple",
+    "question": "Quais componentes são necessários para estabelecer uma AWS Site-to-Site VPN entre um data center e uma única VPC? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Virtual private gateway anexado à VPC", "explanation": "Correta. É o lado da AWS da conexão VPN." },
+      { "key": "B", "text": "Customer gateway representando o dispositivo da rede local", "explanation": "Correta. Representa, na AWS, o roteador ou firewall do lado do cliente." },
+      { "key": "C", "text": "NAT gateway", "explanation": "Incorreta. Não participa da VPN; serve para saída à internet a partir de sub-redes privadas." },
+      { "key": "D", "text": "Amazon CloudFront", "explanation": "Incorreta. É uma CDN, sem relação com VPN." },
+      { "key": "E", "text": "Um local do AWS Direct Connect", "explanation": "Incorreta. É necessário para o Direct Connect, não para uma VPN pela internet." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'Site-to-Site VPN' → virtual private gateway (lado AWS) + customer gateway (lado cliente)",
+    "reference": "AWS Site-to-Site VPN — https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
+  },
+  {
+    "id": "d3-010",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Um site de notícias com leitores no mundo inteiro quer reduzir a latência na entrega de imagens, vídeos e páginas, mantendo cópias do conteúdo em cache perto dos usuários. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Global Accelerator", "explanation": "Incorreta. O Global Accelerator otimiza o caminho do tráfego pela rede da AWS e fornece IPs estáticos, mas não armazena conteúdo em cache." },
+      { "key": "B", "text": "Amazon Route 53", "explanation": "Incorreta. É um serviço de DNS; não armazena conteúdo." },
+      { "key": "C", "text": "Amazon CloudFront", "explanation": "Correta. O CloudFront é a CDN da AWS: mantém conteúdo em cache nos pontos de presença (edge locations), reduzindo a latência para usuários globais." },
+      { "key": "D", "text": "Elastic Load Balancing", "explanation": "Incorreta. Distribui tráfego entre alvos de uma Região; não faz cache global." }
+    ],
+    "correct": ["C"],
+    "trigger": "'cache perto dos usuários' / 'entrega de conteúdo global' → CloudFront",
+    "reference": "Amazon CloudFront — https://aws.amazon.com/cloudfront/"
+  },
+  {
+    "id": "d3-011",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Um jogo online usa UDP e precisa de endereços IP estáticos fixos para os jogadores, melhor desempenho pela rede global da AWS e failover rápido entre Regiões. Qual serviço atende a esses requisitos?",
+    "options": [
+      { "key": "A", "text": "Amazon CloudFront", "explanation": "Incorreta. O CloudFront é uma CDN para conteúdo web (HTTP/HTTPS) com cache; não oferece IPs anycast estáticos para tráfego UDP de jogos." },
+      { "key": "B", "text": "AWS Global Accelerator", "explanation": "Correta. O Global Accelerator fornece IPs estáticos anycast, encaminha o tráfego TCP/UDP pela rede global da AWS até o endpoint regional saudável mais próximo e faz failover rápido." },
+      { "key": "C", "text": "Amazon Route 53", "explanation": "Incorreta. O roteamento por DNS depende do cache de DNS dos clientes e não fornece IPs estáticos anycast." },
+      { "key": "D", "text": "Network Load Balancer", "explanation": "Incorreta. Suporta UDP, mas é regional; sozinho não oferece entrada global nem failover entre Regiões." }
+    ],
+    "correct": ["B"],
+    "trigger": "'IPs estáticos' + 'TCP/UDP' + 'rede global da AWS' + 'failover entre Regiões' → Global Accelerator",
+    "reference": "AWS Global Accelerator — https://aws.amazon.com/global-accelerator/"
+  },
+  {
+    "id": "d3-012",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Uma empresa quer registrar um domínio e direcionar cada usuário para a Região da AWS com menor latência, usando roteamento de DNS com verificações de integridade. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon Route 53", "explanation": "Correta. O Route 53 é o serviço de DNS da AWS: registra domínios, faz verificações de integridade e oferece políticas de roteamento como latência, failover, geolocalização e ponderado." },
+      { "key": "B", "text": "AWS Global Accelerator", "explanation": "Incorreta. Direciona o tráfego com IPs anycast pela rede da AWS, não por DNS, e não registra domínios." },
+      { "key": "C", "text": "Amazon CloudFront", "explanation": "Incorreta. É uma CDN; não registra domínios nem oferece políticas de roteamento de DNS." },
+      { "key": "D", "text": "Elastic Load Balancing", "explanation": "Incorreta. Distribui tráfego dentro de uma Região; não é DNS." }
+    ],
+    "correct": ["A"],
+    "trigger": "'DNS' / 'registrar domínio' / 'roteamento por latência, failover ou geolocalização' → Route 53",
+    "reference": "Amazon Route 53 — https://aws.amazon.com/route53/"
+  },
+  {
+    "id": "d3-013",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "multiple",
+    "question": "Quais afirmações sobre o AWS Global Accelerator estão corretas? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Fornece endereços IP estáticos anycast que servem de ponto de entrada fixo para a aplicação", "explanation": "Correta. Os clientes usam sempre os mesmos IPs, mesmo que os endpoints por trás deles mudem." },
+      { "key": "B", "text": "Armazena conteúdo em cache nos pontos de presença", "explanation": "Incorreta. Cache é função do Amazon CloudFront." },
+      { "key": "C", "text": "Usa a rede global da AWS para melhorar a disponibilidade e o desempenho de aplicações TCP e UDP", "explanation": "Correta. O tráfego entra na rede da AWS no ponto de presença mais próximo e segue por ela até o endpoint." },
+      { "key": "D", "text": "É um serviço de DNS para registrar domínios", "explanation": "Incorreta. Isso é o Amazon Route 53." },
+      { "key": "E", "text": "Conecta o data center à AWS por um link físico dedicado", "explanation": "Incorreta. Isso é o AWS Direct Connect." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'IP estático anycast' + 'TCP/UDP' → Global Accelerator · 'cache' → CloudFront · 'DNS' → Route 53",
+    "reference": "AWS Global Accelerator — https://aws.amazon.com/global-accelerator/"
+  },
+  {
+    "id": "d3-014",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "A VPC A tem uma conexão de peering com a VPC B, e a VPC B tem uma conexão de peering com a VPC C. As instâncias da VPC A conseguem se comunicar com as instâncias da VPC C por meio da VPC B?",
+    "options": [
+      { "key": "A", "text": "Sim, o peering é transitivo por padrão", "explanation": "Incorreta. Conexões de peering não são transitivas." },
+      { "key": "B", "text": "Não. O peering não é transitivo; é preciso um peering direto entre A e C ou um AWS Transit Gateway", "explanation": "Correta. Cada conexão de peering liga apenas duas VPCs; o tráfego não é encaminhado através de uma terceira VPC." },
+      { "key": "C", "text": "Sim, desde que exista um NAT gateway na VPC B", "explanation": "Incorreta. Um NAT gateway não torna o peering transitivo." },
+      { "key": "D", "text": "Somente se as três VPCs estiverem na mesma Zona de Disponibilidade", "explanation": "Incorreta. VPCs abrangem todas as AZs da Região; a AZ não muda a regra de não transitividade." }
+    ],
+    "correct": ["B"],
+    "trigger": "'peering A–B e B–C: A fala com C?' → não (peering não é transitivo; use Transit Gateway)",
+    "reference": "VPC peering — https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html"
+  },
+  {
+    "id": "d3-015",
+    "domain": 3,
+    "topic": "Redes",
+    "type": "single",
+    "question": "Instâncias em uma sub-rede privada precisam acessar um bucket do Amazon S3 sem passar pela internet e sem usar um NAT gateway. Qual recurso atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Internet gateway", "explanation": "Incorreta. Envolve acesso pela internet, que o requisito quer evitar." },
+      { "key": "B", "text": "VPC endpoint de gateway para o Amazon S3", "explanation": "Correta. O endpoint de gateway adiciona uma rota na tabela de rotas para que o tráfego até o S3 (ou DynamoDB) permaneça na rede da AWS, sem internet nem NAT." },
+      { "key": "C", "text": "NAT gateway", "explanation": "Incorreta. O requisito pede justamente para não usar NAT; além disso, o tráfego seguiria para o endpoint público do S3." },
+      { "key": "D", "text": "Virtual private gateway", "explanation": "Incorreta. Conecta a VPC à rede local, não ao S3." }
+    ],
+    "correct": ["B"],
+    "trigger": "'sub-rede privada' + 'acessar S3/DynamoDB sem internet nem NAT' → VPC endpoint de gateway",
+    "reference": "VPC endpoints de gateway — https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html"
+  },
+  {
+    "id": "d3-016",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Uma aplicação crítica deve continuar disponível mesmo se um data center inteiro falhar, com o menor custo e a menor complexidade possíveis. Qual arquitetura atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Implantar a aplicação em várias Zonas de Disponibilidade da mesma Região", "explanation": "Correta. As AZs são isoladas entre si (energia, rede, instalações); distribuir a aplicação entre elas protege contra a falha de um data center, com baixa latência entre os componentes." },
+      { "key": "B", "text": "Implantar a aplicação em várias Regiões", "explanation": "Incorreta. Também resiste à falha de um data center, mas tem custo e complexidade maiores; é indicada para recuperação de desastres regionais ou latência global." },
+      { "key": "C", "text": "Usar uma única instância maior em uma AZ", "explanation": "Incorreta. Continua sendo um ponto único de falha." },
+      { "key": "D", "text": "Distribuir a aplicação entre edge locations", "explanation": "Incorreta. Edge locations servem para cache e entrada de rede (CloudFront, Route 53, Global Accelerator), não para executar a aplicação principal." }
+    ],
+    "correct": ["A"],
+    "trigger": "'falha de um data center/AZ' + 'menor custo' → várias AZs na mesma Região",
+    "reference": "Regiões e Zonas de Disponibilidade — https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+  },
+  {
+    "id": "d3-017",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Uma empresa precisa que seu sistema continue operando mesmo se um desastre natural afetar uma Região inteira da AWS. O que ela deve fazer?",
+    "options": [
+      { "key": "A", "text": "Distribuir a aplicação em várias Zonas de Disponibilidade da mesma Região", "explanation": "Incorreta. Protege contra a falha de uma AZ, mas não contra um evento que afete toda a Região." },
+      { "key": "B", "text": "Implantar a aplicação, ou uma cópia de recuperação, em outra Região da AWS", "explanation": "Correta. Usar várias Regiões é a estratégia para recuperação de desastres e continuidade de negócios diante de eventos regionais." },
+      { "key": "C", "text": "Criar várias sub-redes na mesma Zona de Disponibilidade", "explanation": "Incorreta. Todas continuariam dependendo da mesma AZ." },
+      { "key": "D", "text": "Usar uma Local Zone da mesma Região", "explanation": "Incorreta. Local Zones estendem uma Região para perto de usuários; não substituem uma Região separada para recuperação de desastres." }
+    ],
+    "correct": ["B"],
+    "trigger": "'desastre afetando uma Região inteira' → várias Regiões (recuperação de desastres)",
+    "reference": "Infraestrutura global da AWS — https://aws.amazon.com/about-aws/global-infrastructure/"
+  },
+  {
+    "id": "d3-018",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Qual afirmação sobre o Elastic Load Balancing (ELB) está correta?",
+    "options": [
+      { "key": "A", "text": "Distribui o tráfego de entrada entre alvos em várias Zonas de Disponibilidade dentro de uma única Região", "explanation": "Correta. O ELB é um serviço regional: balanceia o tráfego entre alvos em várias AZs da mesma Região." },
+      { "key": "B", "text": "Distribui automaticamente o tráfego entre Regiões diferentes", "explanation": "Incorreta. Para distribuir tráfego entre Regiões, usa-se o Amazon Route 53 ou o AWS Global Accelerator." },
+      { "key": "C", "text": "Armazena conteúdo em cache nos pontos de presença", "explanation": "Incorreta. Isso é o Amazon CloudFront." },
+      { "key": "D", "text": "Fornece endereços IP estáticos anycast globais", "explanation": "Incorreta. Isso é o AWS Global Accelerator." }
+    ],
+    "correct": ["A"],
+    "trigger": "'ELB' → várias AZs, uma Região · 'entre Regiões' → Route 53 ou Global Accelerator",
+    "reference": "Elastic Load Balancing — https://aws.amazon.com/elasticloadbalancing/"
+  },
+  {
+    "id": "d3-019",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "multiple",
+    "question": "Uma aplicação está implantada em duas Regiões da AWS. Quais serviços podem direcionar os usuários para os endpoints nas Regiões diferentes? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Amazon Route 53", "explanation": "Correta. Políticas de roteamento de DNS (latência, failover, geolocalização) direcionam usuários entre Regiões." },
+      { "key": "B", "text": "Elastic Load Balancing", "explanation": "Incorreta. O ELB distribui tráfego apenas entre alvos em AZs de uma única Região." },
+      { "key": "C", "text": "AWS Global Accelerator", "explanation": "Correta. Encaminha o tráfego para o endpoint regional saudável mais próximo, usando IPs anycast." },
+      { "key": "D", "text": "Amazon EC2 Auto Scaling", "explanation": "Incorreta. Ajusta a quantidade de instâncias; não direciona usuários entre Regiões." },
+      { "key": "E", "text": "NAT gateway", "explanation": "Incorreta. Permite saída para a internet a partir de sub-redes privadas." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'direcionar usuários entre Regiões' → Route 53 ou Global Accelerator (o ELB atua só dentro de uma Região)",
+    "reference": "Amazon Route 53 — https://aws.amazon.com/route53/ · AWS Global Accelerator — https://aws.amazon.com/global-accelerator/"
+  },
+  {
+    "id": "d3-020",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "multiple",
+    "question": "Quais serviços usam os pontos de presença (edge locations) da AWS para atender os usuários? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Amazon CloudFront", "explanation": "Correta. O CloudFront entrega conteúdo em cache a partir dos pontos de presença." },
+      { "key": "B", "text": "Amazon RDS", "explanation": "Incorreta. O RDS executa em Zonas de Disponibilidade dentro de uma Região." },
+      { "key": "C", "text": "Amazon Route 53", "explanation": "Correta. O Route 53 responde às consultas de DNS a partir dos pontos de presença da AWS." },
+      { "key": "D", "text": "Amazon EBS", "explanation": "Incorreta. Volumes EBS ficam em uma Zona de Disponibilidade." },
+      { "key": "E", "text": "Amazon EFS", "explanation": "Incorreta. O EFS é um sistema de arquivos que roda nas AZs de uma Região." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'edge locations' → CloudFront, Route 53 (e Global Accelerator)",
+    "reference": "Infraestrutura global da AWS — https://aws.amazon.com/about-aws/global-infrastructure/"
+  },
+  {
+    "id": "d3-021",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "O que é uma Zona de Disponibilidade (AZ) da AWS?",
+    "options": [
+      { "key": "A", "text": "Uma área geográfica que contém várias Regiões", "explanation": "Incorreta. É o contrário: uma Região contém várias Zonas de Disponibilidade." },
+      { "key": "B", "text": "Um ou mais data centers distintos, com energia, rede e conectividade redundantes, dentro de uma Região", "explanation": "Correta. As AZs são isoladas fisicamente entre si e ligadas por rede de baixa latência dentro da mesma Região." },
+      { "key": "C", "text": "Um ponto de presença usado para armazenar conteúdo em cache", "explanation": "Incorreta. Isso é uma edge location." },
+      { "key": "D", "text": "Um único servidor físico dedicado a um cliente", "explanation": "Incorreta. Isso se parece com um Dedicated Host, não com uma AZ." }
+    ],
+    "correct": ["B"],
+    "trigger": "'AZ' → um ou mais data centers isolados dentro de uma Região",
+    "reference": "Regiões e Zonas de Disponibilidade — https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+  },
+  {
+    "id": "d3-022",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "multiple",
+    "question": "Quais fatores devem ser considerados na escolha de uma Região da AWS para uma carga de trabalho? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Requisitos de conformidade e de residência dos dados", "explanation": "Correta. Leis e regulamentos podem exigir que os dados fiquem em determinado país ou região. A disponibilidade dos serviços e o preço, que variam por Região, também pesam na escolha." },
+      { "key": "B", "text": "Proximidade dos usuários, para reduzir a latência", "explanation": "Correta. Regiões mais próximas dos usuários oferecem menor latência." },
+      { "key": "C", "text": "O fuso horário da sede da empresa", "explanation": "Incorreta. O fuso horário não influencia a escolha técnica da Região." },
+      { "key": "D", "text": "O idioma configurado no Console de Gerenciamento", "explanation": "Incorreta. O idioma do console não depende da Região." },
+      { "key": "E", "text": "A Região em que o usuário raiz da conta foi criado", "explanation": "Incorreta. A conta e o IAM são globais; a conta pode usar qualquer Região habilitada." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'escolher a Região' → conformidade/residência dos dados, latência, serviços disponíveis, preço",
+    "reference": "Infraestrutura global da AWS — https://aws.amazon.com/about-aws/global-infrastructure/"
+  },
+  {
+    "id": "d3-023",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Um estúdio de efeitos visuais precisa executar estações de renderização com latência muito baixa para artistas de uma grande área metropolitana que fica distante da Região da AWS mais próxima. Qual opção da infraestrutura global atende melhor?",
+    "options": [
+      { "key": "A", "text": "AWS Local Zones", "explanation": "Correta. Local Zones colocam computação, armazenamento e outros serviços perto de grandes centros populacionais e industriais, como extensão de uma Região, para latência muito baixa." },
+      { "key": "B", "text": "AWS Wavelength", "explanation": "Incorreta. O Wavelength é voltado a aplicações para dispositivos móveis em redes 5G de operadoras de telecomunicação." },
+      { "key": "C", "text": "AWS Outposts", "explanation": "Incorreta. O Outposts leva a infraestrutura da AWS para dentro do data center do próprio cliente; o cenário é atender uma metrópole sem montar infraestrutura própria." },
+      { "key": "D", "text": "Edge locations do Amazon CloudFront", "explanation": "Incorreta. Pontos de presença fazem cache e entrega de conteúdo; não executam estações de renderização." }
+    ],
+    "correct": ["A"],
+    "trigger": "'latência muito baixa' + 'área metropolitana longe da Região' → Local Zones",
+    "reference": "AWS Local Zones — https://aws.amazon.com/about-aws/global-infrastructure/localzones/"
+  },
+  {
+    "id": "d3-024",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Uma empresa desenvolve uma aplicação de realidade aumentada para celulares que exige latência ultrabaixa, com o processamento ocorrendo dentro da rede 5G das operadoras de telecomunicação. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Local Zones", "explanation": "Incorreta. Aproximam a AWS de áreas metropolitanas, mas não ficam dentro das redes 5G das operadoras." },
+      { "key": "B", "text": "AWS Outposts", "explanation": "Incorreta. Leva a infraestrutura da AWS para o data center do cliente." },
+      { "key": "C", "text": "AWS Wavelength", "explanation": "Correta. As Wavelength Zones incorporam computação e armazenamento da AWS às redes 5G das operadoras, reduzindo a latência para dispositivos móveis." },
+      { "key": "D", "text": "AWS Global Accelerator", "explanation": "Incorreta. Melhora o caminho do tráfego pela rede da AWS, mas não executa a aplicação dentro da rede 5G." }
+    ],
+    "correct": ["C"],
+    "trigger": "'5G' + 'dispositivos móveis' + 'latência ultrabaixa' → Wavelength",
+    "reference": "AWS Wavelength — https://aws.amazon.com/wavelength/"
+  },
+  {
+    "id": "d3-025",
+    "domain": 3,
+    "topic": "Infraestrutura global",
+    "type": "single",
+    "question": "Uma fábrica precisa executar aplicações com latência muito baixa junto aos seus sistemas locais e manter alguns dados no próprio local, mas quer usar os mesmos serviços, APIs e ferramentas da AWS. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Outposts", "explanation": "Correta. O Outposts leva infraestrutura e serviços da AWS para o data center ou instalação do cliente, com as mesmas APIs e ferramentas, criando uma experiência híbrida consistente." },
+      { "key": "B", "text": "AWS Local Zones", "explanation": "Incorreta. Ficam em instalações da AWS perto de grandes cidades, não dentro da fábrica." },
+      { "key": "C", "text": "AWS Storage Gateway", "explanation": "Incorreta. Dá acesso local a armazenamento na nuvem, mas não executa aplicações com serviços da AWS no local." },
+      { "key": "D", "text": "AWS Direct Connect", "explanation": "Incorreta. É uma conexão de rede dedicada; não executa serviços da AWS no local." }
+    ],
+    "correct": ["A"],
+    "trigger": "'serviços da AWS dentro do meu data center/instalação' (mesmas APIs) → Outposts",
+    "reference": "AWS Outposts — https://aws.amazon.com/outposts/"
+  },
+  {
+    "id": "d3-026",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Um banco de dados executado em uma instância Amazon EC2 precisa de armazenamento em bloco persistente, que mantenha os dados mesmo quando a instância é interrompida (stopped). Qual serviço deve ser usado?",
+    "options": [
+      { "key": "A", "text": "Armazenamento de instância (instance store)", "explanation": "Incorreta. É temporário: os dados se perdem quando a instância é interrompida, hibernada ou encerrada." },
+      { "key": "B", "text": "Amazon EBS", "explanation": "Correta. O EBS fornece volumes de bloco persistentes, anexados pela rede às instâncias, que existem independentemente do ciclo de vida da instância." },
+      { "key": "C", "text": "Amazon S3", "explanation": "Incorreta. É armazenamento de objetos acessado por API; não é um volume de bloco para o banco de dados." },
+      { "key": "D", "text": "Amazon EFS", "explanation": "Incorreta. É um sistema de arquivos compartilhado (NFS); para um banco de dados em uma única instância, o padrão é o armazenamento em bloco do EBS." }
+    ],
+    "correct": ["B"],
+    "trigger": "'bloco' + 'persistente' + 'uma instância EC2' → Amazon EBS",
+    "reference": "Amazon EBS — https://aws.amazon.com/ebs/"
+  },
+  {
+    "id": "d3-027",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma aplicação precisa de armazenamento temporário de altíssimo desempenho para buffers e caches, e não há problema se os dados forem perdidos quando a instância for interrompida. Qual opção é a mais adequada e econômica?",
+    "options": [
+      { "key": "A", "text": "Armazenamento de instância (instance store)", "explanation": "Correta. O instance store fica em discos fisicamente ligados ao host, tem desempenho muito alto e já está incluído no preço dos tipos de instância que o oferecem; é temporário." },
+      { "key": "B", "text": "Amazon EBS com IOPS provisionadas", "explanation": "Incorreta. Oferece alto desempenho persistente, mas com custo adicional desnecessário para dados temporários." },
+      { "key": "C", "text": "Amazon EFS", "explanation": "Incorreta. É um sistema de arquivos de rede compartilhado e persistente." },
+      { "key": "D", "text": "Amazon S3 Glacier Flexible Retrieval", "explanation": "Incorreta. É uma classe de arquivamento com recuperação em minutos ou horas." }
+    ],
+    "correct": ["A"],
+    "trigger": "'temporário' + 'cache/buffer/scratch' + 'pode perder os dados' → instance store",
+    "reference": "Armazenamento de instância do EC2 — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
+  },
+  {
+    "id": "d3-028",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Dezenas de instâncias Linux, em várias Zonas de Disponibilidade, precisam ler e gravar ao mesmo tempo no mesmo sistema de arquivos, que deve crescer e diminuir automaticamente conforme os arquivos são adicionados e removidos. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon EBS", "explanation": "Incorreta. Um volume EBS fica em uma única AZ e normalmente é anexado a uma instância; não é um sistema de arquivos compartilhado entre AZs." },
+      { "key": "B", "text": "Amazon EFS", "explanation": "Correta. O EFS é um sistema de arquivos NFS totalmente gerenciado e elástico, que pode ser montado ao mesmo tempo por muitas instâncias Linux em várias AZs." },
+      { "key": "C", "text": "Amazon S3", "explanation": "Incorreta. É armazenamento de objetos acessado por API, não um sistema de arquivos montado." },
+      { "key": "D", "text": "Amazon FSx for Windows File Server", "explanation": "Incorreta. Oferece compartilhamentos SMB para cargas de trabalho Windows; para várias instâncias Linux com NFS, o indicado é o EFS." }
+    ],
+    "correct": ["B"],
+    "trigger": "'muitas instâncias Linux' + 'mesmo sistema de arquivos' + 'várias AZs' → Amazon EFS",
+    "reference": "Amazon EFS — https://aws.amazon.com/efs/"
+  },
+  {
+    "id": "d3-029",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa migra aplicações Windows que usam compartilhamentos de arquivos SMB integrados ao Microsoft Active Directory. Qual serviço de armazenamento atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon EFS", "explanation": "Incorreta. O EFS usa NFS e é voltado a cargas de trabalho Linux." },
+      { "key": "B", "text": "Amazon FSx for Lustre", "explanation": "Incorreta. É um sistema de arquivos de alto desempenho para HPC e machine learning." },
+      { "key": "C", "text": "Amazon FSx for Windows File Server", "explanation": "Correta. Oferece armazenamento de arquivos Windows totalmente gerenciado, com protocolo SMB e integração ao Active Directory." },
+      { "key": "D", "text": "Amazon S3", "explanation": "Incorreta. É armazenamento de objetos, sem compartilhamentos SMB nativos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'Windows' + 'SMB' + 'Active Directory' → FSx for Windows File Server",
+    "reference": "Amazon FSx — https://aws.amazon.com/fsx/"
+  },
+  {
+    "id": "d3-030",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma equipe de pesquisa executa simulações de computação de alto desempenho (HPC) que exigem um sistema de arquivos com altíssima taxa de transferência e integração com dados armazenados no Amazon S3. Qual serviço é o mais indicado?",
+    "options": [
+      { "key": "A", "text": "Amazon FSx for Lustre", "explanation": "Correta. O FSx for Lustre é um sistema de arquivos de alto desempenho para HPC, machine learning e processamento de mídia, com integração ao Amazon S3." },
+      { "key": "B", "text": "Amazon FSx for Windows File Server", "explanation": "Incorreta. É voltado a compartilhamentos SMB para aplicações Windows." },
+      { "key": "C", "text": "Amazon EFS", "explanation": "Incorreta. É um sistema de arquivos NFS de uso geral; o requisito de HPC com integração ao S3 aponta para o FSx for Lustre." },
+      { "key": "D", "text": "AWS Storage Gateway", "explanation": "Incorreta. Dá acesso local a armazenamento na nuvem; não é um sistema de arquivos de HPC." }
+    ],
+    "correct": ["A"],
+    "trigger": "'HPC' / 'altíssimo desempenho' + 'integração com o S3' → FSx for Lustre",
+    "reference": "Amazon FSx for Lustre — https://aws.amazon.com/fsx/lustre/"
+  },
+  {
+    "id": "d3-031",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa guarda relatórios que são acessados poucas vezes por mês, mas, quando alguém precisa deles, o acesso deve ser imediato (milissegundos). Os dados devem resistir à perda de uma Zona de Disponibilidade. Qual classe do Amazon S3 é a mais econômica para esse caso?",
+    "options": [
+      { "key": "A", "text": "S3 Standard", "explanation": "Incorreta. Atende ao requisito, mas custa mais por GB armazenado; é indicada para dados acessados com frequência." },
+      { "key": "B", "text": "S3 One Zone-IA", "explanation": "Incorreta. Armazena os dados em uma única AZ; não atende à exigência de resistir à perda de uma AZ." },
+      { "key": "C", "text": "S3 Standard-IA", "explanation": "Correta. A Standard-IA é para dados acessados com pouca frequência que exigem acesso rápido, armazenados em várias AZs; há cobrança por GB recuperado." },
+      { "key": "D", "text": "S3 Glacier Flexible Retrieval", "explanation": "Incorreta. É uma classe de arquivamento com recuperação em minutos a horas, não em milissegundos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'acesso pouco frequente' + 'acesso imediato' + 'várias AZs' → S3 Standard-IA",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  },
+  {
+    "id": "d3-032",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa gera miniaturas de imagens que podem ser recriadas a partir dos originais a qualquer momento. As miniaturas são pouco acessadas, mas precisam de acesso em milissegundos. Qual classe do S3 oferece o menor custo para esse caso?",
+    "options": [
+      { "key": "A", "text": "S3 One Zone-IA", "explanation": "Correta. A One Zone-IA guarda os dados em uma única AZ, com custo menor que a Standard-IA; é adequada para dados recriáveis e pouco acessados." },
+      { "key": "B", "text": "S3 Standard-IA", "explanation": "Incorreta. Também atende, mas custa mais por manter os dados em várias AZs, uma proteção desnecessária para dados recriáveis." },
+      { "key": "C", "text": "S3 Glacier Deep Archive", "explanation": "Incorreta. Tem o menor custo de armazenamento, mas a recuperação leva horas." },
+      { "key": "D", "text": "S3 Intelligent-Tiering", "explanation": "Incorreta. É indicada quando o padrão de acesso é desconhecido ou muda; aqui o padrão é conhecido." }
+    ],
+    "correct": ["A"],
+    "trigger": "'dados recriáveis' + 'pouco acesso' + 'menor custo com acesso rápido' → S3 One Zone-IA",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  },
+  {
+    "id": "d3-033",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa armazena um grande volume de dados no Amazon S3 cujo padrão de acesso é desconhecido e muda com o tempo. Ela quer otimizar custos automaticamente, sem impacto no desempenho e sem taxas de recuperação. Qual classe deve usar?",
+    "options": [
+      { "key": "A", "text": "S3 Standard-IA", "explanation": "Incorreta. Cobra pela recuperação e pressupõe acesso pouco frequente conhecido; com acesso imprevisível, pode sair mais caro." },
+      { "key": "B", "text": "S3 Intelligent-Tiering", "explanation": "Correta. A Intelligent-Tiering move os objetos automaticamente entre camadas de acesso conforme o uso, sem taxa de recuperação; há uma pequena taxa mensal de monitoramento por objeto." },
+      { "key": "C", "text": "S3 One Zone-IA", "explanation": "Incorreta. É para dados recriáveis e pouco acessados, em uma única AZ." },
+      { "key": "D", "text": "S3 Glacier Instant Retrieval", "explanation": "Incorreta. É para dados de arquivamento raramente acessados; não se ajusta automaticamente a mudanças no padrão de acesso." }
+    ],
+    "correct": ["B"],
+    "trigger": "'padrão de acesso desconhecido ou que muda' → S3 Intelligent-Tiering",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  },
+  {
+    "id": "d3-034",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Por exigência regulatória, uma empresa precisa reter registros por 10 anos. Esses dados quase nunca são acessados e, quando forem, um prazo de recuperação de algumas horas é aceitável. Qual classe do S3 oferece o MENOR custo de armazenamento?",
+    "options": [
+      { "key": "A", "text": "S3 Glacier Deep Archive", "explanation": "Correta. É a classe de menor custo do S3, feita para retenção de longo prazo de dados raramente acessados, com recuperação em horas." },
+      { "key": "B", "text": "S3 Glacier Flexible Retrieval", "explanation": "Incorreta. Também é de arquivamento, com recuperação de minutos a horas, mas custa mais por GB armazenado que a Deep Archive." },
+      { "key": "C", "text": "S3 Glacier Instant Retrieval", "explanation": "Incorreta. Oferece recuperação em milissegundos e, por isso, custa mais que a Deep Archive." },
+      { "key": "D", "text": "S3 Standard-IA", "explanation": "Incorreta. É para acesso pouco frequente com recuperação imediata; custa bem mais para retenção de longo prazo." }
+    ],
+    "correct": ["A"],
+    "trigger": "'reter por anos' + 'quase nunca acessado' + 'horas para recuperar é aceitável' → S3 Glacier Deep Archive",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  },
+  {
+    "id": "d3-035",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa arquiva imagens médicas que são acessadas cerca de uma vez por trimestre, mas, quando solicitadas, precisam estar disponíveis em milissegundos. Qual classe do S3 oferece o menor custo atendendo a esse requisito?",
+    "options": [
+      { "key": "A", "text": "S3 Glacier Flexible Retrieval", "explanation": "Incorreta. A recuperação leva de minutos a horas." },
+      { "key": "B", "text": "S3 Glacier Deep Archive", "explanation": "Incorreta. A recuperação leva horas." },
+      { "key": "C", "text": "S3 Standard", "explanation": "Incorreta. Tem acesso em milissegundos, mas custo de armazenamento maior; é para dados acessados com frequência." },
+      { "key": "D", "text": "S3 Glacier Instant Retrieval", "explanation": "Correta. É a classe de arquivamento para dados raramente acessados (por exemplo, uma vez por trimestre) que precisam de recuperação em milissegundos." }
+    ],
+    "correct": ["D"],
+    "trigger": "'arquivo raramente acessado' + 'recuperação em milissegundos' → S3 Glacier Instant Retrieval",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  },
+  {
+    "id": "d3-036",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa quer que os objetos de um bucket sejam movidos automaticamente para o S3 Standard-IA após 30 dias, para o S3 Glacier Deep Archive após 1 ano e excluídos após 7 anos. Qual recurso deve ser configurado?",
+    "options": [
+      { "key": "A", "text": "Regras de ciclo de vida do S3 (S3 Lifecycle)", "explanation": "Correta. Regras de ciclo de vida fazem a transição de objetos entre classes e a expiração (exclusão) com base na idade dos objetos." },
+      { "key": "B", "text": "S3 Intelligent-Tiering", "explanation": "Incorreta. Move objetos entre camadas conforme o padrão de acesso, não por datas fixas, e não exclui objetos." },
+      { "key": "C", "text": "Replicação do S3", "explanation": "Incorreta. Copia objetos para outro bucket (na mesma Região ou em outra); não faz transição de classes por idade." },
+      { "key": "D", "text": "Versionamento do S3", "explanation": "Incorreta. Mantém versões dos objetos; não move objetos entre classes." }
+    ],
+    "correct": ["A"],
+    "trigger": "'mover para outra classe após X dias' / 'excluir após X anos' → S3 Lifecycle",
+    "reference": "Ciclo de vida do Amazon S3 — https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+  },
+  {
+    "id": "d3-037",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "single",
+    "question": "Uma empresa quer centralizar e automatizar os backups de volumes Amazon EBS, bancos Amazon RDS, tabelas Amazon DynamoDB e sistemas de arquivos Amazon EFS, com políticas de retenção e cópias para outra Região. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Backup", "explanation": "Correta. O AWS Backup centraliza e automatiza a proteção de dados de vários serviços da AWS (e de alguns recursos híbridos), com planos de backup, retenção e cópias entre Regiões e contas." },
+      { "key": "B", "text": "Regras de ciclo de vida do S3", "explanation": "Incorreta. Gerenciam a transição e a expiração de objetos no S3, não backups de EBS, RDS ou DynamoDB." },
+      { "key": "C", "text": "AWS Storage Gateway", "explanation": "Incorreta. Oferece armazenamento híbrido para aplicações locais; não é o orquestrador central de backups dos serviços da AWS." },
+      { "key": "D", "text": "AWS DataSync", "explanation": "Incorreta. Transfere dados entre sistemas de armazenamento; não gerencia planos de backup." }
+    ],
+    "correct": ["A"],
+    "trigger": "'centralizar backups de vários serviços' + 'políticas de retenção' → AWS Backup",
+    "reference": "AWS Backup — https://aws.amazon.com/backup/"
+  },
+  {
+    "id": "d3-038",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "multiple",
+    "question": "Quais afirmações sobre armazenamento na AWS estão corretas? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Os dados do armazenamento de instância (instance store) são perdidos quando a instância é interrompida ou encerrada", "explanation": "Correta. O instance store é temporário e ligado ao host físico; os dados sobrevivem a uma reinicialização, mas não a um stop ou ao encerramento." },
+      { "key": "B", "text": "Um volume EBS fica em uma Zona de Disponibilidade e pode ser anexado a instâncias dessa mesma AZ", "explanation": "Correta. Volumes EBS são recursos de uma AZ; para usá-los em outra AZ, cria-se um snapshot e, a partir dele, um novo volume." },
+      { "key": "C", "text": "O Amazon EFS é armazenamento em bloco para uma única instância", "explanation": "Incorreta. O EFS é um sistema de arquivos compartilhado (NFS) para muitas instâncias." },
+      { "key": "D", "text": "Um bucket do Amazon S3 pode ser usado como volume raiz de inicialização de uma instância EC2", "explanation": "Incorreta. O volume raiz de uma instância é EBS ou instance store; o S3 é armazenamento de objetos." },
+      { "key": "E", "text": "Snapshots do EBS só podem ser restaurados na mesma AZ em que foram criados", "explanation": "Incorreta. Snapshots ficam armazenados na Região, podem gerar volumes em qualquer AZ dela e podem ser copiados para outras Regiões." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'instance store' → temporário · 'EBS' → bloco persistente preso a uma AZ · 'EFS' → arquivos compartilhados · 'S3' → objetos",
+    "reference": "Amazon EBS — https://aws.amazon.com/ebs/ · Armazenamento de instância — https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
+  },
+  {
+    "id": "d3-039",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Sempre que uma imagem é enviada a um bucket do Amazon S3, uma empresa quer executar um código que gera uma miniatura, sem provisionar nem gerenciar servidores e pagando apenas pelo tempo de execução. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon EC2", "explanation": "Incorreta. Exige provisionar e gerenciar instâncias, que ficariam ociosas entre os envios." },
+      { "key": "B", "text": "AWS Elastic Beanstalk", "explanation": "Incorreta. Simplifica a implantação de aplicações, mas provisiona instâncias EC2 que continuam em execução." },
+      { "key": "C", "text": "AWS Lambda", "explanation": "Correta. O Lambda executa código em resposta a eventos (como um upload no S3), sem servidores para gerenciar, e cobra pelas requisições e pelo tempo de execução." },
+      { "key": "D", "text": "Amazon Lightsail", "explanation": "Incorreta. Oferece servidores virtuais com preço mensal; não é orientado a eventos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'executar código em resposta a um evento' + 'sem servidores' + 'pagar pela execução' → AWS Lambda",
+    "reference": "AWS Lambda — https://aws.amazon.com/lambda/"
+  },
+  {
+    "id": "d3-040",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Uma equipe quer executar contêineres de um serviço web de longa duração no Amazon ECS sem provisionar, aplicar patches ou escalar instâncias EC2. Qual opção de computação atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Fargate", "explanation": "Correta. O Fargate é um mecanismo de computação serverless para contêineres, usado com o ECS e o EKS: você define CPU e memória da tarefa e não gerencia servidores." },
+      { "key": "B", "text": "Amazon EC2 com Auto Scaling", "explanation": "Incorreta. Ainda exige gerenciar as instâncias do cluster." },
+      { "key": "C", "text": "Amazon ECR", "explanation": "Incorreta. O ECR é o registro de imagens de contêiner; armazena imagens, não as executa." },
+      { "key": "D", "text": "AWS Lambda", "explanation": "Incorreta. O Lambda executa funções acionadas por eventos, com tempo máximo de execução limitado; não é a opção para tarefas de contêiner de longa duração no ECS." }
+    ],
+    "correct": ["A"],
+    "trigger": "'contêineres' + 'sem gerenciar servidores/instâncias' → AWS Fargate",
+    "reference": "AWS Fargate — https://aws.amazon.com/fargate/"
+  },
+  {
+    "id": "d3-041",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Uma empresa já usa Kubernetes no data center e quer migrar para um serviço gerenciado na AWS que seja compatível com as ferramentas e os manifestos do Kubernetes. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "Amazon ECS", "explanation": "Incorreta. O ECS é o orquestrador de contêineres próprio da AWS; não usa a API do Kubernetes." },
+      { "key": "B", "text": "Amazon EKS", "explanation": "Correta. O Amazon EKS é o serviço gerenciado de Kubernetes da AWS, compatível com as ferramentas e os manifestos padrão do Kubernetes." },
+      { "key": "C", "text": "AWS Elastic Beanstalk", "explanation": "Incorreta. É uma plataforma para implantar aplicações sem gerenciar a infraestrutura; não é um serviço de Kubernetes." },
+      { "key": "D", "text": "Amazon ECR", "explanation": "Incorreta. Armazena imagens de contêiner; não orquestra contêineres." }
+    ],
+    "correct": ["B"],
+    "trigger": "'Kubernetes' → Amazon EKS · 'orquestrador próprio da AWS' → Amazon ECS",
+    "reference": "Amazon EKS — https://aws.amazon.com/eks/"
+  },
+  {
+    "id": "d3-042",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Desenvolvedores querem apenas enviar o código de uma aplicação web Java, e a AWS deve cuidar automaticamente do provisionamento de capacidade, do balanceamento de carga, da escalabilidade e do monitoramento de integridade, mantendo o acesso aos recursos criados. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS CloudFormation", "explanation": "Incorreta. Provisiona recursos a partir de modelos que você mesmo descreve; não implanta e opera a aplicação a partir do código." },
+      { "key": "B", "text": "AWS Elastic Beanstalk", "explanation": "Correta. O Elastic Beanstalk implanta a aplicação a partir do código e gerencia capacidade, balanceamento de carga, escalabilidade e monitoramento, mantendo o controle dos recursos subjacentes com o cliente." },
+      { "key": "C", "text": "Amazon EC2", "explanation": "Incorreta. Exigiria configurar manualmente instâncias, balanceador e escalabilidade." },
+      { "key": "D", "text": "Amazon Lightsail", "explanation": "Incorreta. Oferece servidores virtuais simples com preço mensal; não automatiza a implantação e a escalabilidade da aplicação dessa forma." }
+    ],
+    "correct": ["B"],
+    "trigger": "'só enviar o código' + 'AWS cuida de capacidade, balanceamento, escala e monitoramento' → Elastic Beanstalk (PaaS)",
+    "reference": "AWS Elastic Beanstalk — https://aws.amazon.com/elasticbeanstalk/"
+  },
+  {
+    "id": "d3-043",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Uma pequena empresa sem experiência em nuvem quer publicar um site WordPress simples, com servidor virtual, armazenamento e transferência de dados incluídos em um preço mensal previsível. Qual serviço é o mais indicado?",
+    "options": [
+      { "key": "A", "text": "Amazon Lightsail", "explanation": "Correta. O Lightsail oferece servidores virtuais, armazenamento e rede em pacotes com preço mensal previsível, ideal para sites e aplicações simples." },
+      { "key": "B", "text": "Amazon EKS", "explanation": "Incorreta. É Kubernetes gerenciado, complexo demais para um site simples." },
+      { "key": "C", "text": "Amazon EC2 com Instâncias Reservadas", "explanation": "Incorreta. Funciona, mas exige configurar e combinar vários recursos separadamente, sem o pacote simplificado de preço previsível." },
+      { "key": "D", "text": "AWS Batch", "explanation": "Incorreta. Executa trabalhos em lote, não sites." }
+    ],
+    "correct": ["A"],
+    "trigger": "'simples' + 'preço mensal previsível' + 'site/WordPress' → Amazon Lightsail",
+    "reference": "Amazon Lightsail — https://aws.amazon.com/lightsail/"
+  },
+  {
+    "id": "d3-044",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Uma empresa executa simulações científicas e processamento em lote que exigem muita CPU e relativamente pouca memória. Qual família de instâncias do Amazon EC2 é a mais adequada?",
+    "options": [
+      { "key": "A", "text": "Otimizada para memória", "explanation": "Incorreta. É indicada para cargas que processam grandes conjuntos de dados em memória, como bancos em memória." },
+      { "key": "B", "text": "Otimizada para armazenamento", "explanation": "Incorreta. É indicada para leitura e gravação sequencial intensa de grandes conjuntos de dados em armazenamento local." },
+      { "key": "C", "text": "Otimizada para computação", "explanation": "Correta. Instâncias otimizadas para computação têm processadores de alto desempenho para cargas intensivas em CPU, como HPC, processamento em lote, codificação de mídia e servidores de jogos." },
+      { "key": "D", "text": "Computação acelerada", "explanation": "Incorreta. Usa aceleradores de hardware (GPUs e chips dedicados) para gráficos e machine learning." }
+    ],
+    "correct": ["C"],
+    "trigger": "'intensivo em CPU' (HPC, lote, codificação) → otimizada para computação",
+    "reference": "Tipos de instância do Amazon EC2 — https://aws.amazon.com/ec2/instance-types/"
+  },
+  {
+    "id": "d3-045",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "multiple",
+    "question": "Quais opções de computação são serverless, isto é, sem servidores para o cliente provisionar ou gerenciar? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS Lambda", "explanation": "Correta. Executa código sob demanda, sem servidores para gerenciar." },
+      { "key": "B", "text": "Amazon EC2", "explanation": "Incorreta. O cliente provisiona e gerencia as instâncias e o sistema operacional." },
+      { "key": "C", "text": "AWS Fargate", "explanation": "Correta. Executa contêineres sem que o cliente gerencie servidores ou clusters de instâncias." },
+      { "key": "D", "text": "Amazon Lightsail", "explanation": "Incorreta. Fornece servidores virtuais que o cliente administra." },
+      { "key": "E", "text": "Amazon EC2 Dedicated Hosts", "explanation": "Incorreta. São servidores físicos dedicados ao cliente; continuam sendo infraestrutura gerenciada por ele." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'serverless' em computação → Lambda (funções) e Fargate (contêineres)",
+    "reference": "Computação serverless na AWS — https://aws.amazon.com/serverless/"
+  },
+  {
+    "id": "d3-046",
+    "domain": 3,
+    "topic": "Computação",
+    "type": "single",
+    "question": "Uma aplicação web precisa encaminhar requisições HTTP para grupos de destino diferentes conforme o caminho da URL (por exemplo, /api e /imagens). Qual tipo de balanceador de carga deve ser usado?",
+    "options": [
+      { "key": "A", "text": "Application Load Balancer", "explanation": "Correta. O ALB opera na camada 7 (HTTP/HTTPS) e permite roteamento por caminho, por host e por cabeçalhos." },
+      { "key": "B", "text": "Network Load Balancer", "explanation": "Incorreta. Opera na camada 4 (TCP/UDP), com latência ultrabaixa, sem roteamento baseado no conteúdo HTTP." },
+      { "key": "C", "text": "Gateway Load Balancer", "explanation": "Incorreta. Serve para implantar e escalar appliances virtuais de terceiros, como firewalls." },
+      { "key": "D", "text": "Amazon Route 53", "explanation": "Incorreta. É DNS; não inspeciona o caminho da URL das requisições." }
+    ],
+    "correct": ["A"],
+    "trigger": "'roteamento por caminho/host HTTP' → ALB · 'TCP/UDP, latência ultrabaixa' → NLB · 'appliances de terceiros' → GWLB",
+    "reference": "Elastic Load Balancing — https://aws.amazon.com/elasticloadbalancing/"
+  },
+  {
+    "id": "d3-047",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Uma aplicação de jogos precisa de um banco de dados NoSQL de chave-valor, serverless, com desempenho de milissegundos de um dígito em qualquer escala. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "Amazon RDS", "explanation": "Incorreta. É um banco relacional gerenciado (SQL), não um banco NoSQL serverless de chave-valor." },
+      { "key": "B", "text": "Amazon DynamoDB", "explanation": "Correta. O DynamoDB é um banco NoSQL de chave-valor e documentos, serverless e totalmente gerenciado, com desempenho de milissegundos de um dígito em qualquer escala." },
+      { "key": "C", "text": "Amazon Redshift", "explanation": "Incorreta. É um data warehouse para análises, não um banco transacional de baixa latência." },
+      { "key": "D", "text": "Amazon ElastiCache", "explanation": "Incorreta. É um cache em memória para acelerar leituras; normalmente fica à frente de um banco de dados e não é o banco NoSQL serverless principal." }
+    ],
+    "correct": ["B"],
+    "trigger": "'NoSQL' + 'chave-valor' + 'serverless' + 'milissegundos em qualquer escala' → DynamoDB",
+    "reference": "Amazon DynamoDB — https://aws.amazon.com/dynamodb/"
+  },
+  {
+    "id": "d3-048",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "multiple",
+    "question": "Quais afirmações sobre o Amazon RDS estão corretas? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Implantações Multi-AZ aumentam a disponibilidade com failover automático para outra Zona de Disponibilidade", "explanation": "Correta. O RDS mantém uma cópia em outra AZ e faz failover automático em caso de falha." },
+      { "key": "B", "text": "Réplicas de leitura ajudam a escalar cargas de trabalho com muitas leituras", "explanation": "Correta. As leituras podem ser direcionadas às réplicas, aliviando a instância principal." },
+      { "key": "C", "text": "O cliente aplica patches no sistema operacional do host acessando-o por SSH", "explanation": "Incorreta. No RDS, o sistema operacional é gerenciado pela AWS e o cliente não tem acesso a ele." },
+      { "key": "D", "text": "Réplicas de leitura eliminam a necessidade de backups", "explanation": "Incorreta. Réplicas reproduzem também erros e exclusões; backups continuam necessários." },
+      { "key": "E", "text": "O RDS é um banco NoSQL serverless de chave-valor", "explanation": "Incorreta. O RDS é relacional; o NoSQL de chave-valor serverless é o DynamoDB." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'Multi-AZ' → alta disponibilidade (failover) · 'réplica de leitura' → escalar leituras",
+    "reference": "Amazon RDS — https://aws.amazon.com/rds/"
+  },
+  {
+    "id": "d3-049",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Uma aplicação faz as mesmas consultas repetidamente a um banco relacional, e a empresa quer reduzir a latência dessas leituras e aliviar a carga do banco com um cache em memória. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon ElastiCache", "explanation": "Correta. O ElastiCache oferece cache em memória gerenciado (compatível com Valkey, Redis OSS e Memcached), com latência de submilissegundos para dados lidos com frequência." },
+      { "key": "B", "text": "Amazon Redshift", "explanation": "Incorreta. É um data warehouse para análises; não é um cache para a aplicação." },
+      { "key": "C", "text": "Amazon Neptune", "explanation": "Incorreta. É um banco de dados de grafos." },
+      { "key": "D", "text": "AWS Backup", "explanation": "Incorreta. Centraliza backups; não acelera leituras." }
+    ],
+    "correct": ["A"],
+    "trigger": "'cache em memória' / 'reduzir a carga de leitura do banco' → ElastiCache",
+    "reference": "Amazon ElastiCache — https://aws.amazon.com/elasticache/"
+  },
+  {
+    "id": "d3-050",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Uma empresa quer executar consultas SQL analíticas complexas sobre petabytes de dados históricos de vendas, para relatórios de business intelligence. Qual serviço é o mais adequado?",
+    "options": [
+      { "key": "A", "text": "Amazon RDS for MySQL", "explanation": "Incorreta. É voltado a cargas transacionais (OLTP), não a análises sobre petabytes." },
+      { "key": "B", "text": "Amazon DynamoDB", "explanation": "Incorreta. É um banco NoSQL para acesso por chave com baixa latência, não para consultas analíticas complexas." },
+      { "key": "C", "text": "Amazon Redshift", "explanation": "Correta. O Redshift é o data warehouse da AWS, otimizado para consultas analíticas (OLAP) sobre grandes volumes de dados." },
+      { "key": "D", "text": "Amazon Neptune", "explanation": "Incorreta. É um banco de grafos para relacionamentos altamente conectados." }
+    ],
+    "correct": ["C"],
+    "trigger": "'data warehouse' / 'análises (OLAP) sobre petabytes' → Amazon Redshift",
+    "reference": "Amazon Redshift — https://aws.amazon.com/redshift/"
+  },
+  {
+    "id": "d3-051",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Uma empresa quer um banco relacional gerenciado, compatível com MySQL e PostgreSQL, criado pela AWS para oferecer desempenho e disponibilidade superiores aos dos mecanismos padrão, com armazenamento replicado automaticamente em várias Zonas de Disponibilidade. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon Aurora", "explanation": "Correta. O Aurora é um banco relacional compatível com MySQL e PostgreSQL, construído pela AWS, com armazenamento distribuído e replicado entre várias AZs e desempenho superior ao dos mecanismos padrão." },
+      { "key": "B", "text": "Amazon RDS for MySQL", "explanation": "Incorreta. Também é gerenciado, mas usa o mecanismo MySQL padrão; o banco criado pela AWS com armazenamento distribuído é o Aurora." },
+      { "key": "C", "text": "Amazon DynamoDB", "explanation": "Incorreta. É NoSQL, não relacional compatível com MySQL ou PostgreSQL." },
+      { "key": "D", "text": "Amazon DocumentDB", "explanation": "Incorreta. É um banco de documentos compatível com MongoDB." }
+    ],
+    "correct": ["A"],
+    "trigger": "'compatível com MySQL e PostgreSQL' + 'criado pela AWS / desempenho superior' → Amazon Aurora",
+    "reference": "Amazon Aurora — https://aws.amazon.com/rds/aurora/"
+  },
+  {
+    "id": "d3-052",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Uma rede social precisa armazenar e consultar relacionamentos altamente conectados entre usuários, como 'amigos de amigos', para gerar recomendações. Qual banco de dados é o mais adequado?",
+    "options": [
+      { "key": "A", "text": "Amazon Neptune", "explanation": "Correta. O Neptune é um banco de dados de grafos gerenciado, ideal para relacionamentos altamente conectados, como redes sociais, recomendações e detecção de fraudes." },
+      { "key": "B", "text": "Amazon Redshift", "explanation": "Incorreta. É um data warehouse para análises SQL em grande escala." },
+      { "key": "C", "text": "Amazon DocumentDB", "explanation": "Incorreta. É um banco de documentos (compatível com MongoDB), não otimizado para percorrer relacionamentos." },
+      { "key": "D", "text": "Amazon ElastiCache", "explanation": "Incorreta. É um cache em memória." }
+    ],
+    "correct": ["A"],
+    "trigger": "'relacionamentos' / 'grafo' / 'amigos de amigos' → Amazon Neptune",
+    "reference": "Amazon Neptune — https://aws.amazon.com/neptune/"
+  },
+  {
+    "id": "d3-053",
+    "domain": 3,
+    "topic": "Bancos de dados",
+    "type": "single",
+    "question": "Em qual situação faz mais sentido executar um banco de dados em instâncias Amazon EC2 em vez de usar o Amazon RDS?",
+    "options": [
+      { "key": "A", "text": "Quando a empresa quer que a AWS aplique os patches do banco automaticamente", "explanation": "Incorreta. Isso é um benefício do RDS; no EC2, os patches ficam com o cliente." },
+      { "key": "B", "text": "Quando é preciso acesso total ao sistema operacional ou usar um mecanismo, versão ou configuração que o RDS não suporta", "explanation": "Correta. Um banco autogerenciado no EC2 dá controle total, ao custo de assumir patches, backups e alta disponibilidade." },
+      { "key": "C", "text": "Quando a empresa quer backups automáticos sem configuração", "explanation": "Incorreta. Backups automatizados são um recurso do RDS." },
+      { "key": "D", "text": "Quando a empresa quer o menor esforço operacional possível", "explanation": "Incorreta. O menor esforço operacional vem de serviços gerenciados como o RDS." }
+    ],
+    "correct": ["B"],
+    "trigger": "'acesso ao SO' / 'mecanismo ou versão não suportados' → banco no EC2 · 'menos administração' → RDS",
+    "reference": "Amazon RDS — https://aws.amazon.com/rds/"
+  },
+  {
+    "id": "d3-054",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Cientistas de dados querem construir, treinar e implantar modelos próprios de machine learning em um serviço gerenciado, sem administrar a infraestrutura. Qual serviço devem usar?",
+    "options": [
+      { "key": "A", "text": "Amazon Rekognition", "explanation": "Incorreta. Oferece análise de imagens e vídeos com modelos prontos; não é uma plataforma para criar e treinar modelos próprios." },
+      { "key": "B", "text": "Amazon SageMaker AI", "explanation": "Correta. O SageMaker AI (antes chamado apenas de Amazon SageMaker) oferece ferramentas gerenciadas para preparar dados e construir, treinar, ajustar e implantar modelos de machine learning." },
+      { "key": "C", "text": "Amazon Comprehend", "explanation": "Incorreta. É um serviço pronto de processamento de linguagem natural." },
+      { "key": "D", "text": "Amazon QuickSight", "explanation": "Incorreta. É um serviço de business intelligence para painéis e visualizações." }
+    ],
+    "correct": ["B"],
+    "trigger": "'construir, treinar e implantar modelos próprios de ML' → Amazon SageMaker AI",
+    "reference": "Amazon SageMaker — https://aws.amazon.com/sagemaker/"
+  },
+  {
+    "id": "d3-055",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Uma empresa quer criar um chatbot que converse com os clientes por texto e por voz, entendendo a intenção das mensagens. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "Amazon Polly", "explanation": "Incorreta. Converte texto em fala; não interpreta intenções nem gerencia conversas." },
+      { "key": "B", "text": "Amazon Transcribe", "explanation": "Incorreta. Converte fala em texto; não cria o fluxo de conversa." },
+      { "key": "C", "text": "Amazon Lex", "explanation": "Correta. O Lex cria interfaces de conversação (chatbots) por voz e texto, com reconhecimento de fala e compreensão de linguagem natural." },
+      { "key": "D", "text": "Amazon Kendra", "explanation": "Incorreta. É um serviço de pesquisa inteligente em documentos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'chatbot' / 'interface de conversa por voz e texto' → Amazon Lex",
+    "reference": "Amazon Lex — https://aws.amazon.com/lex/"
+  },
+  {
+    "id": "d3-056",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Funcionários querem fazer perguntas em linguagem natural e encontrar respostas precisas espalhadas em manuais, wikis e documentos internos da empresa. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon Kendra", "explanation": "Correta. O Kendra é um serviço de pesquisa inteligente que usa machine learning para encontrar respostas em documentos e repositórios corporativos a partir de perguntas em linguagem natural." },
+      { "key": "B", "text": "Amazon Lex", "explanation": "Incorreta. Cria chatbots; não indexa nem pesquisa documentos corporativos por conta própria." },
+      { "key": "C", "text": "Amazon Textract", "explanation": "Incorreta. Extrai texto e dados de documentos digitalizados, mas não oferece pesquisa inteligente." },
+      { "key": "D", "text": "Amazon Athena", "explanation": "Incorreta. Executa consultas SQL sobre dados no S3, não pesquisa em linguagem natural." }
+    ],
+    "correct": ["A"],
+    "trigger": "'pesquisa inteligente' / 'perguntas em linguagem natural sobre documentos internos' → Amazon Kendra",
+    "reference": "Amazon Kendra — https://aws.amazon.com/kendra/"
+  },
+  {
+    "id": "d3-057",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Uma plataforma de fotos quer identificar automaticamente objetos, cenas e conteúdo impróprio nas imagens enviadas pelos usuários, sem precisar criar modelos de machine learning. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "Amazon Rekognition", "explanation": "Correta. O Rekognition analisa imagens e vídeos com modelos prontos: detecta objetos, cenas, rostos, texto em imagens e conteúdo impróprio." },
+      { "key": "B", "text": "Amazon Textract", "explanation": "Incorreta. Extrai texto, formulários e tabelas de documentos; não classifica cenas nem conteúdo impróprio." },
+      { "key": "C", "text": "Amazon Comprehend", "explanation": "Incorreta. Analisa texto (sentimento, entidades), não imagens." },
+      { "key": "D", "text": "Amazon SageMaker AI", "explanation": "Incorreta. Permitiria criar um modelo próprio, mas o requisito é usar análise pronta, sem criar modelos." }
+    ],
+    "correct": ["A"],
+    "trigger": "'analisar imagens/vídeos' + 'sem criar modelos' → Amazon Rekognition",
+    "reference": "Amazon Rekognition — https://aws.amazon.com/rekognition/"
+  },
+  {
+    "id": "d3-058",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Analistas querem executar consultas SQL ad hoc diretamente sobre arquivos armazenados no Amazon S3, sem provisionar servidores e pagando por consulta executada. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon Athena", "explanation": "Correta. O Athena é um serviço de consultas interativas serverless que analisa dados no S3 com SQL padrão, cobrando pelos dados verificados em cada consulta." },
+      { "key": "B", "text": "Amazon RDS", "explanation": "Incorreta. Exigiria carregar os dados em um banco relacional provisionado." },
+      { "key": "C", "text": "Amazon Kinesis", "explanation": "Incorreta. Coleta e processa dados de streaming em tempo real; não consulta arquivos no S3 com SQL ad hoc." },
+      { "key": "D", "text": "AWS Glue", "explanation": "Incorreta. Prepara e cataloga dados (ETL); as consultas SQL ad hoc são feitas pelo Athena, que pode usar o catálogo do Glue." }
+    ],
+    "correct": ["A"],
+    "trigger": "'SQL direto no S3' + 'serverless' + 'paga por consulta' → Amazon Athena",
+    "reference": "Amazon Athena — https://aws.amazon.com/athena/"
+  },
+  {
+    "id": "d3-059",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "single",
+    "question": "Uma empresa precisa coletar e processar em tempo real milhões de eventos por segundo, como cliques no site e dados de sensores IoT, para alimentar painéis instantâneos. Qual serviço deve usar para a ingestão desses dados de streaming?",
+    "options": [
+      { "key": "A", "text": "Amazon Athena", "explanation": "Incorreta. Consulta dados já armazenados no S3; não faz ingestão de streaming em tempo real." },
+      { "key": "B", "text": "Amazon Kinesis Data Streams", "explanation": "Correta. O Kinesis Data Streams captura e armazena temporariamente grandes volumes de dados de streaming em tempo real para processamento contínuo." },
+      { "key": "C", "text": "AWS Glue", "explanation": "Incorreta. É um serviço de ETL e catálogo de dados, voltado principalmente a processamento em lote." },
+      { "key": "D", "text": "Amazon Redshift", "explanation": "Incorreta. É um data warehouse para análises; pode receber dados de streaming, mas não é o serviço de ingestão em tempo real." }
+    ],
+    "correct": ["B"],
+    "trigger": "'tempo real' + 'streaming' (cliques, IoT, logs) → Amazon Kinesis",
+    "reference": "Amazon Kinesis — https://aws.amazon.com/kinesis/"
+  },
+  {
+    "id": "d3-060",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "multiple",
+    "question": "Uma equipe quer descobrir automaticamente o esquema dos dados armazenados no Amazon S3, catalogá-los e depois consultá-los com SQL, tudo sem gerenciar servidores. Quais serviços atendem a esse requisito? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS Glue", "explanation": "Correta. Os crawlers do Glue descobrem esquemas e preenchem o AWS Glue Data Catalog; o Glue também executa ETL serverless." },
+      { "key": "B", "text": "Amazon Athena", "explanation": "Correta. O Athena consulta os dados no S3 com SQL usando as tabelas do Glue Data Catalog." },
+      { "key": "C", "text": "Amazon QuickSight", "explanation": "Incorreta. Cria painéis e visualizações; não cataloga dados nem é o mecanismo de consulta SQL sobre o S3." },
+      { "key": "D", "text": "Amazon Kinesis", "explanation": "Incorreta. Faz ingestão de dados de streaming em tempo real." },
+      { "key": "E", "text": "Amazon Lex", "explanation": "Incorreta. Cria chatbots." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'catalogar / descobrir esquema' → Glue · 'SQL sobre o S3' → Athena · 'painéis' → QuickSight",
+    "reference": "AWS Glue — https://aws.amazon.com/glue/ · Amazon Athena — https://aws.amazon.com/athena/"
+  },
+  {
+    "id": "d3-061",
+    "domain": 3,
+    "topic": "IA/ML e análise",
+    "type": "multiple",
+    "question": "Uma central de atendimento quer transcrever as gravações das chamadas para texto e também gerar áudio natural a partir de textos para a URA. Quais serviços atendem a essas necessidades? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Amazon Transcribe", "explanation": "Correta. Converte fala em texto (reconhecimento automático de fala)." },
+      { "key": "B", "text": "Amazon Polly", "explanation": "Correta. Converte texto em fala com vozes naturais." },
+      { "key": "C", "text": "Amazon Translate", "explanation": "Incorreta. Traduz texto entre idiomas; não converte entre fala e texto." },
+      { "key": "D", "text": "Amazon Comprehend", "explanation": "Incorreta. Analisa texto (sentimento, entidades, tópicos)." },
+      { "key": "E", "text": "Amazon Textract", "explanation": "Incorreta. Extrai texto e dados de documentos digitalizados." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'fala → texto' → Transcribe · 'texto → fala' → Polly · 'traduzir' → Translate",
+    "reference": "Amazon Transcribe — https://aws.amazon.com/transcribe/ · Amazon Polly — https://aws.amazon.com/polly/"
+  },
+  {
+    "id": "d3-062",
+    "domain": 3,
+    "topic": "Implantação e operação",
+    "type": "single",
+    "question": "Uma empresa quer criar ambientes idênticos de desenvolvimento, teste e produção de forma repetível, descrevendo toda a infraestrutura em arquivos de modelo YAML ou JSON versionados. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS CloudFormation", "explanation": "Correta. O CloudFormation provisiona e atualiza recursos a partir de modelos declarativos (infraestrutura como código), garantindo ambientes consistentes e repetíveis." },
+      { "key": "B", "text": "AWS Systems Manager", "explanation": "Incorreta. Gerencia e opera recursos já existentes (patches, comandos, inventário); não provisiona a infraestrutura a partir de modelos." },
+      { "key": "C", "text": "Amazon CloudWatch", "explanation": "Incorreta. Monitora recursos e aplicações." },
+      { "key": "D", "text": "AWS Elastic Beanstalk", "explanation": "Incorreta. Implanta aplicações a partir do código em uma plataforma gerenciada; não é a ferramenta para descrever toda a infraestrutura em modelos próprios." }
+    ],
+    "correct": ["A"],
+    "trigger": "'modelos YAML/JSON' / 'infraestrutura como código' / 'ambientes repetíveis' → CloudFormation",
+    "reference": "AWS CloudFormation — https://aws.amazon.com/cloudformation/"
+  },
+  {
+    "id": "d3-063",
+    "domain": 3,
+    "topic": "Implantação e operação",
+    "type": "multiple",
+    "question": "Quais opções permitem acessar e gerenciar serviços da AWS de forma programática, por meio de chamadas à API? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS Command Line Interface (AWS CLI)", "explanation": "Correta. A CLI permite controlar serviços da AWS por comandos no terminal e em scripts." },
+      { "key": "B", "text": "Console de Gerenciamento da AWS", "explanation": "Incorreta. É a interface web gráfica, usada de forma interativa, não programática." },
+      { "key": "C", "text": "AWS SDKs", "explanation": "Correta. Os SDKs permitem chamar as APIs da AWS a partir de linguagens como Python, Java e JavaScript." },
+      { "key": "D", "text": "AWS Marketplace", "explanation": "Incorreta. É um catálogo para comprar e implantar software de terceiros." },
+      { "key": "E", "text": "AWS Artifact", "explanation": "Incorreta. Fornece relatórios de conformidade da AWS." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'acesso programático' → CLI, SDKs, APIs (Console = interface web)",
+    "reference": "AWS CLI — https://aws.amazon.com/cli/ · Ferramentas para desenvolvedores — https://aws.amazon.com/developer/tools/"
+  },
+  {
+    "id": "d3-064",
+    "domain": 3,
+    "topic": "Implantação e operação",
+    "type": "single",
+    "question": "Desenvolvedores querem definir a infraestrutura da AWS usando linguagens de programação que já conhecem, como TypeScript e Python, com laços, condições e reutilização de componentes. Qual ferramenta atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS SDK para Python (Boto3)", "explanation": "Incorreta. O SDK chama APIs da AWS a partir do código da aplicação; não é um framework de infraestrutura como código." },
+      { "key": "B", "text": "AWS Cloud Development Kit (AWS CDK)", "explanation": "Correta. O CDK permite definir a infraestrutura em linguagens de programação e gera modelos do CloudFormation para o provisionamento." },
+      { "key": "C", "text": "AWS CLI", "explanation": "Incorreta. Executa comandos individuais; não é um framework para modelar infraestrutura." },
+      { "key": "D", "text": "Amazon CloudWatch", "explanation": "Incorreta. É um serviço de monitoramento." }
+    ],
+    "correct": ["B"],
+    "trigger": "'infraestrutura como código em linguagem de programação' (TypeScript, Python) → AWS CDK",
+    "reference": "AWS CDK — https://aws.amazon.com/cdk/"
+  },
+  {
+    "id": "d3-065",
+    "domain": 3,
+    "topic": "Implantação e operação",
+    "type": "single",
+    "question": "Uma empresa mantém um sistema legado em seu data center e o integra a aplicações novas que rodam na AWS, por meio de uma conexão privada entre os ambientes. Qual modelo de implantação de nuvem a empresa está usando?",
+    "options": [
+      { "key": "A", "text": "Nuvem (cloud-native / all-in)", "explanation": "Incorreta. Nesse modelo, todas as partes da aplicação rodam na nuvem." },
+      { "key": "B", "text": "Híbrido", "explanation": "Correta. O modelo híbrido conecta recursos na nuvem à infraestrutura existente fora dela, como um data center próprio." },
+      { "key": "C", "text": "On-premises (nuvem privada)", "explanation": "Incorreta. Nesse modelo, os recursos ficam no data center da empresa, normalmente com virtualização e ferramentas de gerenciamento próprias." },
+      { "key": "D", "text": "Multirregião", "explanation": "Incorreta. Usar várias Regiões é uma estratégia de arquitetura, não um modelo de implantação de nuvem." }
+    ],
+    "correct": ["B"],
+    "trigger": "'parte no data center + parte na AWS, conectadas' → modelo híbrido",
+    "reference": "Tipos de computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/types-of-cloud-computing.html"
+  },
+  {
+    "id": "d3-066",
+    "domain": 3,
+    "topic": "Implantação e operação",
+    "type": "single",
+    "question": "Uma equipe de operações quer aplicar patches automaticamente em centenas de instâncias Amazon EC2 e servidores locais, executar comandos remotamente sem abrir portas SSH e manter um inventário do software instalado. Qual serviço atende a esses requisitos?",
+    "options": [
+      { "key": "A", "text": "AWS Config", "explanation": "Incorreta. Registra e avalia configurações; não aplica patches nem executa comandos remotos." },
+      { "key": "B", "text": "Amazon Inspector", "explanation": "Incorreta. Encontra vulnerabilidades, mas não aplica os patches." },
+      { "key": "C", "text": "AWS Systems Manager", "explanation": "Correta. O Systems Manager oferece Patch Manager, Run Command, Session Manager e Inventory para operar instâncias EC2 e servidores locais em escala." },
+      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Faz recomendações de boas práticas; não opera as instâncias." }
+    ],
+    "correct": ["C"],
+    "trigger": "'aplicar patches em escala' / 'executar comandos remotamente' / 'Session Manager' → AWS Systems Manager",
+    "reference": "AWS Systems Manager — https://aws.amazon.com/systems-manager/"
+  },
+  {
+    "id": "d3-067",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma aplicação de pedidos precisa desacoplar o site do sistema de processamento: os pedidos devem ser enfileirados e processados no ritmo do consumidor, sem se perder em picos de tráfego. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon SNS", "explanation": "Incorreta. O SNS publica mensagens para vários assinantes (push); não guarda as mensagens em fila para o consumidor buscar no próprio ritmo." },
+      { "key": "B", "text": "Amazon SQS", "explanation": "Correta. O SQS é uma fila de mensagens gerenciada que desacopla componentes: as mensagens ficam armazenadas até serem processadas." },
+      { "key": "C", "text": "AWS Step Functions", "explanation": "Incorreta. Orquestra fluxos de trabalho com várias etapas; não é a fila de mensagens." },
+      { "key": "D", "text": "Amazon Kinesis Data Streams", "explanation": "Incorreta. É voltado a streaming de dados em tempo real em grande volume, não a filas de tarefas para desacoplar componentes." }
+    ],
+    "correct": ["B"],
+    "trigger": "'fila' / 'desacoplar' / 'processar no próprio ritmo' → Amazon SQS",
+    "reference": "Amazon SQS — https://aws.amazon.com/sqs/"
+  },
+  {
+    "id": "d3-068",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Quando ocorre um alarme crítico, uma empresa quer enviar a mesma mensagem, ao mesmo tempo, para a equipe por e-mail e SMS e também acionar uma função AWS Lambda. Qual serviço atende a esse requisito com o modelo publicar/assinar?",
+    "options": [
+      { "key": "A", "text": "Amazon SQS", "explanation": "Incorreta. É uma fila da qual os consumidores buscam as mensagens; não envia e-mails e SMS a vários assinantes." },
+      { "key": "B", "text": "Amazon SES", "explanation": "Incorreta. Envia e-mails em escala (transacionais e de marketing), mas não SMS nem distribui a mensagem para vários tipos de assinantes." },
+      { "key": "C", "text": "Amazon SNS", "explanation": "Correta. O SNS publica uma mensagem em um tópico e a entrega a todos os assinantes: e-mail, SMS, notificações móveis, filas SQS, funções Lambda e endpoints HTTP." },
+      { "key": "D", "text": "Amazon Connect", "explanation": "Incorreta. É uma central de atendimento (contact center) na nuvem." }
+    ],
+    "correct": ["C"],
+    "trigger": "'publicar/assinar' / 'enviar para vários assinantes (e-mail, SMS, Lambda)' → Amazon SNS",
+    "reference": "Amazon SNS — https://aws.amazon.com/sns/"
+  },
+  {
+    "id": "d3-069",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma empresa quer criar uma arquitetura orientada a eventos em que eventos de serviços da AWS e de aplicações SaaS parceiras sejam roteados por regras para diferentes destinos, além de agendar tarefas periódicas. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "Amazon EventBridge", "explanation": "Correta. O EventBridge é um barramento de eventos serverless que recebe eventos de serviços da AWS, de aplicações próprias e de SaaS, roteia por regras para os destinos e também agenda execuções." },
+      { "key": "B", "text": "Amazon SQS", "explanation": "Incorreta. É uma fila de mensagens ponto a ponto, sem regras de roteamento pelo conteúdo do evento." },
+      { "key": "C", "text": "AWS CloudTrail", "explanation": "Incorreta. Registra chamadas de API para auditoria; não roteia eventos para destinos de aplicação." },
+      { "key": "D", "text": "Amazon CloudWatch Logs", "explanation": "Incorreta. Armazena e consulta logs." }
+    ],
+    "correct": ["A"],
+    "trigger": "'barramento de eventos' / 'regras para rotear eventos (AWS, SaaS)' / 'agendamento' → EventBridge",
+    "reference": "Amazon EventBridge — https://aws.amazon.com/eventbridge/"
+  },
+  {
+    "id": "d3-070",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma empresa quer montar rapidamente uma central de atendimento na nuvem, com atendimento telefônico e por chat, pagando conforme o uso e sem comprar equipamentos de telefonia. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon SES", "explanation": "Incorreta. Envia e-mails em escala." },
+      { "key": "B", "text": "Amazon Connect", "explanation": "Correta. O Amazon Connect é um serviço de central de atendimento (contact center) na nuvem, com voz e chat, cobrado conforme o uso." },
+      { "key": "C", "text": "Amazon Lex", "explanation": "Incorreta. Cria chatbots, que podem ser integrados a uma central, mas não é a central de atendimento em si." },
+      { "key": "D", "text": "Amazon SNS", "explanation": "Incorreta. Envia notificações para assinantes." }
+    ],
+    "correct": ["B"],
+    "trigger": "'central de atendimento / contact center na nuvem' → Amazon Connect",
+    "reference": "Amazon Connect — https://aws.amazon.com/connect/"
+  },
+  {
+    "id": "d3-071",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma empresa quer fornecer desktops virtuais persistentes, com Windows ou Linux, para funcionários remotos acessarem de qualquer dispositivo, sem manter uma infraestrutura de VDI própria. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "Amazon AppStream 2.0", "explanation": "Incorreta. Transmite aplicações individuais para o navegador, não desktops completos persistentes." },
+      { "key": "B", "text": "Amazon WorkSpaces", "explanation": "Correta. O WorkSpaces oferece desktops virtuais gerenciados (DaaS) que os usuários acessam de vários dispositivos." },
+      { "key": "C", "text": "Amazon Lightsail", "explanation": "Incorreta. Oferece servidores virtuais simples, não desktops gerenciados para usuários finais." },
+      { "key": "D", "text": "Amazon EC2", "explanation": "Incorreta. Exigiria montar e gerenciar toda a solução de desktops virtuais." }
+    ],
+    "correct": ["B"],
+    "trigger": "'desktops virtuais para funcionários' → WorkSpaces · 'transmitir aplicações' → AppStream 2.0",
+    "reference": "Amazon WorkSpaces — https://aws.amazon.com/workspaces/"
+  },
+  {
+    "id": "d3-072",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma aplicação de microsserviços está lenta, e os desenvolvedores precisam rastrear cada requisição de ponta a ponta entre os serviços para identificar onde está o gargalo. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS X-Ray", "explanation": "Correta. O X-Ray rastreia as requisições à medida que passam pelos componentes de uma aplicação distribuída, mostrando um mapa de serviços e a latência de cada etapa." },
+      { "key": "B", "text": "AWS CloudTrail", "explanation": "Incorreta. Registra chamadas à API da AWS para auditoria, não o caminho das requisições dentro da aplicação." },
+      { "key": "C", "text": "AWS Config", "explanation": "Incorreta. Registra configurações dos recursos." },
+      { "key": "D", "text": "Amazon Inspector", "explanation": "Incorreta. Procura vulnerabilidades de software." }
+    ],
+    "correct": ["A"],
+    "trigger": "'rastrear requisições entre microsserviços' / 'tracing distribuído' → AWS X-Ray",
+    "reference": "AWS X-Ray — https://aws.amazon.com/xray/"
+  },
+  {
+    "id": "d3-073",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "single",
+    "question": "Uma equipe quer automatizar o fluxo de lançamento do software: a cada alteração no repositório, o código deve ser compilado, testado e implantado automaticamente, em várias etapas. Qual serviço orquestra esse pipeline de CI/CD?",
+    "options": [
+      { "key": "A", "text": "AWS CodeBuild", "explanation": "Incorreta. O CodeBuild compila o código e executa testes; é uma etapa do pipeline, não o orquestrador." },
+      { "key": "B", "text": "AWS CodeDeploy", "explanation": "Incorreta. O CodeDeploy automatiza implantações em EC2, servidores locais, Lambda e ECS; também é uma etapa, não o orquestrador." },
+      { "key": "C", "text": "AWS CodePipeline", "explanation": "Correta. O CodePipeline orquestra as etapas de origem, compilação, teste e implantação, executando-as automaticamente a cada alteração." },
+      { "key": "D", "text": "AWS CloudFormation", "explanation": "Incorreta. Provisiona infraestrutura a partir de modelos; pode ser usado em uma etapa de implantação, mas não orquestra o CI/CD." }
+    ],
+    "correct": ["C"],
+    "trigger": "'orquestrar CI/CD (origem → build → teste → deploy)' → CodePipeline · 'compilar/testar' → CodeBuild · 'implantar' → CodeDeploy",
+    "reference": "AWS CodePipeline — https://aws.amazon.com/codepipeline/"
+  },
+  {
+    "id": "d3-074",
+    "domain": 3,
+    "topic": "Outros serviços",
+    "type": "multiple",
+    "question": "Quais serviços são usados para desacoplar os componentes de uma aplicação por meio de mensagens? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Amazon SQS", "explanation": "Correta. Filas de mensagens permitem que produtores e consumidores trabalhem de forma independente." },
+      { "key": "B", "text": "Amazon EBS", "explanation": "Incorreta. É armazenamento em bloco para instâncias EC2." },
+      { "key": "C", "text": "Amazon SNS", "explanation": "Correta. O modelo publicar/assinar permite enviar uma mensagem a vários assinantes sem que eles dependam diretamente de quem publica." },
+      { "key": "D", "text": "AWS Direct Connect", "explanation": "Incorreta. É conectividade de rede dedicada." },
+      { "key": "E", "text": "Amazon CloudFront", "explanation": "Incorreta. É uma rede de entrega de conteúdo." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'desacoplar com mensagens' → SQS (fila) e SNS (publicar/assinar)",
+    "reference": "Amazon SQS — https://aws.amazon.com/sqs/ · Amazon SNS — https://aws.amazon.com/sns/"
+  },
+  {
+    "id": "d3-075",
+    "domain": 3,
+    "topic": "Armazenamento",
+    "type": "multiple",
+    "question": "Quais classes de armazenamento do Amazon S3 guardam os dados em uma única Zona de Disponibilidade? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "S3 One Zone-IA", "explanation": "Correta. Armazena os dados em uma única AZ, com custo menor; os dados podem ser perdidos se essa AZ for destruída." },
+      { "key": "B", "text": "S3 Standard", "explanation": "Incorreta. Armazena os dados de forma redundante em várias AZs." },
+      { "key": "C", "text": "S3 Express One Zone", "explanation": "Correta. É uma classe de alto desempenho e latência muito baixa que armazena os dados em uma única AZ escolhida pelo cliente." },
+      { "key": "D", "text": "S3 Standard-IA", "explanation": "Incorreta. Armazena os dados em várias AZs, diferentemente da One Zone-IA." },
+      { "key": "E", "text": "S3 Glacier Deep Archive", "explanation": "Incorreta. Armazena os dados em várias AZs." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'One Zone' no nome → uma única AZ (One Zone-IA, Express One Zone); as demais classes usam várias AZs",
+    "reference": "Classes de armazenamento do Amazon S3 — https://aws.amazon.com/s3/storage-classes/"
+  }
+]

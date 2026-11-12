@@ -1,0 +1,860 @@
+[
+  {
+    "id": "d1-001",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma startup quer testar uma ideia de produto nova. No data center antigo, ela levava semanas para comprar e instalar servidores; na AWS, consegue provisionar o ambiente em minutos e descartá-lo se o experimento não der certo. Qual benefício da nuvem esse cenário descreve?",
+    "options": [
+      { "key": "A", "text": "Elasticidade", "explanation": "Incorreta. Elasticidade é ajustar a capacidade automaticamente conforme a demanda sobe e desce. O cenário fala da rapidez para obter recursos e experimentar." },
+      { "key": "B", "text": "Agilidade", "explanation": "Correta. Agilidade é a capacidade de disponibilizar recursos em minutos, em vez de semanas, o que reduz o custo e o tempo para experimentar e inovar." },
+      { "key": "C", "text": "Alta disponibilidade", "explanation": "Incorreta. Alta disponibilidade é manter o sistema funcionando com o mínimo de interrupção, por exemplo distribuindo-o em várias Zonas de Disponibilidade." },
+      { "key": "D", "text": "Economia de escala", "explanation": "Incorreta. Economia de escala explica por que a AWS consegue cobrar menos (o uso agregado de muitos clientes reduz o custo unitário). Não trata da velocidade de provisionamento." }
+    ],
+    "correct": ["B"],
+    "trigger": "'em minutos em vez de semanas' + 'experimentar' → agilidade",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-002",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Um site de venda de ingressos recebe picos enormes de acesso quando um show é anunciado e quase nenhum acesso de madrugada. A empresa quer que a quantidade de servidores aumente e diminua automaticamente conforme a demanda, pagando só pelo que usar. Qual conceito descreve esse comportamento?",
+    "options": [
+      { "key": "A", "text": "Agilidade", "explanation": "Incorreta. Agilidade é a rapidez para provisionar recursos e experimentar; não descreve o ajuste automático da capacidade à demanda." },
+      { "key": "B", "text": "Escalabilidade vertical", "explanation": "Incorreta. Escalar verticalmente é trocar um recurso por outro maior (mais CPU ou memória). O cenário pede aumentar e reduzir a quantidade de servidores automaticamente." },
+      { "key": "C", "text": "Elasticidade", "explanation": "Correta. Elasticidade é adquirir recursos quando são necessários e liberá-los quando deixam de ser, acompanhando a demanda automaticamente e evitando pagar por capacidade ociosa." },
+      { "key": "D", "text": "Tolerância a falhas", "explanation": "Incorreta. Tolerância a falhas é continuar funcionando mesmo quando um componente falha; não trata de acompanhar picos e vales de demanda." }
+    ],
+    "correct": ["C"],
+    "trigger": "'aumente e diminua automaticamente conforme a demanda' → elasticidade",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-003",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma aplicação foi projetada para suportar o crescimento da base de usuários adicionando mais instâncias atrás de um balanceador de carga, sem precisar ser reescrita. Qual característica do projeto está sendo destacada?",
+    "options": [
+      { "key": "A", "text": "Escalabilidade", "explanation": "Correta. Escalabilidade é a capacidade de um sistema crescer para atender a uma carga maior, por exemplo adicionando instâncias (escala horizontal), sem mudar a arquitetura." },
+      { "key": "B", "text": "Elasticidade", "explanation": "Incorreta. Elasticidade enfatiza o ajuste automático para cima e para baixo conforme a demanda varia. O cenário destaca a capacidade de crescer com o aumento de usuários." },
+      { "key": "C", "text": "Durabilidade", "explanation": "Incorreta. Durabilidade é a proteção contra perda de dados ao longo do tempo, como no Amazon S3; não se refere a suportar mais usuários." },
+      { "key": "D", "text": "Agilidade", "explanation": "Incorreta. Agilidade é a rapidez para disponibilizar recursos e experimentar, não a capacidade de a arquitetura suportar crescimento." }
+    ],
+    "correct": ["A"],
+    "trigger": "'suportar o crescimento' + 'adicionar instâncias sem reescrever' → escalabilidade",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-004",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "multiple",
+    "question": "Quais opções estão entre as seis vantagens da computação em nuvem descritas pela AWS? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Trocar despesas de capital por despesas variáveis", "explanation": "Correta. Em vez de investir antecipadamente em data centers e servidores, você paga apenas pelos recursos que consome." },
+      { "key": "B", "text": "Eliminar toda a responsabilidade do cliente pela segurança", "explanation": "Incorreta. Pelo modelo de responsabilidade compartilhada, o cliente continua responsável pela segurança na nuvem (dados, acessos, configurações)." },
+      { "key": "C", "text": "Parar de adivinhar a capacidade", "explanation": "Correta. Você usa a capacidade necessária e escala para cima ou para baixo em minutos, sem precisar prever a infraestrutura com antecedência." },
+      { "key": "D", "text": "Pagar um valor fixo mensal independentemente do uso", "explanation": "Incorreta. O modelo da nuvem é pagar conforme o uso; o custo acompanha o consumo." },
+      { "key": "E", "text": "Obter recursos somente por meio de contratos de longo prazo", "explanation": "Incorreta. Os recursos podem ser usados sob demanda, sem compromisso de longo prazo. Compromissos (como Savings Plans) são opcionais e servem para obter desconto." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'seis vantagens da nuvem' → despesa variável, economias de escala, parar de adivinhar a capacidade, velocidade e agilidade, parar de manter data centers, global em minutos",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-005",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Por que a AWS consegue oferecer preços por uso menores do que muitas empresas conseguiriam ao construir e operar seus próprios data centers?",
+    "options": [
+      { "key": "A", "text": "Porque os clientes assumem a manutenção física dos servidores da AWS", "explanation": "Incorreta. A manutenção física da infraestrutura é responsabilidade da AWS." },
+      { "key": "B", "text": "Porque todos os serviços da AWS são gratuitos no primeiro ano", "explanation": "Incorreta. O nível gratuito cobre apenas usos limitados de alguns serviços; ele não explica os preços menores no uso contínuo." },
+      { "key": "C", "text": "Porque a AWS exige pagamento antecipado de vários anos para qualquer serviço", "explanation": "Incorreta. A maioria dos serviços é paga conforme o uso, sem pagamento antecipado obrigatório." },
+      { "key": "D", "text": "Porque o uso agregado de um grande número de clientes permite à AWS obter economias de escala", "explanation": "Correta. Ao agregar a demanda de muitos clientes, a AWS reduz o custo por unidade e repassa isso em preços menores de pagamento conforme o uso." }
+    ],
+    "correct": ["D"],
+    "trigger": "'preços menores' + 'uso agregado de muitos clientes' → economias de escala",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-006",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma empresa comprava servidores com base na previsão de pico do ano e, na maior parte do tempo, ficava com capacidade ociosa; em outros momentos, faltava capacidade. Na AWS, passou a usar apenas a capacidade necessária e a ajustá-la em minutos. Qual das seis vantagens da nuvem isso representa?",
+    "options": [
+      { "key": "A", "text": "Parar de adivinhar a capacidade", "explanation": "Correta. Na nuvem você não precisa prever a capacidade com antecedência: provisiona o que precisa e escala para cima ou para baixo conforme a demanda real." },
+      { "key": "B", "text": "Aproveitar economias de escala massivas", "explanation": "Incorreta. Economia de escala explica os preços menores obtidos pela AWS com o volume de clientes, não o fim da previsão de capacidade." },
+      { "key": "C", "text": "Tornar-se global em minutos", "explanation": "Incorreta. Essa vantagem trata de implantar aplicações em várias Regiões do mundo rapidamente." },
+      { "key": "D", "text": "Parar de gastar dinheiro executando e mantendo data centers", "explanation": "Incorreta. Essa vantagem trata de deixar o trabalho pesado de infraestrutura física com a AWS para focar no negócio; o cenário trata de dimensionar a capacidade." }
+    ],
+    "correct": ["A"],
+    "trigger": "'capacidade ociosa' ou 'faltava capacidade' + 'previsão de pico' → parar de adivinhar a capacidade",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-007",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma empresa brasileira de comércio eletrônico quer atender clientes no Japão com baixa latência. Ela pretende implantar a aplicação em uma Região da AWS próxima a esses clientes em pouco tempo, sem construir infraestrutura física no país. Qual vantagem da nuvem descreve esse cenário?",
+    "options": [
+      { "key": "A", "text": "Trocar despesas de capital por despesas variáveis", "explanation": "Incorreta. Trata do modelo de pagamento (pagar pelo uso em vez de investir antecipadamente), não da expansão geográfica." },
+      { "key": "B", "text": "Parar de adivinhar a capacidade", "explanation": "Incorreta. Trata de dimensionar a capacidade conforme a demanda, não de alcançar usuários em outros países." },
+      { "key": "C", "text": "Tornar-se global em minutos", "explanation": "Correta. Com a infraestrutura global da AWS, você implanta a aplicação em outras Regiões com poucos cliques e oferece menor latência a usuários em todo o mundo." },
+      { "key": "D", "text": "Elasticidade", "explanation": "Incorreta. Elasticidade é ajustar a capacidade à demanda; não trata de levar a aplicação para perto de usuários em outra região geográfica." }
+    ],
+    "correct": ["C"],
+    "trigger": "'atender clientes em outro país' + 'baixa latência' + 'pouco tempo' → tornar-se global em minutos",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-008",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "A equipe de TI de uma empresa passa a maior parte do tempo trocando discos e cuidando de energia, refrigeração e cabeamento do data center. A diretoria quer que a equipe se concentre em projetos que diferenciam o negócio. Qual vantagem da nuvem atende a esse objetivo?",
+    "options": [
+      { "key": "A", "text": "Tornar-se global em minutos", "explanation": "Incorreta. Trata da expansão para outras Regiões geográficas." },
+      { "key": "B", "text": "Parar de gastar dinheiro executando e mantendo data centers", "explanation": "Correta. A AWS assume o trabalho pesado de instalar, alimentar e manter servidores, e a equipe pode focar nos clientes e em projetos que diferenciam o negócio." },
+      { "key": "C", "text": "Aumentar a velocidade e a agilidade", "explanation": "Incorreta. Agilidade trata de disponibilizar recursos rapidamente para experimentar. O cenário foca em eliminar o trabalho de manter a infraestrutura física." },
+      { "key": "D", "text": "Aproveitar economias de escala massivas", "explanation": "Incorreta. Trata dos preços menores obtidos pelo volume agregado de clientes." }
+    ],
+    "correct": ["B"],
+    "trigger": "'energia, refrigeração, cabeamento' + 'focar no que diferencia o negócio' → parar de gastar com data centers",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-009",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma aplicação web continua respondendo aos usuários mesmo quando um data center inteiro fica indisponível, porque suas instâncias estão distribuídas em várias Zonas de Disponibilidade atrás de um balanceador de carga. Qual característica a arquitetura demonstra?",
+    "options": [
+      { "key": "A", "text": "Elasticidade", "explanation": "Incorreta. Elasticidade é ajustar a capacidade à demanda; o cenário trata de continuar funcionando diante de uma falha." },
+      { "key": "B", "text": "Agilidade", "explanation": "Incorreta. Agilidade é a rapidez para provisionar recursos e experimentar." },
+      { "key": "C", "text": "Economia de escala", "explanation": "Incorreta. Economia de escala está ligada a preços menores pelo volume agregado de clientes." },
+      { "key": "D", "text": "Alta disponibilidade", "explanation": "Correta. Distribuir a aplicação em várias Zonas de Disponibilidade elimina pontos únicos de falha e mantém o sistema disponível mesmo se uma AZ falhar." }
+    ],
+    "correct": ["D"],
+    "trigger": "'continua funcionando se um data center/AZ falhar' + 'várias AZs' → alta disponibilidade",
+    "reference": "Regiões e Zonas de Disponibilidade — https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+  },
+  {
+    "id": "d1-010",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Qual afirmação descreve MELHOR a agilidade proporcionada pela nuvem AWS?",
+    "options": [
+      { "key": "A", "text": "Reduzir de semanas para minutos o tempo para disponibilizar recursos, o que facilita experimentar com baixo custo de falha", "explanation": "Correta. Agilidade é obter recursos rapidamente e testar ideias novas; se o experimento falhar, os recursos são descartados sem grande investimento perdido." },
+      { "key": "B", "text": "Ajustar automaticamente a capacidade conforme a demanda aumenta ou diminui", "explanation": "Incorreta. Essa é a definição de elasticidade." },
+      { "key": "C", "text": "Executar a aplicação em várias Zonas de Disponibilidade para resistir a falhas", "explanation": "Incorreta. Isso descreve alta disponibilidade." },
+      { "key": "D", "text": "Obter preços menores graças ao volume agregado de clientes", "explanation": "Incorreta. Isso descreve economia de escala." }
+    ],
+    "correct": ["A"],
+    "trigger": "'rapidez para disponibilizar recursos' + 'experimentar' → agilidade (≠ elasticidade, que é ajustar à demanda)",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-011",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "multiple",
+    "question": "Quais exemplos demonstram elasticidade na nuvem AWS? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Comprar Instâncias Reservadas de 3 anos para um servidor que roda 24 horas por dia", "explanation": "Incorreta. Isso é um compromisso de preço para uso constante; não há ajuste da capacidade à demanda." },
+      { "key": "B", "text": "Um grupo do Amazon EC2 Auto Scaling que adiciona instâncias durante uma promoção e as remove quando o tráfego volta ao normal", "explanation": "Correta. A capacidade cresce e diminui automaticamente conforme a demanda, o que é exatamente a elasticidade." },
+      { "key": "C", "text": "Distribuir instâncias em duas Zonas de Disponibilidade", "explanation": "Incorreta. Isso aumenta a disponibilidade, mas não ajusta a capacidade à demanda." },
+      { "key": "D", "text": "Uma tabela do Amazon DynamoDB no modo de capacidade sob demanda, que acomoda automaticamente aumentos e reduções de tráfego", "explanation": "Correta. No modo sob demanda, o DynamoDB acompanha a variação do tráfego sem planejamento de capacidade, e você paga pelas requisições feitas." },
+      { "key": "E", "text": "Usar o Amazon CloudFront para manter conteúdo em cache perto dos usuários", "explanation": "Incorreta. O CloudFront reduz a latência com cache em pontos de presença; isso é desempenho, não elasticidade." }
+    ],
+    "correct": ["B", "D"],
+    "trigger": "'cresce e diminui automaticamente conforme o tráfego' → elasticidade (Auto Scaling, capacidade sob demanda)",
+    "reference": "Amazon EC2 Auto Scaling — https://aws.amazon.com/ec2/autoscaling/ · Amazon DynamoDB — https://aws.amazon.com/dynamodb/"
+  },
+  {
+    "id": "d1-012",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Para suportar mais carga, uma equipe substituiu uma instância Amazon EC2 por outra da mesma família com o dobro de CPU e memória. Que tipo de escalabilidade foi aplicado?",
+    "options": [
+      { "key": "A", "text": "Escalabilidade horizontal (scale out)", "explanation": "Incorreta. Escalar horizontalmente é adicionar mais instâncias e distribuir a carga entre elas." },
+      { "key": "B", "text": "Elasticidade", "explanation": "Incorreta. Elasticidade é o ajuste automático da capacidade para cima e para baixo conforme a demanda; aqui houve uma troca manual por uma instância maior." },
+      { "key": "C", "text": "Escalabilidade vertical (scale up)", "explanation": "Correta. Escalar verticalmente é aumentar os recursos de uma única instância (mais CPU, mais memória), trocando-a por um tamanho maior." },
+      { "key": "D", "text": "Alta disponibilidade", "explanation": "Incorreta. Uma única instância maior continua sendo um ponto único de falha; alta disponibilidade exige redundância, como várias AZs." }
+    ],
+    "correct": ["C"],
+    "trigger": "'trocar por uma instância maior' → escala vertical; 'adicionar mais instâncias' → escala horizontal",
+    "reference": "Tipos de instância do Amazon EC2 — https://aws.amazon.com/ec2/instance-types/"
+  },
+  {
+    "id": "d1-013",
+    "domain": 1,
+    "topic": "Conceitos de nuvem",
+    "type": "single",
+    "question": "Uma empresa quer que sua frota de instâncias Amazon EC2 cresça automaticamente durante o horário comercial e diminua à noite, para não pagar por capacidade ociosa. Qual recurso da AWS implementa essa elasticidade?",
+    "options": [
+      { "key": "A", "text": "Amazon EC2 Auto Scaling", "explanation": "Correta. O EC2 Auto Scaling adiciona e remove instâncias automaticamente com base em métricas ou agendamentos, ajustando a capacidade à demanda." },
+      { "key": "B", "text": "Elastic Load Balancing", "explanation": "Incorreta. O ELB distribui o tráfego entre as instâncias existentes, mas não cria nem remove instâncias." },
+      { "key": "C", "text": "AWS CloudFormation", "explanation": "Incorreta. O CloudFormation provisiona recursos a partir de modelos (infraestrutura como código), mas não ajusta a quantidade de instâncias conforme a demanda." },
+      { "key": "D", "text": "Amazon CloudWatch", "explanation": "Incorreta. O CloudWatch monitora métricas e dispara alarmes; quem adiciona ou remove as instâncias é o Auto Scaling, que pode usar esses alarmes." }
+    ],
+    "correct": ["A"],
+    "trigger": "'frota de EC2 cresce e diminui automaticamente' → Amazon EC2 Auto Scaling",
+    "reference": "Amazon EC2 Auto Scaling — https://aws.amazon.com/ec2/autoscaling/"
+  },
+  {
+    "id": "d1-014",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Uma empresa quer deixar de fazer grandes investimentos antecipados em servidores e passar a pagar apenas pelos recursos de TI que consome, à medida que consome. Qual vantagem da nuvem descreve essa mudança?",
+    "options": [
+      { "key": "A", "text": "Aproveitar economias de escala massivas", "explanation": "Incorreta. Economia de escala explica os preços menores que a AWS obtém com o uso agregado de muitos clientes." },
+      { "key": "B", "text": "Tornar-se global em minutos", "explanation": "Incorreta. Trata de implantar aplicações em várias Regiões rapidamente." },
+      { "key": "C", "text": "Trocar despesas de capital (CapEx) por despesas variáveis (OpEx)", "explanation": "Correta. Em vez de investir em data centers e servidores antes de saber como serão usados, você paga somente quando consome recursos e na medida do consumo." },
+      { "key": "D", "text": "Parar de adivinhar a capacidade", "explanation": "Incorreta. Trata de dimensionar a capacidade conforme a demanda real; o cenário trata da forma de pagamento (investimento antecipado versus pagamento pelo uso)." }
+    ],
+    "correct": ["C"],
+    "trigger": "'investimento antecipado' → 'pagar conforme consome' → trocar CapEx por despesa variável",
+    "reference": "Seis vantagens da computação em nuvem — https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+  },
+  {
+    "id": "d1-015",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "multiple",
+    "question": "Ao comparar o custo total de propriedade (TCO) de um data center próprio com o da AWS, quais custos existem no ambiente on-premises e são, em grande parte, eliminados ao migrar para a AWS? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Energia elétrica e refrigeração do data center", "explanation": "Correta. Na AWS, energia, refrigeração e instalações físicas são responsabilidade da AWS e já estão embutidas no preço dos serviços." },
+      { "key": "B", "text": "Desenvolvimento do código da aplicação", "explanation": "Incorreta. O desenvolvimento da aplicação continua sendo do cliente em qualquer ambiente." },
+      { "key": "C", "text": "Compra e renovação periódica do hardware dos servidores", "explanation": "Correta. Não é preciso comprar servidores nem trocá-los ao fim da vida útil; você paga pelo uso dos recursos." },
+      { "key": "D", "text": "Definição de quem pode acessar os dados da aplicação", "explanation": "Incorreta. O controle de acesso aos dados continua sendo do cliente (modelo de responsabilidade compartilhada)." },
+      { "key": "E", "text": "Armazenamento de objetos no Amazon S3", "explanation": "Incorreta. Esse é um custo da própria AWS, pago conforme o uso; não é um custo do ambiente on-premises." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'TCO on-premises' → hardware, energia, refrigeração, espaço físico e pessoal para manter a infraestrutura",
+    "reference": "Como funciona a definição de preço da AWS — https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/how-aws-pricing-works.html"
+  },
+  {
+    "id": "d1-016",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Uma empresa já possui licenças de um software de banco de dados que permitem uso na nuvem e quer reaproveitá-las na AWS para reduzir custos. Qual estratégia de licenciamento ela está usando?",
+    "options": [
+      { "key": "A", "text": "Licença incluída (License Included)", "explanation": "Incorreta. Nesse modelo, o custo da licença já vem embutido no preço do recurso da AWS (por exemplo, algumas instâncias com Windows Server). A empresa pagaria de novo pela licença." },
+      { "key": "B", "text": "Traga sua própria licença (BYOL – Bring Your Own License)", "explanation": "Correta. No BYOL, a empresa usa na AWS licenças que já possui, respeitando os termos do fornecedor, e evita pagar a licença novamente." },
+      { "key": "C", "text": "Instâncias Spot", "explanation": "Incorreta. Spot é uma opção de compra de capacidade com desconto que pode ser interrompida; não tem relação com licenças de software." },
+      { "key": "D", "text": "Savings Plans", "explanation": "Incorreta. Savings Plans dão desconto em troca de um compromisso de uso de computação; não tratam de reaproveitar licenças." }
+    ],
+    "correct": ["B"],
+    "trigger": "'já possui licenças' + 'reaproveitar' → BYOL; 'licença embutida no preço' → License Included",
+    "reference": "AWS License Manager (BYOL) — https://aws.amazon.com/license-manager/"
+  },
+  {
+    "id": "d1-017",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Uma análise mostrou que várias instâncias Amazon EC2 de uma empresa operam o tempo todo com uso de CPU e de memória muito baixo. Qual ação reduz custos sem prejudicar o desempenho dessas cargas de trabalho?",
+    "options": [
+      { "key": "A", "text": "Comprar Instâncias Reservadas para essas mesmas instâncias", "explanation": "Incorreta. O desconto ajudaria, mas a empresa continuaria pagando por capacidade que não usa. O certo é ajustar o tamanho antes de assumir compromissos." },
+      { "key": "B", "text": "Migrar as instâncias para Dedicated Hosts", "explanation": "Incorreta. Hosts dedicados atendem a requisitos de licenciamento e conformidade e costumam custar mais; não resolvem o superdimensionamento." },
+      { "key": "C", "text": "Redimensionar (rightsizing) para tipos ou tamanhos de instância menores", "explanation": "Correta. Rightsizing é ajustar o tipo e o tamanho dos recursos à demanda real, eliminando capacidade ociosa paga." },
+      { "key": "D", "text": "Aumentar o tamanho dos volumes do Amazon EBS", "explanation": "Incorreta. Aumentaria o custo e não trata da CPU e da memória subutilizadas." }
+    ],
+    "correct": ["C"],
+    "trigger": "'uso consistentemente baixo' → rightsizing (redimensionar para menor)",
+    "reference": "AWS Compute Optimizer (recomendações de rightsizing) — https://aws.amazon.com/compute-optimizer/"
+  },
+  {
+    "id": "d1-018",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Uma empresa executa um banco de dados MySQL em instâncias Amazon EC2 e gasta muito tempo aplicando patches, configurando backups e montando alta disponibilidade. Qual mudança reduz MAIS esse esforço operacional?",
+    "options": [
+      { "key": "A", "text": "Migrar para instâncias EC2 maiores", "explanation": "Incorreta. Instâncias maiores não eliminam patches, backups nem a configuração de alta disponibilidade, que continuariam com a equipe." },
+      { "key": "B", "text": "Migrar para o Amazon RDS for MySQL", "explanation": "Correta. O Amazon RDS é um serviço gerenciado: a AWS cuida de patches do sistema operacional e do mecanismo e de backups automáticos, e há implantações Multi-AZ para alta disponibilidade." },
+      { "key": "C", "text": "Usar volumes do Amazon EBS com IOPS provisionadas", "explanation": "Incorreta. Melhora o desempenho do armazenamento, mas não reduz as tarefas de administração do banco." },
+      { "key": "D", "text": "Contratar uma conexão AWS Direct Connect", "explanation": "Incorreta. Direct Connect é conectividade de rede dedicada; não tem relação com a administração do banco de dados." }
+    ],
+    "correct": ["B"],
+    "trigger": "'gasta tempo com patches, backups e alta disponibilidade do banco' → serviço gerenciado (Amazon RDS)",
+    "reference": "Amazon RDS — https://aws.amazon.com/rds/"
+  },
+  {
+    "id": "d1-019",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Qual benefício econômico a automação da infraestrutura com o AWS CloudFormation oferece?",
+    "options": [
+      { "key": "A", "text": "Provisionar ambientes de forma repetível e consistente, reduzindo erros manuais e o tempo da equipe", "explanation": "Correta. Infraestrutura como código permite criar ambientes idênticos rapidamente e sem configuração manual, o que reduz retrabalho e custo operacional." },
+      { "key": "B", "text": "Aplicar automaticamente descontos de Instâncias Reservadas na fatura", "explanation": "Incorreta. Descontos por compromisso vêm de Instâncias Reservadas e Savings Plans, não do CloudFormation." },
+      { "key": "C", "text": "Tornar gratuitos os recursos criados pelos modelos", "explanation": "Incorreta. Os recursos provisionados por um modelo (como instâncias EC2) são cobrados normalmente." },
+      { "key": "D", "text": "Dispensar o monitoramento das aplicações", "explanation": "Incorreta. Automatizar o provisionamento não substitui o monitoramento, que continua necessário (por exemplo, com o Amazon CloudWatch)." }
+    ],
+    "correct": ["A"],
+    "trigger": "'infraestrutura como código' / 'ambientes repetíveis e consistentes' → AWS CloudFormation",
+    "reference": "AWS CloudFormation — https://aws.amazon.com/cloudformation/"
+  },
+  {
+    "id": "d1-020",
+    "domain": 1,
+    "topic": "Economia da nuvem",
+    "type": "single",
+    "question": "Uma empresa de mídia processa vídeos pesados apenas alguns dias por mês. Por que executar essa carga na AWS tende a ser mais econômico do que comprar servidores próprios para ela?",
+    "options": [
+      { "key": "A", "text": "Porque a AWS cobra um valor mensal fixo, independentemente do uso", "explanation": "Incorreta. A maioria dos serviços é cobrada conforme o uso; não há tarifa fixa que ignore o consumo." },
+      { "key": "B", "text": "Porque o processamento na nuvem não tem custos de transferência de dados", "explanation": "Incorreta. Há cobrança de transferência de dados em vários cenários, como a saída de dados da AWS para a internet." },
+      { "key": "C", "text": "Porque instâncias EC2 interrompidas (stopped) deixam de gerar custo de armazenamento nos volumes EBS", "explanation": "Incorreta. Com a instância interrompida, você não paga pelo uso da instância, mas continua pagando pelos volumes EBS anexados a ela." },
+      { "key": "D", "text": "Porque a empresa paga pelos recursos apenas enquanto os utiliza, sem manter capacidade ociosa no resto do mês", "explanation": "Correta. Com pagamento conforme o uso, os servidores podem ser criados para o processamento e encerrados depois, evitando o custo de hardware parado." }
+    ],
+    "correct": ["D"],
+    "trigger": "'usa só alguns dias por mês' → pagamento conforme o uso (sem capacidade ociosa)",
+    "reference": "Como funciona a definição de preço da AWS — https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/how-aws-pricing-works.html"
+  },
+  {
+    "id": "d1-021",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Um arquiteto quer garantir que a carga de trabalho se recupere automaticamente de falhas e que os procedimentos de recuperação sejam testados regularmente. Qual pilar do AWS Well-Architected Framework trata disso?",
+    "options": [
+      { "key": "A", "text": "Excelência operacional", "explanation": "Incorreta. Foca em executar e monitorar sistemas e melhorar continuamente processos, como operações como código e mudanças pequenas e reversíveis." },
+      { "key": "B", "text": "Eficiência de performance", "explanation": "Incorreta. Foca em usar os recursos de computação de forma eficiente para atender aos requisitos e manter essa eficiência conforme a demanda muda." },
+      { "key": "C", "text": "Confiabilidade", "explanation": "Correta. O pilar Confiabilidade inclui recuperar-se automaticamente de falhas, testar procedimentos de recuperação, escalar horizontalmente e parar de adivinhar a capacidade." },
+      { "key": "D", "text": "Segurança", "explanation": "Incorreta. Foca em proteger dados, sistemas e ativos (identidade, rastreabilidade, criptografia)." }
+    ],
+    "correct": ["C"],
+    "trigger": "'recuperar-se de falhas' + 'testar a recuperação' → pilar Confiabilidade",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-022",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Uma equipe quer executar operações como código, fazer mudanças pequenas, frequentes e reversíveis e aprender com cada falha operacional. Esses princípios pertencem a qual pilar do AWS Well-Architected Framework?",
+    "options": [
+      { "key": "A", "text": "Excelência operacional", "explanation": "Correta. Operações como código, mudanças frequentes, pequenas e reversíveis, refinar procedimentos e aprender com falhas são princípios de design da Excelência operacional." },
+      { "key": "B", "text": "Confiabilidade", "explanation": "Incorreta. Confiabilidade trata de a carga de trabalho funcionar corretamente e se recuperar de falhas (recuperação automática, escala horizontal)." },
+      { "key": "C", "text": "Otimização de custos", "explanation": "Incorreta. Trata de evitar gastos desnecessários (gestão financeira da nuvem, modelo de consumo)." },
+      { "key": "D", "text": "Sustentabilidade", "explanation": "Incorreta. Trata de minimizar os impactos ambientais da carga de trabalho." }
+    ],
+    "correct": ["A"],
+    "trigger": "'operações como código' + 'mudanças pequenas e reversíveis' → Excelência operacional",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-023",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Uma empresa quer usar a tecnologia mais adequada para cada requisito, como arquiteturas serverless, experimentar novas opções com frequência e manter o uso eficiente dos recursos à medida que a demanda muda. Qual pilar do AWS Well-Architected Framework orienta isso?",
+    "options": [
+      { "key": "A", "text": "Confiabilidade", "explanation": "Incorreta. Foca em recuperar-se de falhas e atender à demanda de forma consistente." },
+      { "key": "B", "text": "Eficiência de performance", "explanation": "Correta. Esse pilar trata de usar os recursos de computação com eficiência e inclui princípios como democratizar tecnologias avançadas, usar arquiteturas serverless, tornar-se global em minutos e experimentar com mais frequência." },
+      { "key": "C", "text": "Segurança", "explanation": "Incorreta. Foca em proteger informações, sistemas e ativos." },
+      { "key": "D", "text": "Excelência operacional", "explanation": "Incorreta. Foca em executar e monitorar sistemas e melhorar os processos de operação." }
+    ],
+    "correct": ["B"],
+    "trigger": "'usar serverless' + 'experimentar com frequência' + 'eficiência conforme a demanda muda' → Eficiência de performance",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-024",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Uma empresa quer implementar gestão financeira da nuvem, adotar um modelo de consumo (pagar só pelo que usa) e analisar e atribuir os gastos a cada equipe. Qual pilar do AWS Well-Architected Framework reúne esses princípios?",
+    "options": [
+      { "key": "A", "text": "Sustentabilidade", "explanation": "Incorreta. Foca em reduzir o impacto ambiental, embora usar menos recursos também possa reduzir custos." },
+      { "key": "B", "text": "Eficiência de performance", "explanation": "Incorreta. Foca em atender aos requisitos de desempenho com o uso eficiente dos recursos." },
+      { "key": "C", "text": "Excelência operacional", "explanation": "Incorreta. Foca em operar e monitorar sistemas e melhorar continuamente os processos." },
+      { "key": "D", "text": "Otimização de custos", "explanation": "Correta. Gestão financeira da nuvem, modelo de consumo, medir a eficiência geral, parar de gastar com trabalho pesado indiferenciado e analisar e atribuir despesas são princípios da Otimização de custos." }
+    ],
+    "correct": ["D"],
+    "trigger": "'gestão financeira da nuvem' + 'atribuir gastos' → Otimização de custos",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-025",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Uma empresa quer reduzir o impacto ambiental de suas cargas de trabalho na nuvem: maximizar a utilização dos recursos, adotar hardware e software mais eficientes e reduzir a energia consumida. Qual pilar do AWS Well-Architected Framework trata disso?",
+    "options": [
+      { "key": "A", "text": "Sustentabilidade", "explanation": "Correta. O pilar Sustentabilidade foca em minimizar os impactos ambientais, com princípios como entender seu impacto, maximizar a utilização e usar serviços gerenciados." },
+      { "key": "B", "text": "Otimização de custos", "explanation": "Incorreta. Reduzir desperdício também economiza dinheiro, mas o objetivo descrito (impacto ambiental) é do pilar Sustentabilidade." },
+      { "key": "C", "text": "Confiabilidade", "explanation": "Incorreta. Foca em funcionar corretamente e se recuperar de falhas." },
+      { "key": "D", "text": "Eficiência de performance", "explanation": "Incorreta. Foca em atender aos requisitos de desempenho com eficiência, não no impacto ambiental." }
+    ],
+    "correct": ["A"],
+    "trigger": "'impacto ambiental' / 'energia' → pilar Sustentabilidade",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-026",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Um arquiteto quer aplicar segurança em todas as camadas, habilitar a rastreabilidade das ações e proteger os dados em trânsito e em repouso. Qual pilar do AWS Well-Architected Framework contém esses princípios?",
+    "options": [
+      { "key": "A", "text": "Confiabilidade", "explanation": "Incorreta. Trata de recuperar-se de falhas e atender à demanda de forma consistente." },
+      { "key": "B", "text": "Excelência operacional", "explanation": "Incorreta. Trata de operar, monitorar e melhorar continuamente os processos." },
+      { "key": "C", "text": "Segurança", "explanation": "Correta. Base sólida de identidade, rastreabilidade, segurança em todas as camadas, automação de práticas de segurança, proteção de dados em trânsito e em repouso e preparação para incidentes são princípios do pilar Segurança." },
+      { "key": "D", "text": "Eficiência de performance", "explanation": "Incorreta. Trata do uso eficiente de recursos para atender aos requisitos de desempenho." }
+    ],
+    "correct": ["C"],
+    "trigger": "'rastreabilidade' + 'proteger dados em trânsito e em repouso' → pilar Segurança",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-027",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "multiple",
+    "question": "Quais itens são pilares do AWS Well-Architected Framework? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Sustentabilidade", "explanation": "Correta. É um dos seis pilares: Excelência operacional, Segurança, Confiabilidade, Eficiência de performance, Otimização de custos e Sustentabilidade." },
+      { "key": "B", "text": "Escalabilidade", "explanation": "Incorreta. Escalabilidade é uma característica desejável, tratada dentro de pilares como Confiabilidade e Eficiência de performance, mas não é um pilar." },
+      { "key": "C", "text": "Confiabilidade", "explanation": "Correta. É um dos seis pilares do framework." },
+      { "key": "D", "text": "Governança", "explanation": "Incorreta. Governança é uma das perspectivas do AWS Cloud Adoption Framework (AWS CAF), não um pilar do Well-Architected." },
+      { "key": "E", "text": "Agilidade", "explanation": "Incorreta. Agilidade é um benefício da nuvem, não um pilar do framework." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "6 pilares: Excelência operacional, Segurança, Confiabilidade, Eficiência de performance, Otimização de custos, Sustentabilidade (Governança/Pessoas/Plataforma → CAF)",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-028",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "single",
+    "question": "Uma equipe quer revisar uma carga de trabalho em relação às práticas recomendadas da AWS, respondendo a perguntas organizadas pelos pilares do framework, identificar riscos e acompanhar as melhorias ao longo do tempo. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Trusted Advisor", "explanation": "Incorreta. O Trusted Advisor inspeciona automaticamente os recursos da conta e recomenda ações (custos, segurança, tolerância a falhas etc.), mas não conduz a revisão de uma carga de trabalho pelas perguntas dos pilares." },
+      { "key": "B", "text": "AWS Config", "explanation": "Incorreta. O AWS Config registra e avalia a configuração dos recursos em relação a regras; não faz revisões de arquitetura." },
+      { "key": "C", "text": "AWS Well-Architected Tool", "explanation": "Correta. A ferramenta guia a revisão da carga de trabalho pelos pilares do Well-Architected, aponta riscos e registra marcos de melhoria." },
+      { "key": "D", "text": "AWS Audit Manager", "explanation": "Incorreta. O Audit Manager coleta evidências do uso da AWS para auditorias de conformidade; não revisa arquitetura." }
+    ],
+    "correct": ["C"],
+    "trigger": "'revisar carga de trabalho pelos pilares' / 'perguntas de boas práticas' → AWS Well-Architected Tool",
+    "reference": "AWS Well-Architected Tool — https://aws.amazon.com/well-architected-tool/"
+  },
+  {
+    "id": "d1-029",
+    "domain": 1,
+    "topic": "Well-Architected",
+    "type": "multiple",
+    "question": "Uma empresa quer seguir os princípios de design do pilar Segurança do AWS Well-Architected Framework. Quais ações estão alinhadas a esse pilar? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Implementar uma base sólida de identidade, aplicando o privilégio mínimo", "explanation": "Correta. Base sólida de identidade, com privilégio mínimo e separação de funções, é um princípio do pilar Segurança." },
+      { "key": "B", "text": "Parar de adivinhar a capacidade", "explanation": "Incorreta. É um princípio do pilar Confiabilidade (e também uma das seis vantagens da nuvem)." },
+      { "key": "C", "text": "Habilitar a rastreabilidade, monitorando e registrando ações e alterações", "explanation": "Correta. Rastreabilidade (logs e métricas para investigar e agir) é um princípio do pilar Segurança." },
+      { "key": "D", "text": "Adotar um modelo de consumo", "explanation": "Incorreta. É um princípio do pilar Otimização de custos." },
+      { "key": "E", "text": "Fazer mudanças pequenas, frequentes e reversíveis", "explanation": "Incorreta. É um princípio do pilar Excelência operacional." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'privilégio mínimo' / 'rastreabilidade' → pilar Segurança",
+    "reference": "Pilares do AWS Well-Architected Framework — https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+  },
+  {
+    "id": "d1-030",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa precisa migrar centenas de servidores para a AWS rapidamente, antes do fim do contrato do data center, sem alterar as aplicações. Qual estratégia de migração é a mais adequada?",
+    "options": [
+      { "key": "A", "text": "Refactor (refatorar)", "explanation": "Incorreta. Refatorar redesenha a aplicação com recursos nativos da nuvem; exige mais tempo e esforço." },
+      { "key": "B", "text": "Replatform (redefinir a plataforma)", "explanation": "Incorreta. Replatform faz algumas otimizações para a nuvem (como trocar o banco por um serviço gerenciado); o cenário pede mover sem alterações." },
+      { "key": "C", "text": "Repurchase (recomprar)", "explanation": "Incorreta. Recomprar substitui a aplicação por outro produto, normalmente SaaS." },
+      { "key": "D", "text": "Rehost (redefinir a hospedagem / lift and shift)", "explanation": "Correta. Rehost move as aplicações como estão para a AWS, sem mudanças. É a estratégia mais rápida para migrações em grande escala e pode ser automatizada com o AWS Application Migration Service." }
+    ],
+    "correct": ["D"],
+    "trigger": "'rapidamente' + 'sem alterar as aplicações' → rehost (lift and shift)",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-031",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Durante a migração, uma empresa vai trocar seu banco de dados autogerenciado pelo Amazon RDS para reduzir a administração, sem mudar a arquitetura central da aplicação. Qual estratégia de migração é essa?",
+    "options": [
+      { "key": "A", "text": "Rehost (redefinir a hospedagem)", "explanation": "Incorreta. Rehost move tudo como está, sem otimizações; trocar o banco por um serviço gerenciado já é uma otimização." },
+      { "key": "B", "text": "Replatform (redefinir a plataforma)", "explanation": "Correta. Replatform ('lift, tinker and shift') faz algumas otimizações para a nuvem, como adotar um banco gerenciado, sem mudar a arquitetura central da aplicação." },
+      { "key": "C", "text": "Refactor (refatorar)", "explanation": "Incorreta. Refatorar redesenha a aplicação (por exemplo, para microsserviços); aqui a arquitetura central não muda." },
+      { "key": "D", "text": "Retain (reter)", "explanation": "Incorreta. Reter significa manter a aplicação no ambiente de origem por enquanto." }
+    ],
+    "correct": ["B"],
+    "trigger": "'pequena otimização' (ex.: mover o banco para o RDS) + 'sem mudar a arquitetura' → replatform",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-032",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa quer transformar uma aplicação monolítica em microsserviços usando AWS Lambda e Amazon DynamoDB, para ganhar escalabilidade e acelerar a entrega de novas funcionalidades. Qual estratégia de migração é essa?",
+    "options": [
+      { "key": "A", "text": "Refactor (refatorar / rearquitetar)", "explanation": "Correta. Refatorar é reimaginar a arquitetura com recursos nativos da nuvem, normalmente motivado por necessidade de escala, desempenho ou agilidade." },
+      { "key": "B", "text": "Replatform (redefinir a plataforma)", "explanation": "Incorreta. Replatform faz otimizações pontuais sem mudar a arquitetura central; o cenário muda a arquitetura por completo." },
+      { "key": "C", "text": "Rehost (redefinir a hospedagem)", "explanation": "Incorreta. Rehost move a aplicação como está, sem mudanças." },
+      { "key": "D", "text": "Relocate (realocar)", "explanation": "Incorreta. Relocate move a infraestrutura no nível do hipervisor (por exemplo, VMs VMware) sem alterar as aplicações." }
+    ],
+    "correct": ["A"],
+    "trigger": "'monolito → microsserviços/serverless' → refactor (re-architect)",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-033",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa decide abandonar o sistema de CRM instalado em seus servidores e passar a usar um produto de CRM oferecido como software como serviço (SaaS). Qual estratégia de migração é essa?",
+    "options": [
+      { "key": "A", "text": "Retire (retirar)", "explanation": "Incorreta. Retirar é desligar aplicações que não são mais necessárias; aqui a função de CRM continua existindo em outro produto." },
+      { "key": "B", "text": "Rehost (redefinir a hospedagem)", "explanation": "Incorreta. Rehost levaria o mesmo CRM para servidores na AWS, sem trocá-lo." },
+      { "key": "C", "text": "Repurchase (recomprar)", "explanation": "Correta. Recomprar ('drop and shop') é substituir a aplicação por um produto diferente, normalmente SaaS." },
+      { "key": "D", "text": "Refactor (refatorar)", "explanation": "Incorreta. Refatorar é reescrever a própria aplicação com recursos nativos da nuvem." }
+    ],
+    "correct": ["C"],
+    "trigger": "'trocar por um produto SaaS' → repurchase",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-034",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "No inventário anterior à migração, uma empresa descobre várias aplicações que ninguém usa mais e que não têm valor para o negócio. Qual estratégia de migração se aplica a elas?",
+    "options": [
+      { "key": "A", "text": "Retain (reter)", "explanation": "Incorreta. Reter é manter no ambiente de origem aplicações que ainda serão usadas, mas não serão migradas agora." },
+      { "key": "B", "text": "Retire (retirar)", "explanation": "Correta. Retirar é desativar aplicações sem uso, o que reduz o escopo da migração e os custos." },
+      { "key": "C", "text": "Relocate (realocar)", "explanation": "Incorreta. Realocar move a infraestrutura para a nuvem sem alterá-la; não faz sentido para algo sem uso." },
+      { "key": "D", "text": "Rehost (redefinir a hospedagem)", "explanation": "Incorreta. Migrar como está algo que ninguém usa só levaria custo para a nuvem." }
+    ],
+    "correct": ["B"],
+    "trigger": "'ninguém usa mais' / 'sem valor para o negócio' → retire",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-035",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma aplicação foi atualizada recentemente on-premises e depende de um mainframe que ainda não pode ser migrado. A empresa decide mantê-la onde está e reavaliar no futuro. Qual estratégia de migração é essa?",
+    "options": [
+      { "key": "A", "text": "Retire (retirar)", "explanation": "Incorreta. Retirar é desligar a aplicação; aqui ela continua sendo usada." },
+      { "key": "B", "text": "Repurchase (recomprar)", "explanation": "Incorreta. Recomprar é substituir a aplicação por outro produto, como SaaS." },
+      { "key": "C", "text": "Rehost (redefinir a hospedagem)", "explanation": "Incorreta. Rehost moveria a aplicação agora, o que a empresa decidiu não fazer." },
+      { "key": "D", "text": "Retain (reter / revisitar)", "explanation": "Correta. Reter é manter a aplicação no ambiente de origem por enquanto, por dependências, investimento recente ou outras restrições, e revisitar a decisão depois." }
+    ],
+    "correct": ["D"],
+    "trigger": "'manter onde está por enquanto' + 'reavaliar depois' → retain",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-036",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa executa centenas de máquinas virtuais em VMware vSphere no data center e quer movê-las para a AWS rapidamente, sem comprar hardware novo, sem reescrever as aplicações e mantendo as mesmas ferramentas de operação da plataforma VMware. Qual estratégia de migração é essa?",
+    "options": [
+      { "key": "A", "text": "Relocate (realocar)", "explanation": "Correta. Realocar move a infraestrutura no nível do hipervisor para a versão em nuvem da mesma plataforma, sem alterar aplicações nem processos de operação." },
+      { "key": "B", "text": "Refactor (refatorar)", "explanation": "Incorreta. Refatorar exigiria redesenhar as aplicações." },
+      { "key": "C", "text": "Repurchase (recomprar)", "explanation": "Incorreta. Recomprar é trocar as aplicações por outro produto." },
+      { "key": "D", "text": "Retain (reter)", "explanation": "Incorreta. Reter é manter as cargas de trabalho no ambiente de origem." }
+    ],
+    "correct": ["A"],
+    "trigger": "'mesma plataforma de virtualização (VMware)' + 'sem mudar aplicações nem operação' → relocate",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-037",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "multiple",
+    "question": "Quais estratégias de migração levam a aplicação para a AWS sem alterar sua arquitetura nem seu código? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Rehost (redefinir a hospedagem)", "explanation": "Correta. Rehost move a aplicação como está (lift and shift), sem mudanças." },
+      { "key": "B", "text": "Refactor (refatorar)", "explanation": "Incorreta. Refatorar muda a arquitetura e o código para usar recursos nativos da nuvem." },
+      { "key": "C", "text": "Relocate (realocar)", "explanation": "Correta. Relocate move a infraestrutura no nível do hipervisor, sem alterar as aplicações." },
+      { "key": "D", "text": "Repurchase (recomprar)", "explanation": "Incorreta. Recomprar substitui a aplicação por outro produto; a aplicação original não é levada." },
+      { "key": "E", "text": "Retain (reter)", "explanation": "Incorreta. Reter mantém a aplicação no ambiente de origem; ela não é levada para a AWS." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'sem alterar arquitetura nem código' → rehost ou relocate",
+    "reference": "Estratégias de migração (7 Rs) — https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+  },
+  {
+    "id": "d1-038",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Durante a adoção da nuvem, uma empresa quer orquestrar as iniciativas, gerenciar riscos, controlar os gastos (gestão financeira da nuvem) e maximizar os benefícios para a organização. Qual perspectiva do AWS Cloud Adoption Framework (AWS CAF) trata dessas capacidades?",
+    "options": [
+      { "key": "A", "text": "Negócios", "explanation": "Incorreta. A perspectiva de Negócios garante que os investimentos em nuvem acelerem a transformação digital e os resultados de negócio (estratégia, portfólio, produtos, insights de dados)." },
+      { "key": "B", "text": "Governança", "explanation": "Correta. A perspectiva de Governança orquestra as iniciativas de nuvem maximizando benefícios e minimizando riscos; inclui gestão de programas e projetos, gestão de riscos e gestão financeira da nuvem." },
+      { "key": "C", "text": "Segurança", "explanation": "Incorreta. A perspectiva de Segurança trata de confidencialidade, integridade e disponibilidade de dados e cargas de trabalho." },
+      { "key": "D", "text": "Operações", "explanation": "Incorreta. A perspectiva de Operações garante que os serviços de nuvem sejam entregues no nível que o negócio precisa (observabilidade, incidentes, mudanças)." }
+    ],
+    "correct": ["B"],
+    "trigger": "'gerenciar riscos' / 'gestão financeira da nuvem' / 'orquestrar iniciativas' → perspectiva Governança",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-039",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa precisa criar um programa de capacitação em nuvem para os funcionários, evoluir a cultura organizacional e preparar a liderança para a transformação. Qual perspectiva do AWS CAF trata disso?",
+    "options": [
+      { "key": "A", "text": "Plataforma", "explanation": "Incorreta. Plataforma trata da construção de uma plataforma de nuvem escalável (arquitetura, engenharia, CI/CD)." },
+      { "key": "B", "text": "Governança", "explanation": "Incorreta. Governança trata de orquestrar iniciativas e gerenciar riscos e gastos." },
+      { "key": "C", "text": "Pessoas", "explanation": "Correta. A perspectiva de Pessoas é a ponte entre tecnologia e negócio: evolução da cultura, estrutura organizacional, liderança, transformação da força de trabalho e fluência em nuvem." },
+      { "key": "D", "text": "Negócios", "explanation": "Incorreta. Negócios foca em estratégia e resultados de negócio dos investimentos em nuvem." }
+    ],
+    "correct": ["C"],
+    "trigger": "'treinamento' / 'cultura' / 'liderança' / 'estrutura organizacional' → perspectiva Pessoas",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-040",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Arquitetos e engenheiros de uma empresa precisam construir uma plataforma de nuvem híbrida escalável, modernizar cargas de trabalho existentes e adotar práticas de CI/CD. Qual perspectiva do AWS CAF descreve essas capacidades?",
+    "options": [
+      { "key": "A", "text": "Operações", "explanation": "Incorreta. Operações trata de entregar e manter os serviços no nível exigido pelo negócio (observabilidade, gestão de incidentes, mudanças e capacidade)." },
+      { "key": "B", "text": "Plataforma", "explanation": "Correta. A perspectiva de Plataforma trata de arquitetura e engenharia da plataforma, dados, provisionamento, desenvolvimento moderno de aplicações e CI/CD." },
+      { "key": "C", "text": "Segurança", "explanation": "Incorreta. Segurança trata de identidade, detecção de ameaças, proteção de dados e resposta a incidentes." },
+      { "key": "D", "text": "Pessoas", "explanation": "Incorreta. Pessoas trata de cultura, liderança e capacitação." }
+    ],
+    "correct": ["B"],
+    "trigger": "'construir a plataforma' / 'arquitetura' / 'CI/CD' → perspectiva Plataforma",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-041",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "Uma empresa quer garantir que seus serviços em nuvem sejam entregues no nível acordado com o negócio, com observabilidade, gestão de incidentes e problemas, gestão de patches e de capacidade. Qual perspectiva do AWS CAF trata disso?",
+    "options": [
+      { "key": "A", "text": "Operações", "explanation": "Correta. A perspectiva de Operações inclui observabilidade, gestão de eventos, incidentes e problemas, mudanças e versões, desempenho e capacidade, configuração e patches." },
+      { "key": "B", "text": "Governança", "explanation": "Incorreta. Governança orquestra as iniciativas e gerencia riscos e gastos; não executa a operação diária dos serviços." },
+      { "key": "C", "text": "Plataforma", "explanation": "Incorreta. Plataforma trata de construir a plataforma de nuvem e modernizar cargas de trabalho." },
+      { "key": "D", "text": "Negócios", "explanation": "Incorreta. Negócios trata de estratégia e resultados de negócio." }
+    ],
+    "correct": ["A"],
+    "trigger": "'observabilidade' / 'incidentes' / 'patches' / 'nível de serviço' → perspectiva Operações",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-042",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "single",
+    "question": "O CEO e o CFO de uma empresa querem garantir que os investimentos em nuvem acelerem as ambições de transformação digital e gerem resultados de negócio, com gestão de estratégia, de portfólio e de produtos. Qual perspectiva do AWS CAF trata disso?",
+    "options": [
+      { "key": "A", "text": "Governança", "explanation": "Incorreta. Governança foca em orquestrar as iniciativas minimizando riscos (gestão de programas, riscos e finanças da nuvem)." },
+      { "key": "B", "text": "Pessoas", "explanation": "Incorreta. Pessoas foca em cultura, liderança e capacitação." },
+      { "key": "C", "text": "Operações", "explanation": "Incorreta. Operações foca na entrega e manutenção dos serviços." },
+      { "key": "D", "text": "Negócios", "explanation": "Correta. A perspectiva de Negócios garante que os investimentos em nuvem acelerem a transformação digital e os resultados de negócio; inclui gestão de estratégia, portfólio, inovação e produtos." }
+    ],
+    "correct": ["D"],
+    "trigger": "'resultados de negócio' / 'estratégia' / 'portfólio' / CEO e CFO → perspectiva Negócios",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-043",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "multiple",
+    "question": "O AWS CAF agrupa suas seis perspectivas em capacidades de negócio e capacidades técnicas. Quais perspectivas tratam de capacidades técnicas? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Plataforma", "explanation": "Correta. Plataforma, Segurança e Operações são as perspectivas com foco em capacidades técnicas." },
+      { "key": "B", "text": "Negócios", "explanation": "Incorreta. Negócios, Pessoas e Governança são as perspectivas com foco em capacidades de negócio." },
+      { "key": "C", "text": "Pessoas", "explanation": "Incorreta. É uma perspectiva com foco em capacidades de negócio (cultura, liderança, capacitação)." },
+      { "key": "D", "text": "Operações", "explanation": "Correta. Operações é uma das três perspectivas técnicas, junto com Plataforma e Segurança." },
+      { "key": "E", "text": "Governança", "explanation": "Incorreta. É uma perspectiva com foco em capacidades de negócio (riscos, programas, finanças da nuvem)." }
+    ],
+    "correct": ["A", "D"],
+    "trigger": "'capacidades técnicas do CAF' → Plataforma, Segurança, Operações (capacidades de negócio → Negócios, Pessoas, Governança)",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-044",
+    "domain": 1,
+    "topic": "Migração e CAF",
+    "type": "multiple",
+    "question": "Segundo a AWS, quais são resultados de negócio que o uso do AWS CAF ajuda a alcançar? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "Redução do risco do negócio", "explanation": "Correta. A AWS cita como resultados do CAF: redução do risco do negócio, melhoria do desempenho ambiental, social e de governança (ESG), aumento da receita e aumento da eficiência operacional." },
+      { "key": "B", "text": "Eliminação da necessidade de treinar as equipes", "explanation": "Incorreta. Pelo contrário: a perspectiva de Pessoas trata justamente da capacitação e da evolução da cultura." },
+      { "key": "C", "text": "Aumento da eficiência operacional", "explanation": "Correta. É um dos quatro resultados de negócio citados pela AWS para o CAF." },
+      { "key": "D", "text": "Garantia de aprovação em auditorias de conformidade", "explanation": "Incorreta. O CAF é um guia de boas práticas para a adoção da nuvem; não garante resultados de auditoria." },
+      { "key": "E", "text": "Descontos automáticos na fatura da AWS", "explanation": "Incorreta. O CAF não está ligado a descontos de preço." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'resultados de negócio do CAF' → menos risco, melhor desempenho ESG, mais receita, mais eficiência operacional",
+    "reference": "AWS Cloud Adoption Framework — https://aws.amazon.com/cloud-adoption-framework/"
+  },
+  {
+    "id": "d1-045",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa quer migrar servidores físicos e máquinas virtuais do data center para o Amazon EC2 sem alterar as aplicações, com replicação contínua em nível de bloco e uma virada (cutover) com o mínimo de indisponibilidade. Qual serviço deve usar?",
+    "options": [
+      { "key": "A", "text": "AWS Database Migration Service (AWS DMS)", "explanation": "Incorreta. O DMS migra bancos de dados, não servidores inteiros." },
+      { "key": "B", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync transfere arquivos e objetos entre sistemas de armazenamento; não migra servidores com sistema operacional e aplicações." },
+      { "key": "C", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Correta. O MGN é o serviço recomendado para rehost (lift and shift): replica continuamente os servidores de origem para a AWS e permite testar e fazer a virada com pouca indisponibilidade." },
+      { "key": "D", "text": "AWS Schema Conversion Tool (AWS SCT)", "explanation": "Incorreta. A SCT converte esquemas e código de banco de dados entre mecanismos diferentes." }
+    ],
+    "correct": ["C"],
+    "trigger": "'migrar servidores/VMs para o EC2' + 'replicação contínua em bloco' → AWS MGN",
+    "reference": "AWS Application Migration Service — https://aws.amazon.com/application-migration-service/"
+  },
+  {
+    "id": "d1-046",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa vai migrar um banco de dados Oracle on-premises para o Amazon RDS for Oracle. O banco de origem precisa continuar em operação durante a migração, com o mínimo de indisponibilidade na virada. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Database Migration Service (AWS DMS)", "explanation": "Correta. O DMS migra bancos de dados para a AWS mantendo a origem em operação e pode replicar continuamente as alterações até a virada, reduzindo a indisponibilidade." },
+      { "key": "B", "text": "AWS Schema Conversion Tool (AWS SCT)", "explanation": "Incorreta. A SCT é necessária quando o mecanismo de destino é diferente (migração heterogênea). Aqui o mecanismo é o mesmo (Oracle para Oracle)." },
+      { "key": "C", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Incorreta. O MGN migra servidores inteiros para o EC2; não leva os dados para um banco gerenciado no Amazon RDS." },
+      { "key": "D", "text": "AWS Storage Gateway", "explanation": "Incorreta. O Storage Gateway dá acesso híbrido a armazenamento na nuvem; não migra bancos de dados." }
+    ],
+    "correct": ["A"],
+    "trigger": "'migrar banco de dados' + 'origem continua operando' → AWS DMS",
+    "reference": "AWS Database Migration Service — https://aws.amazon.com/dms/"
+  },
+  {
+    "id": "d1-047",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Qual ferramenta da AWS converte o esquema de um banco de dados e objetos de código, como stored procedures e funções, de um mecanismo para outro (por exemplo, de Microsoft SQL Server para Amazon Aurora PostgreSQL)?",
+    "options": [
+      { "key": "A", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync transfere arquivos e objetos; não converte esquemas de banco de dados." },
+      { "key": "B", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Incorreta. O MGN replica servidores inteiros para o EC2, sem converter bancos de dados." },
+      { "key": "C", "text": "AWS Glue", "explanation": "Incorreta. O Glue é um serviço de ETL e catálogo de dados para análise; não converte esquemas e procedures entre mecanismos de banco." },
+      { "key": "D", "text": "AWS Schema Conversion Tool (AWS SCT)", "explanation": "Correta. A SCT converte o esquema e o código do banco de origem para o formato do mecanismo de destino em migrações heterogêneas; os dados em si são migrados com o AWS DMS." }
+    ],
+    "correct": ["D"],
+    "trigger": "'converter esquema/stored procedures entre mecanismos diferentes' → AWS SCT",
+    "reference": "AWS Schema Conversion Tool — https://aws.amazon.com/dms/schema-conversion-tool/"
+  },
+  {
+    "id": "d1-048",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "multiple",
+    "question": "Uma empresa vai migrar um banco Oracle on-premises para o Amazon Aurora PostgreSQL com o mínimo de indisponibilidade. Quais serviços ela deve usar em conjunto? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS Schema Conversion Tool (AWS SCT)", "explanation": "Correta. Como os mecanismos são diferentes, a SCT converte o esquema e o código (procedures, funções) do Oracle para PostgreSQL." },
+      { "key": "B", "text": "AWS Database Migration Service (AWS DMS)", "explanation": "Correta. O DMS migra os dados e pode replicar alterações continuamente até a virada, com a origem em operação." },
+      { "key": "C", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Incorreta. O MGN migra servidores para o EC2 como estão; não converte o banco para o Aurora." },
+      { "key": "D", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync transfere arquivos e objetos, não bancos de dados com conversão de mecanismo." },
+      { "key": "E", "text": "AWS Snowball Edge", "explanation": "Incorreta. O Snowball Edge transfere grandes volumes de dados fisicamente (offline); não converte esquemas nem mantém replicação contínua." }
+    ],
+    "correct": ["A", "B"],
+    "trigger": "'mecanismos diferentes' (migração heterogênea) → SCT (esquema) + DMS (dados)",
+    "reference": "AWS DMS — https://aws.amazon.com/dms/ · AWS SCT — https://aws.amazon.com/dms/schema-conversion-tool/"
+  },
+  {
+    "id": "d1-049",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "multiple",
+    "question": "Uma aplicação será migrada para a AWS: os servidores de aplicação (máquinas virtuais) irão para o Amazon EC2 sem alterações, e o banco PostgreSQL irá para o Amazon RDS for PostgreSQL. Quais serviços atendem a essa migração? (Escolha DUAS.)",
+    "options": [
+      { "key": "A", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Correta. O MGN faz o rehost dos servidores de aplicação para o EC2 com replicação contínua." },
+      { "key": "B", "text": "AWS Schema Conversion Tool (AWS SCT)", "explanation": "Incorreta. A SCT só é necessária quando o mecanismo de destino é diferente. PostgreSQL para PostgreSQL é uma migração homogênea." },
+      { "key": "C", "text": "AWS Database Migration Service (AWS DMS)", "explanation": "Correta. O DMS migra os dados do PostgreSQL de origem para o Amazon RDS for PostgreSQL com a origem em operação." },
+      { "key": "D", "text": "AWS Storage Gateway", "explanation": "Incorreta. O Storage Gateway oferece armazenamento híbrido; não migra servidores nem bancos de dados." },
+      { "key": "E", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync move arquivos e objetos entre sistemas de armazenamento." }
+    ],
+    "correct": ["A", "C"],
+    "trigger": "'servidores para o EC2' → MGN · 'banco para o RDS com o mesmo mecanismo' → DMS (sem SCT)",
+    "reference": "AWS Application Migration Service — https://aws.amazon.com/application-migration-service/ · AWS DMS — https://aws.amazon.com/dms/"
+  },
+  {
+    "id": "d1-050",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa precisa transferir pela rede, de forma automatizada e agendada, centenas de terabytes de arquivos de um servidor NFS on-premises para o Amazon S3 e o Amazon EFS, com criptografia em trânsito e verificação de integridade dos dados. Qual serviço atende melhor?",
+    "options": [
+      { "key": "A", "text": "AWS DataSync", "explanation": "Correta. O DataSync automatiza e acelera a transferência online de dados entre armazenamento on-premises (NFS, SMB e outros) e serviços como Amazon S3, Amazon EFS e Amazon FSx, com criptografia e validação de integridade." },
+      { "key": "B", "text": "AWS Storage Gateway", "explanation": "Incorreta. O Storage Gateway dá às aplicações on-premises acesso contínuo a armazenamento na nuvem (com cache local); para mover grandes conjuntos de dados de forma agendada, o serviço indicado é o DataSync." },
+      { "key": "C", "text": "AWS Snowball Edge", "explanation": "Incorreta. O Snowball Edge é um dispositivo físico para transferência offline, indicado quando a rede não comporta o volume no prazo; o cenário pede transferência pela rede." },
+      { "key": "D", "text": "AWS Application Migration Service (AWS MGN)", "explanation": "Incorreta. O MGN migra servidores inteiros, não conjuntos de arquivos." }
+    ],
+    "correct": ["A"],
+    "trigger": "'transferência online e agendada de arquivos (NFS/SMB) para S3/EFS/FSx' → AWS DataSync",
+    "reference": "AWS DataSync — https://aws.amazon.com/datasync/"
+  },
+  {
+    "id": "d1-051",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa precisa levar centenas de terabytes de dados para a AWS, mas sua conexão com a internet é lenta e a transferência pela rede levaria meses. Qual opção é a mais adequada?",
+    "options": [
+      { "key": "A", "text": "Amazon S3 Transfer Acceleration", "explanation": "Incorreta. O Transfer Acceleration acelera transferências de longa distância para o S3, mas ainda depende da conexão de internet da empresa, que é o gargalo." },
+      { "key": "B", "text": "AWS Snowball Edge", "explanation": "Correta. Os dispositivos da família AWS Snow são enviados ao cliente, recebem os dados localmente e voltam para a AWS, que carrega os dados no Amazon S3. É a opção para grandes volumes quando a rede é insuficiente." },
+      { "key": "C", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync transfere dados pela rede; com a conexão lenta, o problema do prazo continua." },
+      { "key": "D", "text": "AWS Storage Gateway", "explanation": "Incorreta. O Storage Gateway também usa a rede e serve para acesso híbrido contínuo, não para uma transferência inicial massiva offline." }
+    ],
+    "correct": ["B"],
+    "trigger": "'muitos TB' + 'internet lenta / levaria meses' → AWS Snowball Edge (transferência offline)",
+    "reference": "AWS Snowball — https://aws.amazon.com/snowball/"
+  },
+  {
+    "id": "d1-052",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa quer que seus servidores on-premises continuem acessando arquivos por NFS e SMB, mas com os dados armazenados no Amazon S3 e um cache local para acesso de baixa latência aos arquivos mais usados. Qual serviço atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS DataSync", "explanation": "Incorreta. O DataSync move dados entre locais de armazenamento; não oferece um compartilhamento de arquivos com cache local para uso contínuo." },
+      { "key": "B", "text": "Amazon EFS", "explanation": "Incorreta. O EFS é um sistema de arquivos NFS gerenciado na AWS; não armazena os dados como objetos no S3 nem mantém cache no data center." },
+      { "key": "C", "text": "AWS Storage Gateway (S3 File Gateway)", "explanation": "Correta. O S3 File Gateway apresenta compartilhamentos NFS/SMB às aplicações locais, guarda os arquivos como objetos no S3 e mantém em cache local os dados acessados recentemente." },
+      { "key": "D", "text": "AWS Snowball Edge", "explanation": "Incorreta. O Snowball Edge é para transferência offline de dados ou computação na borda, não para acesso contínuo a arquivos." }
+    ],
+    "correct": ["C"],
+    "trigger": "'on-premises acessa arquivos (NFS/SMB) com dados no S3' + 'cache local' → Storage Gateway (File Gateway)",
+    "reference": "AWS Storage Gateway — https://aws.amazon.com/storagegateway/"
+  },
+  {
+    "id": "d1-053",
+    "domain": 1,
+    "topic": "Ferramentas de migração",
+    "type": "single",
+    "question": "Uma empresa quer substituir as fitas físicas de backup por armazenamento na nuvem sem mudar o software de backup atual, que grava em uma biblioteca de fitas. Qual solução atende a esse requisito?",
+    "options": [
+      { "key": "A", "text": "AWS Storage Gateway (Tape Gateway)", "explanation": "Correta. O Tape Gateway apresenta uma biblioteca de fitas virtual ao software de backup existente e armazena as fitas virtuais no S3, podendo arquivá-las em classes do S3 Glacier." },
+      { "key": "B", "text": "Amazon S3 Glacier Deep Archive", "explanation": "Incorreta. É uma classe de armazenamento de baixo custo que o Tape Gateway pode usar para arquivar fitas, mas sozinha não oferece a interface de biblioteca de fitas que o software de backup espera." },
+      { "key": "C", "text": "AWS Backup", "explanation": "Incorreta. O AWS Backup centraliza backups de serviços da AWS (e de alguns recursos híbridos), mas não emula uma biblioteca de fitas para o software de backup existente." },
+      { "key": "D", "text": "AWS Snowball Edge", "explanation": "Incorreta. O Snowball Edge serve para transferências offline pontuais, não para substituir continuamente as fitas no processo de backup." }
+    ],
+    "correct": ["A"],
+    "trigger": "'substituir fitas' + 'sem mudar o software de backup' → Storage Gateway (Tape Gateway)",
+    "reference": "AWS Storage Gateway — https://aws.amazon.com/storagegateway/"
+  }
+]
