@@ -370,7 +370,10 @@ select {
   color: var(--accent);
 }
 .hero h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 8px; }
-.lead { max-width: 70ch; color: var(--muted); font-size: 1.02rem; }
+/* Explicação em 10 segundos: o que é, como funciona, privacidade */
+.intro { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; max-width: 72ch; color: var(--muted); font-size: 1rem; }
+.intro strong { color: var(--text); }
+.intro__note { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); }
 
 .bank {
   display: flex;
@@ -727,25 +730,6 @@ select {
 .bar--mid .bar__value { color: var(--mid); }
 .bar--bad .bar__value { color: var(--bad); }
 
-.wrong {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 18px;
-  margin-top: 14px;
-  background: var(--surface);
-}
-.wrong__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
-.wrong__n { font-weight: 800; }
-.wrong__q { font-size: 1.02rem; line-height: 1.6; white-space: pre-line; }
-
-.wrong__answers { display: grid; gap: 8px; margin: 12px 0; }
-@media (min-width: 720px) { .wrong__answers { grid-template-columns: 1fr 1fr; } }
-.wrong__answers div { padding: 10px 12px; border-radius: 8px; background: var(--surface-2); }
-.wrong__answers dt { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-.wrong__answers dd { margin: 2px 0 0; font-weight: 600; }
-.wrong__answers dd.bad { color: var(--bad); }
-.wrong__answers dd.ok { color: var(--ok); }
-
 .ropts { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
 .ropt { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); border-left-width: 4px; }
 .ropt.is-correct { border-color: var(--ok); background: var(--ok-soft); }
@@ -757,6 +741,134 @@ select {
 .ropt.is-wrong .ropt__tag { color: var(--bad); border-color: var(--bad); }
 .ropt__why { margin: 4px 0 0; font-size: 0.92rem; color: var(--muted); }
 .ropt.is-correct .ropt__why, .ropt.is-wrong .ropt__why { color: var(--text); }
+.ropt .ropt__why.is-pending { color: var(--muted); font-style: italic; }
+
+.actions--start { justify-content: flex-start; }
+
+/* ---------- Conclusão e respostas completas ---------- */
+
+/* Os dois botões da conclusão ficam lado a lado, inclusive no celular; sozinho, o botão ocupa a linha. */
+.conclusion__actions { display: flex; gap: 10px; margin-top: 16px; }
+.conclusion__actions .btn { flex: 1 1 0; min-height: 52px; text-align: center; font-size: 1rem; }
+.conclusion__note { margin: 8px 0 0; }
+
+.score-pair__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.result-hero .big.tone-ok { color: var(--ok); }
+.result-hero .big.tone-mid { color: var(--mid); }
+.result-hero .big.tone-bad { color: var(--bad); }
+
+.last-review p { margin: 0 0 10px; }
+
+.rv-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 14px; }
+.rv-head__title { flex: 1 1 240px; min-width: 0; }
+.rv-head__title h1 { margin: 2px 0; }
+.rv-head__title p { margin: 0; }
+@media (max-width: 600px) {
+  .rv-head { justify-content: space-between; }
+  .rv-head__title { order: 3; flex-basis: 100%; }
+}
+
+.rv-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin: 14px 0 18px;
+}
+.rv-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.rv-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.rv-tab:hover { background: var(--surface-2); color: var(--text); }
+.rv-tab.is-on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.rv-tab__n {
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.rv-tab.is-on .rv-tab__n { background: var(--surface); }
+.rv-domain { flex: 0 1 300px; }
+@media (max-width: 600px) { .rv-domain { flex-basis: 100%; } }
+
+.rv-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.rv-status--ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+.rv-status--fixed { color: var(--mid); background: var(--mid-soft); border-color: var(--mid); }
+.rv-status--wrong { color: var(--bad); background: var(--bad-soft); border-color: var(--bad); }
+
+.rv-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 12px 0 14px; }
+
+/* Palavra-chave do enunciado que leva à resposta */
+mark.kw {
+  background: color-mix(in srgb, var(--mark) 26%, transparent);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+.ans-note { margin: 6px 0 0; font-weight: 600; color: var(--bad); }
+
+/* ✓ correta / ✗ marcada errada: o ícone repete a cor (acessibilidade) */
+.ropt__mark { flex: none; width: 1em; font-weight: 800; text-align: center; }
+.ropt.is-correct .ropt__mark { color: var(--ok); }
+.ropt.is-wrong .ropt__mark { color: var(--bad); }
+
+/* Mapa e legenda: número + ícone, nunca só a cor */
+.rv-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.rv-fixed { background: var(--mid-soft); border-color: var(--mid); color: var(--mid); }
+.rv-wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.rv-cell__icon { position: absolute; top: 2px; right: 4px; font-size: 0.62rem; line-height: 1; }
+.rv-legend {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+.rv-side-stats { flex-wrap: wrap; }
+
+/* ---------- Rodapé ---------- */
+
+.sitefoot {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px calc(28px + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.sitefoot p { margin: 0; }
 
 .trigger {
   padding: 10px 12px;

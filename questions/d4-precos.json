@@ -7,7 +7,7 @@
     "question": "Uma empresa executa trabalhos de processamento em lote que podem ser interrompidos e reiniciados a qualquer momento, sem prazo rígido de conclusão. Qual opção de compra do Amazon EC2 é a MAIS econômica?",
     "options": [
       { "key": "A", "text": "Instâncias On-Demand", "explanation": "Incorreta. Não exigem compromisso, mas custam mais que as Spot para cargas tolerantes a interrupção." },
-      { "key": "B", "text": "Instâncias Reservadas", "explanation": "Incorreta. Exigem compromisso de 1 ou 3 anos e são indicadas para uso estável e contínuo." },
+      { "key": "B", "text": "Instâncias Reservadas", "explanation": "Incorreta. Não é ela, pois Instâncias Reservadas exigem compromisso de 1 ou 3 anos e servem para uso estável e contínuo; o cenário é um lote que tolera interrupções, perfil de Spot, que sai mais barato." },
       { "key": "C", "text": "Instâncias Spot", "explanation": "Correta. Usam a capacidade ociosa do EC2 com grandes descontos em relação ao On-Demand; como podem ser interrompidas pela AWS, são ideais para cargas flexíveis e tolerantes a falhas." },
       { "key": "D", "text": "Dedicated Hosts", "explanation": "Incorreta. São servidores físicos dedicados, indicados para licenciamento e conformidade, e custam mais." }
     ],
@@ -121,7 +121,7 @@
     "options": [
       { "key": "A", "text": "A AWS pode interromper a instância quando precisar da capacidade de volta, com um aviso de dois minutos", "explanation": "Correta. Por usar capacidade ociosa com desconto, a instância Spot pode ser recuperada pela AWS; o aviso de interrupção chega dois minutos antes." },
       { "key": "B", "text": "Têm preço fixo garantido por 3 anos", "explanation": "Incorreta. O preço Spot varia conforme a oferta e a demanda; não há preço fixo por contrato." },
-      { "key": "C", "text": "Garantem capacidade reservada em uma AZ", "explanation": "Incorreta. Quem reserva capacidade são as Reservas de Capacidade sob demanda (e as RIs zonais)." },
+      { "key": "C", "text": "Garantem capacidade reservada em uma AZ", "explanation": "Incorreta. A Spot não garante capacidade: usa capacidade ociosa que a AWS pode retomar. Quem reserva capacidade em uma AZ são as Reservas de Capacidade sob demanda (e as RIs zonais)." },
       { "key": "D", "text": "Exigem pagamento antecipado integral", "explanation": "Incorreta. Não há pagamento antecipado; paga-se pelo uso." }
     ],
     "correct": ["A"],
@@ -218,7 +218,7 @@
     "options": [
       { "key": "A", "text": "AWS Budgets", "explanation": "Correta. O AWS Budgets permite definir orçamentos de custo e uso e enviar alertas quando os valores reais ou previstos ultrapassam os limites; também pode executar ações automáticas." },
       { "key": "B", "text": "AWS Cost Explorer", "explanation": "Incorreta. É uma ferramenta de visualização e análise; o mecanismo de orçamento com alertas é o AWS Budgets." },
-      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos antes da implantação." },
+      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Não é ela, pois a Pricing Calculator estima custos de arquiteturas antes da implantação; não acompanha o gasto real nem envia alertas." },
       { "key": "D", "text": "AWS Cost and Usage Report", "explanation": "Incorreta. Fornece dados detalhados de custo e uso; não envia alertas." }
     ],
     "correct": ["A"],
@@ -234,7 +234,7 @@
     "options": [
       { "key": "A", "text": "AWS Cost Explorer", "explanation": "Incorreta. Analisa custos e uso de recursos que já existem na conta." },
       { "key": "B", "text": "AWS Pricing Calculator", "explanation": "Correta. A Pricing Calculator estima o custo de uma arquitetura planejada, serviço a serviço, antes de qualquer recurso ser criado." },
-      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Monitora gastos em relação a orçamentos definidos." },
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Não é ele, pois o Budgets acompanha os gastos reais em relação a orçamentos definidos; a arquitetura ainda não existe, então não há gasto para monitorar." },
       { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda otimizações para recursos que já existem." }
     ],
     "correct": ["B"],
@@ -250,8 +250,8 @@
     "options": [
       { "key": "A", "text": "AWS Cost and Usage Report (CUR)", "explanation": "Correta. O CUR é a fonte mais completa e granular de dados de custo e uso, entregue em arquivos no S3 e consultável com ferramentas como Athena e QuickSight." },
       { "key": "B", "text": "AWS Cost Explorer", "explanation": "Incorreta. Oferece gráficos e filtros com dados agregados; não entrega os dados brutos mais granulares no S3." },
-      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos e envia alertas." },
-      { "key": "D", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos de arquiteturas planejadas." }
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Não é ele, pois o Budgets acompanha gastos em relação a orçamentos e envia alertas; não entrega dados detalhados por recurso e por hora no S3." },
+      { "key": "D", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Não é ela, pois a Pricing Calculator estima custos de arquiteturas planejadas; não fornece dados reais de custo e uso." }
     ],
     "correct": ["A"],
     "trigger": "'dados mais detalhados/granulares' + 'entregues no S3' + 'Athena' → Cost and Usage Report",
@@ -364,8 +364,8 @@
     "options": [
       { "key": "A", "text": "Transferência de dados da internet para a AWS (entrada)", "explanation": "Correta. Em geral, a entrada de dados da internet para a AWS não é cobrada; a saída para a internet e as transferências entre Regiões, por exemplo, são cobradas." },
       { "key": "B", "text": "Transferência de dados da AWS para a internet (saída)", "explanation": "Incorreta. A saída de dados para a internet é cobrada por GB (além de eventuais cotas gratuitas)." },
-      { "key": "C", "text": "Transferência de dados entre Regiões da AWS", "explanation": "Incorreta. É cobrada." },
-      { "key": "D", "text": "Transferência de dados entre Zonas de Disponibilidade", "explanation": "Incorreta. Em geral, é cobrada." }
+      { "key": "C", "text": "Transferência de dados entre Regiões da AWS", "explanation": "Incorreta. Transferências entre Regiões da AWS são cobradas (por GB transferido); a entrada de dados da internet é que, em geral, não é." },
+      { "key": "D", "text": "Transferência de dados entre Zonas de Disponibilidade", "explanation": "Incorreta. O tráfego entre Zonas de Disponibilidade, em geral, é cobrado (por exemplo, entre instâncias EC2 em AZs diferentes); a entrada de dados da internet é que, em geral, não é." }
     ],
     "correct": ["A"],
     "trigger": "'transferência não cobrada' → entrada de dados da internet · saída e entre Regiões → cobradas",
@@ -380,8 +380,8 @@
     "options": [
       { "key": "A", "text": "AWS Compute Optimizer", "explanation": "Correta. O Compute Optimizer analisa métricas de utilização e recomenda tipos e tamanhos ideais para recursos como EC2, Auto Scaling, EBS, Lambda e ECS no Fargate." },
       { "key": "B", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos de arquiteturas planejadas; não analisa a utilização real." },
-      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos." },
-      { "key": "D", "text": "AWS Health Dashboard", "explanation": "Incorreta. Informa eventos da AWS que afetam a conta." }
+      { "key": "C", "text": "AWS Budgets", "explanation": "Incorreta. Não é ele, pois o Budgets acompanha gastos em relação a orçamentos; não analisa a utilização para recomendar tamanhos de recursos." },
+      { "key": "D", "text": "AWS Health Dashboard", "explanation": "Incorreta. Não é ele, pois o AWS Health Dashboard informa eventos da AWS que afetam a conta; não faz recomendações de dimensionamento." }
     ],
     "correct": ["A"],
     "trigger": "'recomendações de dimensionamento com base na utilização' (EC2, EBS, Lambda) → AWS Compute Optimizer",
@@ -396,7 +396,7 @@
     "options": [
       { "key": "A", "text": "AWS Cost Anomaly Detection", "explanation": "Correta. Usa machine learning para monitorar continuamente os gastos, detectar padrões incomuns e enviar alertas com a análise da causa." },
       { "key": "B", "text": "AWS Budgets", "explanation": "Incorreta. Alerta com base em limites definidos pelo usuário, não na detecção de padrões anômalos." },
-      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Estima custos antes da implantação." },
+      { "key": "C", "text": "AWS Pricing Calculator", "explanation": "Incorreta. Não é ela, pois a Pricing Calculator estima custos antes da implantação; não monitora os gastos reais nem detecta anomalias." },
       { "key": "D", "text": "AWS Cost and Usage Report", "explanation": "Incorreta. Fornece dados detalhados, mas não detecta anomalias nem envia alertas." }
     ],
     "correct": ["A"],
@@ -477,7 +477,7 @@
       { "key": "A", "text": "Business", "explanation": "Incorreta. Não oferece TAM, e seu menor tempo de resposta é de menos de 1 hora (sistema de produção fora do ar)." },
       { "key": "B", "text": "Enterprise On-Ramp", "explanation": "Correta. O Enterprise On-Ramp oferece resposta em menos de 30 minutos para sistema crítico fora do ar e acesso a um pool de TAMs." },
       { "key": "C", "text": "Enterprise", "explanation": "Incorreta. Atende e vai além (TAM designado, resposta em menos de 15 minutos), mas custa mais." },
-      { "key": "D", "text": "Developer", "explanation": "Incorreta. É voltado a testes, com suporte por e-mail em horário comercial." }
+      { "key": "D", "text": "Developer", "explanation": "Incorreta. Não é ele, pois o Developer é voltado a testes, com suporte por e-mail em horário comercial; não tem TAM nem resposta em menos de 30 minutos." }
     ],
     "correct": ["B"],
     "trigger": "'< 30 min para sistema crítico' + 'pool de TAMs' → Enterprise On-Ramp",
@@ -541,8 +541,8 @@
     "options": [
       { "key": "A", "text": "Equipe de Concierge Support", "explanation": "Correta. A equipe de Concierge, incluída nos planos Enterprise On-Ramp e Enterprise, é especializada em faturamento e contas." },
       { "key": "B", "text": "Technical Account Manager (TAM)", "explanation": "Incorreta. O TAM oferece orientação técnica e arquitetural; não é a equipe dedicada a faturamento." },
-      { "key": "C", "text": "Equipe de Trust & Safety da AWS", "explanation": "Incorreta. Trata de denúncias de abuso envolvendo recursos da AWS." },
-      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. É a equipe de consultoria da AWS para projetos, como migração e modernização." }
+      { "key": "C", "text": "Equipe de Trust & Safety da AWS", "explanation": "Incorreta. Não é ela, pois a equipe de Trust & Safety trata de denúncias de abuso envolvendo recursos da AWS (spam, varredura de portas); não atende questões de faturamento." },
+      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. Não é ela, pois o AWS Professional Services é a consultoria da AWS para projetos, como migração e modernização; não é a equipe de suporte para faturamento e contas." }
     ],
     "correct": ["A"],
     "trigger": "'faturamento e contas' + 'Enterprise / Enterprise On-Ramp' → equipe de Concierge",
@@ -558,7 +558,7 @@
       { "key": "A", "text": "AWS Marketplace", "explanation": "Incorreta. É um catálogo para encontrar, comprar e implantar software de terceiros, não o canal para contratar consultorias de migração." },
       { "key": "B", "text": "AWS Partner Network (APN)", "explanation": "Correta. A APN reúne empresas parceiras da AWS, como consultorias e integradores de sistemas, que podem ser encontradas e contratadas para projetos como migração." },
       { "key": "C", "text": "AWS re:Post", "explanation": "Incorreta. É uma comunidade de perguntas e respostas, não um canal para contratar consultoria." },
-      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda otimizações automáticas na conta." }
+      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Não é ele, pois o Trusted Advisor recomenda otimizações automáticas na conta; não é um canal para contratar consultorias." }
     ],
     "correct": ["B"],
     "trigger": "'contratar parceiro / consultoria / integrador' → AWS Partner Network (APN)",
@@ -573,7 +573,7 @@
     "options": [
       { "key": "A", "text": "AWS Marketplace", "explanation": "Correta. O Marketplace é um catálogo digital com produtos de fornecedores independentes, implantáveis na AWS e cobrados na fatura da AWS." },
       { "key": "B", "text": "AWS Partner Network (APN)", "explanation": "Incorreta. A APN é o programa de parceiros; o catálogo para comprar e implantar software com cobrança na fatura é o Marketplace." },
-      { "key": "C", "text": "AWS Artifact", "explanation": "Incorreta. Fornece relatórios e acordos de conformidade da AWS." },
+      { "key": "C", "text": "AWS Artifact", "explanation": "Incorreta. Não é ele, pois o AWS Artifact fornece relatórios e acordos de conformidade da AWS; não vende software de terceiros." },
       { "key": "D", "text": "AWS Service Catalog", "explanation": "Incorreta. Permite que a própria empresa crie um catálogo interno de produtos de TI aprovados; não é uma loja de software de terceiros." }
     ],
     "correct": ["A"],
@@ -589,8 +589,8 @@
     "options": [
       { "key": "A", "text": "AWS re:Post", "explanation": "Correta. O re:Post é a comunidade de perguntas e respostas da AWS, aberta a todos, com respostas da comunidade e de especialistas." },
       { "key": "B", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Faz verificações automáticas na conta; não é um fórum de perguntas." },
-      { "key": "C", "text": "AWS Marketplace", "explanation": "Incorreta. É um catálogo de software." },
-      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. É uma equipe de consultoria contratada para projetos." }
+      { "key": "C", "text": "AWS Marketplace", "explanation": "Incorreta. Não é ele, pois o AWS Marketplace é um catálogo para comprar software de terceiros; não é uma comunidade de perguntas e respostas." },
+      { "key": "D", "text": "AWS Professional Services", "explanation": "Incorreta. Não é ele, pois o AWS Professional Services é uma consultoria paga, contratada para projetos; não é um serviço gratuito de perguntas e respostas." }
     ],
     "correct": ["A"],
     "trigger": "'comunidade de perguntas e respostas' / 'fóruns' → AWS re:Post",
@@ -605,7 +605,7 @@
     "options": [
       { "key": "A", "text": "À equipe de Trust & Safety da AWS", "explanation": "Correta. A equipe de Trust & Safety recebe e investiga denúncias de abuso envolvendo recursos da AWS, como spam, varredura de portas e ataques DDoS." },
       { "key": "B", "text": "Ao seu Technical Account Manager", "explanation": "Incorreta. O TAM orienta clientes Enterprise sobre a própria conta; denúncias de abuso vão para a equipe de Trust & Safety." },
-      { "key": "C", "text": "À equipe de Concierge Support", "explanation": "Incorreta. Cuida de questões de faturamento e contas." },
+      { "key": "C", "text": "À equipe de Concierge Support", "explanation": "Incorreta. Não é ela, pois a equipe de Concierge cuida de questões de faturamento e contas de clientes Enterprise; denúncias de abuso vão para a equipe de Trust & Safety." },
       { "key": "D", "text": "À Shield Response Team", "explanation": "Incorreta. Apoia clientes do Shield Advanced durante ataques DDoS aos próprios recursos; não é o canal de denúncias de abuso." }
     ],
     "correct": ["A"],
@@ -620,9 +620,9 @@
     "question": "Uma equipe procura estratégias, guias e padrões testados pela AWS e por parceiros para acelerar projetos de migração e modernização. Qual recurso oferece esse conteúdo?",
     "options": [
       { "key": "A", "text": "AWS Prescriptive Guidance", "explanation": "Correta. O Prescriptive Guidance reúne estratégias, guias e padrões testados para migração, modernização e otimização, criados pela AWS e por parceiros." },
-      { "key": "B", "text": "AWS Artifact", "explanation": "Incorreta. Fornece relatórios e acordos de conformidade." },
-      { "key": "C", "text": "AWS Health Dashboard", "explanation": "Incorreta. Informa eventos da AWS que afetam a conta." },
-      { "key": "D", "text": "AWS Budgets", "explanation": "Incorreta. Acompanha gastos em relação a orçamentos." }
+      { "key": "B", "text": "AWS Artifact", "explanation": "Incorreta. Não é ele, pois o AWS Artifact fornece relatórios e acordos de conformidade da AWS; não reúne guias e padrões de migração." },
+      { "key": "C", "text": "AWS Health Dashboard", "explanation": "Incorreta. Não é ele, pois o AWS Health Dashboard informa eventos da AWS que afetam a conta; não oferece estratégias nem guias de migração." },
+      { "key": "D", "text": "AWS Budgets", "explanation": "Incorreta. Não é ele, pois o Budgets acompanha gastos em relação a orçamentos; não oferece guias nem padrões de migração e modernização." }
     ],
     "correct": ["A"],
     "trigger": "'estratégias, guias e padrões testados' → AWS Prescriptive Guidance",

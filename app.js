@@ -32,12 +32,17 @@
 
   const DOMAIN_IDS = [1, 2, 3, 4];
   const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+  // No GitHub Pages, o localStorage de <usuario>.github.io é compartilhado por todos os repositórios:
+  // as chaves levam o nome do projeto.
+  const PREFIX = 'simulado_aws_practitioner.';
   const KEYS = {
-    session: 'clf02.session',
-    history: 'clf02.history',
-    seen: 'clf02.seen',
-    theme: 'clf02.theme',
-    practice: 'clf02.practice',
+    session: `${PREFIX}session`,
+    history: `${PREFIX}history`,
+    seen: `${PREFIX}seen`,
+    theme: `${PREFIX}theme`,
+    practice: `${PREFIX}practice`,
+    review: `${PREFIX}review`, // último simulado: 1ª tentativa + refazeres
+    answersUi: `${PREFIX}answers.ui`, // filtro e questão abertos em "Respostas completas"
   };
 
   /* ===================== Formatação ===================== */
@@ -95,6 +100,14 @@
   // As explicações começam com "Correta." ou "Incorreta."; na tela isso vira um selo.
   function stripVerdict(text) {
     return String(text || '').replace(/^\s*(?:correta|incorreta)\s*[.:!–—-]?\s*/i, '');
+  }
+
+  const PENDING_TEXT = 'Justificativa pendente';
+
+  // Justificativa da alternativa, sem o "Correta."/"Incorreta." do início. Se faltar, avisa em vez de quebrar.
+  function justification(option) {
+    const t = stripVerdict(option && option.explanation).trim();
+    return t || PENDING_TEXT;
   }
 
   function optionOf(q, key) {
@@ -171,6 +184,7 @@
       warned: false,
       submittedAt: null,
       reason: null,
+      reviewId: meta.reviewId || null, // refazer: id da revisão (1ª tentativa) de onde os erros saíram
     };
   }
 
@@ -231,14 +245,14 @@
         confused = 'Deixei a questão sem resposta.';
       } else if (wrongPicks.length) {
         confused = wrongPicks
-          .map((k) => `Marquei "${optionOf(q, k).text}": ${stripVerdict(optionOf(q, k).explanation)}`)
+          .map((k) => `Marquei "${optionOf(q, k).text}": ${justification(optionOf(q, k))}`)
           .join(' ');
       } else {
         const picked = r.ans.map((k) => `"${optionOf(q, k).text}"`).join(' e ');
         confused = `Marquei só ${picked} e não escolhi a outra opção correta.`;
       }
       const right = q.correct
-        .map((k) => `"${optionOf(q, k).text}": ${stripVerdict(optionOf(q, k).explanation)}`)
+        .map((k) => `"${optionOf(q, k).text}": ${justification(optionOf(q, k))}`)
         .join(' ');
       out.push('');
       out.push(`## ${i + 1}. D${q.domain} · ${q.topic} (questão ${r.n})`);
@@ -251,6 +265,143 @@
       out.push(`- Referência: ${q.reference}`);
     });
     return `${out.join('\n')}\n`;
+  }
+
+  /* ---------- Conclusão: 1ª tentativa × refazeres ---------- */
+
+  // Cópia independente do que foi respondido (a sessão pode mudar depois).
+  function attemptOf(s) {
+    return JSON.parse(
+      JSON.stringify({
+        startedAt: s.startedAt,
+        endsAt: s.endsAt,
+        durationSec: s.durationSec,
+        submittedAt: s.submittedAt,
+        reason: s.reason,
+        items: s.items,
+        answers: s.answers,
+      })
+    );
+  }
+
+  // A tentativa original e os refazeres ficam separados: refazer nunca altera a 1ª tentativa.
+  function createReview(s) {
+    return { v: 2, id: String(s.startedAt), label: s.label, mode: s.mode, first: attemptOf(s), retries: [] };
+  }
+
+  // Acrescenta um refazer à revisão de onde ele saiu; devolve null se a sessão não for desse refazer.
+  function addRetry(review, s) {
+    if (!review || !s || s.mode !== 'retry' || !s.reviewId || s.reviewId !== review.id) return null;
+    const next = JSON.parse(JSON.stringify(review));
+    next.retries = (next.retries || []).concat([attemptOf(s)]);
+    return next;
+  }
+
+  // Uma linha por questão da 1ª tentativa, com a resposta mais recente do refazer (se houve).
+  // ok = certa de primeira · fixed = errada e corrigida no refazer · wrong = errada (em branco é erro).
+  function reviewRows(review, byId) {
+    const last = {};
+    (review.retries || []).forEach((r) => r.items.forEach((it) => (last[it.id] = r.answers[it.id] || [])));
+    const rows = [];
+    review.first.items.forEach((item, idx) => {
+      const q = byId.get(item.id);
+      if (!q) return;
+      const first = (review.first.answers[item.id] || []).slice();
+      const okFirst = sameAnswer(q.correct, first);
+      const again = !okFirst && item.id in last ? last[item.id].slice() : null;
+      let status = 'ok';
+      if (!okFirst) status = again && sameAnswer(q.correct, again) ? 'fixed' : 'wrong';
+      rows.push({ n: idx + 1, q, item, first, last: again, status });
+    });
+    return rows;
+  }
+
+  // Questões que continuam erradas: são as que o próximo refazer oferece.
+  function pendingIds(review, byId) {
+    return reviewRows(review, byId).filter((r) => r.status === 'wrong').map((r) => r.q.id);
+  }
+
+  // Botões da conclusão: "Refazer as X erradas" só com X > 0; "Ver respostas completas" sempre.
+  function conclusionActions(review, byId) {
+    return { retry: pendingIds(review, byId).length, answers: true };
+  }
+
+  function reviewSummary(rows) {
+    const count = (st) => rows.filter((r) => r.status === st).length;
+    const total = rows.length;
+    const ok = count('ok');
+    const fixed = count('fixed');
+    return {
+      total,
+      ok,
+      fixed,
+      wrong: count('wrong'),
+      firstPct: total ? (ok * 100) / total : 0,
+      nowPct: total ? ((ok + fixed) * 100) / total : 0,
+      retried: rows.some((r) => r.last !== null),
+    };
+  }
+
+  const REVIEW_FILTERS = {
+    all: () => true,
+    wrong: (r) => r.status !== 'ok', // errou na 1ª tentativa (inclui as corrigidas no refazer)
+    right: (r) => r.status === 'ok', // acertou de primeira
+  };
+
+  // domain: 'all' ou o número do domínio (o <select> entrega como texto).
+  function filterReviewRows(rows, filter, domain) {
+    const byStatus = REVIEW_FILTERS[filter] || REVIEW_FILTERS.all;
+    const allDomains = domain == null || domain === 'all';
+    return rows.filter((r) => byStatus(r) && (allDomains || r.q.domain === Number(domain)));
+  }
+
+  // Destaca no enunciado os trechos que o trigger cita entre aspas simples (antes do "→").
+  // Só trechos com 3+ caracteres, começando no início de uma palavra e indo até o fim dela.
+  // Um trecho com barra ('dedicada/privada') que não aparece inteiro é procurado por partes.
+  function markKeywords(text, trigger) {
+    const src = String(text || '');
+    const cue = String(trigger || '').split('→')[0];
+    const lower = src.toLowerCase();
+    const isWord = (ch) => !!ch && /[\p{L}\p{N}]/u.test(ch);
+    const occurs = (p) => {
+      const needle = p.toLowerCase();
+      for (let at = lower.indexOf(needle); at >= 0; at = lower.indexOf(needle, at + needle.length)) {
+        if (!isWord(src[at - 1])) return true;
+      }
+      return false;
+    };
+    const phrases = (cue.match(/'([^']+)'/g) || [])
+      .map((p) => p.slice(1, -1).trim())
+      .filter((p) => p.length >= 3)
+      .flatMap((p) => (occurs(p) ? [p] : p.split('/').map((s) => s.trim()).filter((s) => s.length >= 4)));
+    const ranges = [];
+    phrases.forEach((p) => {
+      const needle = p.toLowerCase();
+      let at = lower.indexOf(needle);
+      while (at >= 0) {
+        if (!isWord(src[at - 1])) {
+          let end = at + needle.length;
+          while (isWord(src[end])) end += 1;
+          ranges.push([at, end]);
+        }
+        at = lower.indexOf(needle, at + needle.length);
+      }
+    });
+    if (!ranges.length) return esc(src);
+    ranges.sort((a, b) => a[0] - b[0]);
+    const merged = [];
+    ranges.forEach((r) => {
+      const prev = merged[merged.length - 1];
+      if (prev && r[0] <= prev[1]) prev[1] = Math.max(prev[1], r[1]);
+      else merged.push(r.slice());
+    });
+    let out = '';
+    let pos = 0;
+    merged.forEach(([a, b]) => {
+      out += `${esc(src.slice(pos, a))}<mark class="kw">${esc(src.slice(a, b))}</mark>`;
+      pos = b;
+    });
+    return out + esc(src.slice(pos));
   }
 
   const Logic = {
@@ -268,6 +419,17 @@
     fmtDuration,
     fmtPct,
     stripVerdict,
+    justification,
+    KEYS,
+    attemptOf,
+    createReview,
+    addRetry,
+    reviewRows,
+    pendingIds,
+    conclusionActions,
+    reviewSummary,
+    filterReviewRows,
+    markKeywords,
   };
 
   // Permite testar a lógica no Node: require('./app.js')
@@ -321,6 +483,21 @@
   let view = { name: 'loading' };
   let timerId = null;
   let toastTimer = null;
+  let reviewMem = null; // cópia em memória, se o localStorage falhar
+
+  function isReview(rv) {
+    return !!rv && rv.v === 2 && !!rv.first && Array.isArray(rv.first.items) && Array.isArray(rv.retries);
+  }
+
+  function loadReview() {
+    const rv = store.get(KEYS.review, null);
+    return isReview(rv) ? rv : reviewMem;
+  }
+
+  function saveReview(rv) {
+    reviewMem = rv;
+    store.set(KEYS.review, rv);
+  }
 
   /* ---------- Inicialização ---------- */
 
@@ -351,7 +528,26 @@
       return;
     }
     if (saved) store.remove(KEYS.session);
+    // Recarregou na conclusão ou nas respostas completas: volta para a mesma tela.
+    const m = window.location.hash.match(/^#(resumo|respostas)\/(.+)$/);
+    const rv = m && reviewFor(decodeURIComponent(m[2]));
+    if (rv) {
+      if (m[1] === 'respostas') showAnswers(rv);
+      else showConclusion(rv);
+      return;
+    }
     showHome();
+  }
+
+  // Só a conclusão (#resumo/<id>) e as respostas (#respostas/<id>) têm endereço; as outras telas limpam o hash.
+  function setRoute(hash) {
+    const want = hash ? `#${hash}` : '';
+    if (window.location.hash === want) return;
+    try {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${want}`);
+    } catch (e) {
+      /* ignora */
+    }
   }
 
   async function loadBank() {
@@ -451,8 +647,14 @@
       case 'home': showHome(); break;
       case 'copy-md': copyMarkdown(); break;
       case 'download-md': downloadMarkdown(); break;
-      case 'retry-wrong': retryWrong(); break;
-      case 'open-attempt': openAttempt(el.dataset.id); break;
+      case 'retry': startRetry(); break;
+      case 'open-conclusion': openReview(el.dataset.id, 'conclusion'); break;
+      case 'open-answers': openReview(el.dataset.id, 'answers'); break;
+      case 'ans-filter': setAnswersFilter(el.dataset.value); break;
+      case 'ans-goto': answersGoto(el.dataset.qid); break;
+      case 'ans-prev': answersStep(-1); break;
+      case 'ans-next': answersStep(1); break;
+      case 'open-attempt': openReview(el.dataset.id, 'conclusion'); break;
       case 'clear-history': clearHistory(); break;
       case 'close-dialog': closeDialog(); break;
       default: break;
@@ -463,6 +665,10 @@
     const t = e.target;
     if (t.matches('input[data-opt]')) {
       onAnswerChange(t);
+      return;
+    }
+    if (t.id === 'ans-domain') {
+      setAnswersDomain(t.value);
       return;
     }
     if (t.id === 'p-domain') {
@@ -478,6 +684,10 @@
   }
 
   function onKey(e) {
+    if (view.name === 'answers') {
+      onAnswersKey(e);
+      return;
+    }
     if (view.name !== 'exam' || !session) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const t = e.target;
@@ -528,6 +738,7 @@
   function showHome() {
     stopTimer();
     clearTimerSlot();
+    setRoute('');
     view = { name: 'home' };
     const seen = store.get(KEYS.seen, {});
     const unseen = BANK.filter((q) => !seen[q.id]).length;
@@ -540,13 +751,19 @@
         <div class="hero">
           <p class="eyebrow">AWS Certified Cloud Practitioner · CLF-C02</p>
           <h1>Simulado em português</h1>
-          <p class="lead">Questões originais no estilo da prova, sem gabarito durante a tentativa. A meta aqui é ${CONFIG.passPct}%, para ter margem sobre o corte real (700 de 1000).</p>
-          <ul class="bank" aria-label="Banco de questões">
-            <li><strong>${BANK.length}</strong> questões</li>
+          <ul class="intro">
+            <li><strong>O que é:</strong> simulado da CLF-C02 com ${BANK.length} questões originais, separadas pelos domínios da prova.</li>
+            <li><strong>Como funciona:</strong> responda → refaça as que errou → veja as respostas completas, com o porquê de cada alternativa estar certa ou errada.</li>
+            <li><strong>Privacidade:</strong> sem cadastro; o progresso fica salvo só no seu navegador.</li>
+          </ul>
+          <p class="intro__note">Projeto independente, não afiliado à AWS.</p>
+          <ul class="bank" aria-label="Questões por domínio">
             ${DOMAIN_IDS.map((d) => `<li title="${esc(CONFIG.domains[d].name)}">D${d} <strong>${countByDomain(d)}</strong></li>`).join('')}
             <li><strong>${unseen}</strong> ainda não vistas</li>
           </ul>
         </div>
+
+        ${renderLastReview()}
 
         <div class="modes">
           <article class="card mode">
@@ -683,12 +900,39 @@
   }
 
   function clearHistory() {
-    const ok = window.confirm('Apagar o histórico de tentativas e a memória de questões já vistas neste navegador?');
+    const ok = window.confirm('Apagar o histórico de tentativas, a memória de questões já vistas e o último simulado guardado para revisão neste navegador?');
     if (!ok) return;
     store.remove(KEYS.history);
     store.remove(KEYS.seen);
+    store.remove(KEYS.review);
+    store.remove(KEYS.answersUi);
+    reviewMem = null;
     showHome();
     toast('Histórico apagado.');
+  }
+
+  // Tela inicial: atalho para o último simulado.
+  function renderLastReview() {
+    const rv = loadReview();
+    if (!rv) return '';
+    const rows = reviewRows(rv, BY_ID);
+    if (!rows.length) return '';
+    const sum = reviewSummary(rows);
+    const score = sum.retried
+      ? `Nota atualizada <strong>${fmtPct(sum.nowPct)}</strong> · 1ª tentativa ${fmtPct(sum.firstPct)}`
+      : `Nota <strong>${fmtPct(sum.firstPct)}</strong>`;
+    const pending = sum.wrong ? ` · ${sum.wrong} ${sum.wrong === 1 ? 'errada' : 'erradas'} para refazer` : '';
+    return `<section class="panel last-review">
+      <div class="panel__head">
+        <h2>Último simulado</h2>
+        <span class="muted small">${esc(rv.label)} · ${fmtDate(rv.first.submittedAt)}</span>
+      </div>
+      <p>${score}${pending}</p>
+      <div class="actions actions--start">
+        <button type="button" class="btn btn--primary" data-action="open-conclusion" data-id="${esc(rv.id)}">Abrir resumo</button>
+        <button type="button" class="btn" data-action="open-answers" data-id="${esc(rv.id)}">Ver respostas completas</button>
+      </div>
+    </section>`;
   }
 
   /* ---------- Criação de tentativas ---------- */
@@ -713,15 +957,23 @@
     beginSession(questions, { mode: 'practice', label, seconds: questions.length * CONFIG.secondsPerQuestion });
   }
 
-  function retryWrong() {
-    if (!view.session || !view.score) return;
-    const ids = view.score.rows.filter((r) => !r.correct).map((r) => r.q.id);
-    const questions = shuffle(ids.map((id) => BY_ID.get(id)).filter(Boolean));
-    if (!questions.length) return;
+  // Refaz as questões que continuam erradas. As respostas ficam separadas das da 1ª tentativa.
+  function startRetry() {
+    const rv = view.review;
+    if (!rv) return;
+    const questions = shuffle(pendingIds(rv, BY_ID).map((id) => BY_ID.get(id)));
+    if (!questions.length) {
+      showConclusion(rv);
+      return;
+    }
+    // Uma tentativa aberta pelo histórico passa a ser o "último simulado", para o refazer voltar a ela.
+    const stored = loadReview();
+    if (!stored || stored.id !== rv.id) saveReview(rv);
     beginSession(questions, {
       mode: 'retry',
-      label: 'Refazer erros',
+      label: 'Refazer erradas',
       seconds: questions.length * CONFIG.secondsPerQuestion,
+      reviewId: rv.id,
     });
   }
 
@@ -753,6 +1005,7 @@
       return;
     }
     view = { name: 'exam' };
+    setRoute('');
     renderTimerSlot();
     renderExam();
     startTimer();
@@ -1045,7 +1298,7 @@
     </div>`;
   }
 
-  /* ---------- Envio e resultado ---------- */
+  /* ---------- Envio ---------- */
 
   function finishSession(reason) {
     if (!session || session.submittedAt) return;
@@ -1053,7 +1306,6 @@
     const s = session;
     s.submittedAt = Math.min(Date.now(), s.endsAt);
     s.reason = reason;
-    const sc = scoreSession(s, BY_ID);
 
     const seen = store.get(KEYS.seen, {});
     s.items.forEach((it) => {
@@ -1061,14 +1313,25 @@
     });
     store.set(KEYS.seen, seen);
 
-    const hist = store.get(KEYS.history, []);
-    hist.unshift(makeHistoryEntry(s, sc));
-    saveHistory(hist);
-
     store.remove(KEYS.session);
     session = null;
     clearTimerSlot();
-    showResult(s, { fresh: true });
+    const opts = { timeoutMsg: reason === 'timeout' ? 'O tempo acabou e as respostas foram enviadas automaticamente.' : '' };
+
+    // Refazer: entra na revisão de onde saiu (a 1ª tentativa não muda) e volta à conclusão com a nota atualizada.
+    const updated = addRetry(loadReview(), s);
+    if (updated) {
+      saveReview(updated);
+      showConclusion(updated, opts);
+      return;
+    }
+    // Tentativa nova: entra no histórico e vira o "último simulado".
+    const hist = store.get(KEYS.history, []);
+    hist.unshift(makeHistoryEntry(s, scoreSession(s, BY_ID)));
+    saveHistory(hist);
+    const rv = createReview(s);
+    saveReview(rv);
+    showConclusion(rv, opts);
   }
 
   function makeHistoryEntry(s, sc) {
@@ -1122,74 +1385,40 @@
     }
   }
 
-  function openAttempt(id) {
+  // A revisão de um id: o último simulado (com os refazeres) ou uma tentativa do histórico.
+  function reviewFor(id) {
+    const stored = loadReview();
+    if (stored && stored.id === id) return stored;
     const h = store.get(KEYS.history, []).find((x) => x.id === id);
-    if (!h || !h.detail) {
+    if (!h || !h.detail || !h.detail.items.some((it) => BY_ID.has(it.id))) return null;
+    const d = h.detail;
+    return {
+      v: 2,
+      id: h.id,
+      label: d.label || h.label,
+      mode: d.mode || h.mode,
+      first: {
+        startedAt: d.startedAt,
+        endsAt: d.endsAt,
+        durationSec: d.durationSec,
+        submittedAt: d.submittedAt,
+        reason: d.reason,
+        items: d.items,
+        answers: d.answers || {},
+      },
+      retries: [],
+    };
+  }
+
+  // Sem id: a revisão da tela atual (conclusão ↔ respostas).
+  function openReview(id, screen) {
+    const rv = id ? reviewFor(id) : view.review;
+    if (!rv) {
       toast('Os detalhes desta tentativa não estão mais disponíveis.');
       return;
     }
-    if (!h.detail.items.some((it) => BY_ID.has(it.id))) {
-      toast('As questões desta tentativa não existem mais no banco.');
-      return;
-    }
-    showResult(Object.assign({}, h.detail), { fresh: false });
-  }
-
-  function showResult(s, opts) {
-    const sc = scoreSession(s, BY_ID);
-    view = { name: 'result', session: s, score: sc };
-    const wrongRows = sc.rows.filter((r) => !r.correct);
-    const timeout = opts && opts.fresh && s.reason === 'timeout';
-
-    $app.innerHTML = `
-      <section class="result">
-        ${timeout ? '<div class="banner banner--warn" role="alert">O tempo acabou e a tentativa foi enviada automaticamente.</div>' : ''}
-        <div class="result-hero ${sc.passed ? 'is-pass' : 'is-fail'}">
-          <div class="result-hero__score">
-            <span class="big">${fmtPct(sc.pct)}</span>
-            <span class="muted small">meta: ${CONFIG.passPct}%</span>
-          </div>
-          <div class="result-hero__info">
-            <span class="badge ${sc.passed ? 'badge--ok' : 'badge--bad'}">${sc.passed ? 'Aprovado' : 'Reprovado'}</span>
-            <h1>${esc(s.label)}</h1>
-            <p class="muted">${fmtDate(s.submittedAt)} · ${sc.total} questões</p>
-          </div>
-        </div>
-
-        <div class="stat-grid">
-          ${statTile('Acertos', sc.correct, `de ${sc.total} questões`)}
-          ${statTile('Erros', sc.wrong, sc.unanswered ? `inclui ${sc.unanswered} sem resposta` : 'todas respondidas')}
-          ${statTile('Tempo usado', fmtDuration(sc.usedSec), `de ${fmtDuration(s.durationSec)}`)}
-          ${statTile('Média por questão', fmtDuration(sc.avgSec), 'ritmo da prova: 1min23')}
-        </div>
-
-        <div class="two-col">
-          <section class="panel">
-            <h2>Desempenho por domínio</h2>
-            <p class="muted small">Do pior para o melhor</p>
-            ${bars(sc.byDomain)}
-          </section>
-          <section class="panel">
-            <h2>Desempenho por tópico</h2>
-            <p class="muted small">Do pior para o melhor</p>
-            ${bars(sc.byTopic)}
-          </section>
-        </div>
-
-        <section class="panel">
-          <div class="panel__head">
-            <h2>Questões erradas (${wrongRows.length})</h2>
-            ${wrongRows.length ? `<button type="button" class="btn btn--sm" data-action="copy-md">${ICONS.copy}<span>Copiar erros em Markdown</span></button>` : ''}
-          </div>
-          ${wrongRows.length ? wrongRows.map(renderWrongCard).join('') : '<p class="muted">Nenhum erro nesta tentativa.</p>'}
-        </section>
-
-        <div class="actions">
-          ${wrongRows.length ? '<button type="button" class="btn" data-action="retry-wrong">Refazer só os erros</button>' : ''}
-          <button type="button" class="btn btn--primary" data-action="home">Voltar ao início</button>
-        </div>
-      </section>`;
-    window.scrollTo(0, 0);
+    if (screen === 'answers') showAnswers(rv);
+    else showConclusion(rv);
   }
 
   function bars(groups) {
@@ -1207,46 +1436,310 @@
       .join('')}</ul>`;
   }
 
-  function renderWrongCard(r) {
-    const q = r.q;
-    const opts = r.item.order
+  function whyHtml(o) {
+    const t = justification(o);
+    return `<p class="ropt__why${t === PENDING_TEXT ? ' is-pending' : ''}">${esc(t)}</p>`;
+  }
+
+  /* ---------- Conclusão ---------- */
+
+  const tone = (pct) => (pct >= CONFIG.passPct ? 'ok' : pct >= 70 ? 'mid' : 'bad');
+
+  // A 1ª tentativa no formato de sessão: reaproveita placar, barras e o Markdown dos erros.
+  function firstAsSession(rv) {
+    return Object.assign({ mode: rv.mode, label: rv.label, marked: {} }, rv.first);
+  }
+
+  function showConclusion(rv, opts) {
+    stopTimer();
+    clearTimerSlot();
+    setRoute(`resumo/${encodeURIComponent(rv.id)}`);
+    const rows = reviewRows(rv, BY_ID);
+    const sum = reviewSummary(rows);
+    const act = conclusionActions(rv, BY_ID);
+    const first = firstAsSession(rv);
+    const sc = scoreSession(first, BY_ID);
+    view = { name: 'conclusion', review: rv, session: first, score: sc };
+    const passed = sum.firstPct >= CONFIG.passPct;
+    const pct = sum.retried ? sum.nowPct : sum.firstPct;
+    const blanks = rows.filter((r) => !r.first.length).length;
+    const msg = opts && opts.timeoutMsg;
+    const retryLabel = act.retry === 1 ? 'Refazer a errada' : `Refazer as ${act.retry} erradas`;
+    const scoreNote = sum.retried
+      ? `${sum.ok + sum.fixed}/${sum.total} · 1ª tentativa ${fmtPct(sum.firstPct)}`
+      : `${sum.ok}/${sum.total} · meta ${CONFIG.passPct}%`;
+
+    $app.innerHTML = `
+      <section class="result conclusion">
+        ${msg ? `<div class="banner banner--warn" role="alert">${esc(msg)}</div>` : ''}
+        <div class="result-hero ${passed ? 'is-pass' : 'is-fail'}">
+          <div class="result-hero__score">
+            <span class="score-pair__label">${sum.retried ? 'Nota atualizada' : 'Nota'}</span>
+            <span class="big tone-${tone(pct)}">${fmtPct(pct)}</span>
+            <span class="muted small">${scoreNote}</span>
+          </div>
+          <div class="result-hero__info">
+            <span class="badge ${passed ? 'badge--ok' : 'badge--bad'}">${passed ? '✓ Aprovado' : '✗ Reprovado'}${sum.retried ? ' na 1ª tentativa' : ''}</span>
+            <h1>${esc(rv.label)}</h1>
+            <p class="muted">${fmtDate(rv.first.submittedAt)} · ${sum.total} questões</p>
+          </div>
+        </div>
+
+        <div class="conclusion__actions">
+          ${act.retry ? `<button type="button" class="btn btn--primary" data-action="retry">${retryLabel}</button>` : ''}
+          <button type="button" class="btn${act.retry ? '' : ' btn--primary'}" data-action="open-answers">Ver respostas completas</button>
+        </div>
+        ${!act.retry && sum.fixed ? '<p class="muted small conclusion__note">Você corrigiu todas as que tinha errado.</p>' : ''}
+
+        <div class="stat-grid">
+          ${statTile('Certas de primeira', sum.ok, `de ${sum.total} questões`)}
+          ${sum.retried ? statTile('Corrigidas no refazer', sum.fixed, `de ${sum.fixed + sum.wrong} erradas na 1ª tentativa`) : ''}
+          ${statTile('Erradas', sum.wrong, blanks && !sum.retried ? `inclui ${blanks} em branco` : 'em branco conta como erro')}
+          ${statTile('Tempo da 1ª tentativa', fmtDuration(sc.usedSec), `média de ${fmtDuration(sc.avgSec)} por questão`)}
+        </div>
+
+        <div class="two-col">
+          <section class="panel">
+            <h2>Desempenho por domínio</h2>
+            <p class="muted small">1ª tentativa, do pior para o melhor</p>
+            ${bars(sc.byDomain)}
+          </section>
+          <section class="panel">
+            <h2>Desempenho por tópico</h2>
+            <p class="muted small">1ª tentativa, do pior para o melhor</p>
+            ${bars(sc.byTopic)}
+          </section>
+        </div>
+
+        <div class="actions">
+          ${sum.fixed + sum.wrong ? `<button type="button" class="btn btn--ghost" data-action="copy-md">${ICONS.copy}<span>Copiar erros em Markdown</span></button>` : ''}
+          <button type="button" class="btn" data-action="home">Voltar ao início</button>
+        </div>
+      </section>`;
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- Respostas completas ---------- */
+
+  // Status sempre com ícone e texto, nunca só pela cor.
+  const STATUS = {
+    ok: { icon: '✓', label: 'Certa' },
+    fixed: { icon: '↻', label: 'Corrigida no refazer' },
+    wrong: { icon: '✗', label: 'Errada' },
+  };
+
+  const FILTER_TABS = [
+    { value: 'all', label: 'Todas' },
+    { value: 'wrong', label: 'Erradas' },
+    { value: 'right', label: 'Certas' },
+  ];
+
+  function showAnswers(rv) {
+    const rows = reviewRows(rv, BY_ID);
+    if (!rows.length) {
+      toast('As questões desta tentativa não existem mais no banco.');
+      showHome();
+      return;
+    }
+    const saved = store.get(KEYS.answersUi, null);
+    const ui = saved && saved.id === rv.id ? saved : { filter: 'all', domain: 'all', qid: null };
+    view = { name: 'answers', review: rv, rows, filter: ui.filter, domain: String(ui.domain), qid: ui.qid, mapOpen: null };
+    stopTimer();
+    clearTimerSlot();
+    setRoute(`respostas/${encodeURIComponent(rv.id)}`);
+    renderAnswers();
+    window.scrollTo(0, 0);
+  }
+
+  function answersList() {
+    return filterReviewRows(view.rows, view.filter, view.domain);
+  }
+
+  // Re-desenha e guarda filtro + questão atual (recarregar volta ao mesmo ponto).
+  function updateAnswers() {
+    renderAnswers();
+    store.set(KEYS.answersUi, { id: view.review.id, filter: view.filter, domain: view.domain, qid: view.qid });
+  }
+
+  function setAnswersFilter(value) {
+    if (view.name !== 'answers') return;
+    view.filter = FILTER_TABS.some((t) => t.value === value) ? value : 'all';
+    updateAnswers();
+  }
+
+  function setAnswersDomain(value) {
+    if (view.name !== 'answers') return;
+    view.domain = value;
+    updateAnswers();
+  }
+
+  function answersGoto(qid) {
+    if (view.name !== 'answers') return;
+    view.qid = qid;
+    view.mapOpen = true;
+    updateAnswers();
+    window.scrollTo(0, 0);
+  }
+
+  function answersStep(delta) {
+    if (view.name !== 'answers') return;
+    const list = answersList();
+    const j = list.findIndex((r) => r.q.id === view.qid) + delta;
+    if (j < 0 || j >= list.length) return;
+    view.qid = list[j].q.id;
+    updateAnswers();
+    window.scrollTo(0, 0);
+  }
+
+  function onAnswersKey(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'select' || tag === 'input' || tag === 'textarea') return;
+    if (document.getElementById('dlg').open) return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      answersStep(1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      answersStep(-1);
+    }
+  }
+
+  function renderAnswers() {
+    const v = view;
+    const rv = v.review;
+    const openNow = $app.querySelector('.rv-mapwrap');
+    if (openNow && v.mapOpen === null) v.mapOpen = openNow.open;
+    const domains = DOMAIN_IDS.filter((d) => v.rows.some((r) => r.q.domain === d));
+    if (!(v.domain === 'all' || domains.includes(Number(v.domain)))) v.domain = 'all';
+    const list = answersList();
+    let pos = list.findIndex((r) => r.q.id === v.qid);
+    if (pos < 0 && list.length) {
+      pos = 0;
+      v.qid = list[0].q.id;
+    }
+    const row = pos >= 0 ? list[pos] : null;
+    const sum = reviewSummary(v.rows);
+
+    const tabs = FILTER_TABS.map((t) => {
+      const n = filterReviewRows(v.rows, t.value, v.domain).length;
+      const on = v.filter === t.value;
+      return `<button type="button" class="rv-tab${on ? ' is-on' : ''}" data-action="ans-filter" data-value="${t.value}" aria-pressed="${on}">${esc(t.label)} <span class="rv-tab__n">${n}</span></button>`;
+    }).join('');
+    const domainSelect = domains.length > 1
+      ? `<label class="rv-domain"><span class="sr-only">Domínio</span>
+          <select id="ans-domain">
+            <option value="all"${v.domain === 'all' ? ' selected' : ''}>Todos os domínios</option>
+            ${domains.map((d) => `<option value="${d}"${v.domain === String(d) ? ' selected' : ''}>D${d} · ${esc(CONFIG.domains[d].name)}</option>`).join('')}
+          </select>
+        </label>`
+      : '';
+    const score = sum.retried ? `nota ${fmtPct(sum.nowPct)} (1ª tentativa ${fmtPct(sum.firstPct)})` : `nota ${fmtPct(sum.firstPct)}`;
+
+    $app.innerHTML = `
+      <section class="fullreview">
+        <div class="rv-head">
+          <button type="button" class="btn btn--ghost btn--sm" data-action="open-conclusion">${ICONS.left}<span>Resumo</span></button>
+          <div class="rv-head__title">
+            <h1>Respostas completas</h1>
+            <p class="muted small">${esc(rv.label)} · ${fmtDate(rv.first.submittedAt)} · ${score}</p>
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm" data-action="home">Início</button>
+        </div>
+        <div class="rv-filters">
+          <div class="rv-tabs" role="group" aria-label="Filtrar questões">${tabs}</div>
+          ${domainSelect}
+        </div>
+        ${row
+          ? `<div class="exam">
+              <div class="exam__main">${answerHtml(row, pos, list.length)}</div>
+              <aside class="exam__side" aria-label="Mapa das questões">${answersMapHtml(list, row, sum)}</aside>
+            </div>`
+          : `<section class="panel">
+              <p class="muted">Nenhuma questão neste filtro.</p>
+              <button type="button" class="btn btn--sm" data-action="ans-filter" data-value="all">Mostrar todas</button>
+            </section>`}
+      </section>`;
+    v.mapOpen = null;
+  }
+
+  function answerHtml(row, pos, n) {
+    const q = row.q;
+    const st = STATUS[row.status];
+    // Só mostra o que a pessoa marcou quando a resposta foi diferente da correta.
+    const firstWrong = !sameAnswer(q.correct, row.first);
+    const lastWrong = !!row.last && !sameAnswer(q.correct, row.last);
+    const options = row.item.order
       .map((key, i) => {
         const o = optionOf(q, key);
-        const isRight = q.correct.includes(key);
-        const picked = r.ans.includes(key);
-        const cls = isRight ? ' is-correct' : picked ? ' is-wrong' : '';
-        let tag = '';
-        if (isRight && picked) tag = 'Correta · sua escolha';
-        else if (isRight) tag = 'Correta';
-        else if (picked) tag = 'Sua escolha';
+        const right = q.correct.includes(key);
+        const p1 = firstWrong && row.first.includes(key);
+        const p2 = lastWrong && row.last.includes(key);
+        const cls = right ? ' is-correct' : p1 || p2 ? ' is-wrong' : '';
+        const icon = right ? '✓' : p1 || p2 ? '✗' : '';
+        const tags = [right ? 'Correta' : '', p1 ? 'Você marcou' : '', p2 ? 'Você marcou no refazer' : ''].filter(Boolean);
         return `<li class="ropt${cls}">
           <div class="ropt__head">
+            <span class="ropt__mark" aria-hidden="true">${icon}</span>
             <span class="option__letter">${LETTERS[i]}.</span>
             <span class="ropt__text">${esc(o.text)}</span>
-            ${tag ? `<span class="ropt__tag">${tag}</span>` : ''}
+            ${tags.map((t) => `<span class="ropt__tag">${t}</span>`).join('')}
           </div>
-          <p class="ropt__why">${esc(stripVerdict(o.explanation))}</p>
+          ${whyHtml(o)}
         </li>`;
       })
       .join('');
-    const fmtKeys = (keys) => keys.map((k) => `${letterOf(r.item, k)}) ${optionOf(q, k).text}`).join(' | ');
-    const yours = r.answered ? fmtKeys(r.ans.slice().sort((a, b) => r.item.order.indexOf(a) - r.item.order.indexOf(b))) : 'Sem resposta';
-    const right = fmtKeys(q.correct.slice().sort((a, b) => r.item.order.indexOf(a) - r.item.order.indexOf(b)));
-    return `<article class="wrong">
-      <header class="wrong__head">
-        <span class="wrong__n">Questão ${r.n}</span>
+    const notes = [];
+    if (!row.first.length) notes.push('Você deixou em branco.');
+    if (row.last && !row.last.length) notes.push('No refazer, também ficou em branco.');
+    const filtered = view.filter !== 'all' || view.domain !== 'all';
+    return `
+      <div class="qhead">
+        <span class="qhead__count">Questão <strong>${row.n}</strong> de ${view.rows.length}</span>
+        <span class="rv-status rv-status--${row.status}"><span aria-hidden="true">${st.icon}</span>&nbsp;${st.label}</span>
+      </div>
+      <div class="rv-meta">
         <span class="chip">D${q.domain} · ${esc(q.topic)}</span>
-        ${q.type === 'multiple' ? '<span class="chip">Seleção múltipla</span>' : ''}
-      </header>
-      <p class="wrong__q">${esc(q.question)}</p>
-      <dl class="wrong__answers">
-        <div><dt>Sua resposta</dt><dd class="bad">${esc(yours)}</dd></div>
-        <div><dt>Resposta correta</dt><dd class="ok">${esc(right)}</dd></div>
-      </dl>
-      <ol class="ropts">${opts}</ol>
-      <div class="trigger"><strong>Como reconhecer na prova:</strong> ${esc(q.trigger)}</div>
+        ${q.type === 'multiple' ? '<span class="chip">Escolha DUAS</span>' : ''}
+        ${filtered ? `<span class="muted small">${pos + 1} de ${n} no filtro</span>` : ''}
+      </div>
+      <p class="qtext">${markKeywords(q.question, q.trigger)}</p>
+      ${notes.map((t) => `<p class="ans-note">${t}</p>`).join('')}
+      <ol class="ropts">${options}</ol>
+      ${q.trigger ? `<p class="trigger"><strong>Como reconhecer na prova:</strong> ${esc(q.trigger)}</p>` : ''}
       <p class="ref"><strong>Referência:</strong> ${linkify(q.reference)}</p>
-    </article>`;
+      <nav class="qnav" aria-label="Navegação entre as questões">
+        <button type="button" class="btn" data-action="ans-prev"${pos === 0 ? ' disabled' : ''}>${ICONS.left}<span>Anterior</span></button>
+        <button type="button" class="btn btn--primary" data-action="ans-next"${pos === n - 1 ? ' disabled' : ''}><span>Próxima</span>${ICONS.right}</button>
+      </nav>
+      <p class="shortcuts">Atalhos: <kbd>←</kbd> <kbd>→</kbd> navegar</p>`;
+  }
+
+  function answersMapHtml(list, current, sum) {
+    const open = view.mapOpen !== null ? view.mapOpen : window.matchMedia('(min-width: 960px)').matches;
+    const cells = list
+      .map((r) => {
+        const cur = r === current;
+        const st = STATUS[r.status];
+        return `<button type="button" class="qcell rv-${r.status}${cur ? ' is-current' : ''}" data-action="ans-goto" data-qid="${esc(r.q.id)}" aria-label="Questão ${r.n}: ${st.label}"${cur ? ' aria-current="true"' : ''}>${r.n}<span class="rv-cell__icon" aria-hidden="true">${st.icon}</span></button>`;
+      })
+      .join('');
+    const legend = ['ok', 'fixed', 'wrong']
+      .filter((k) => k !== 'fixed' || sum.retried)
+      .map((k) => `<li><span class="rv-legend rv-${k}" aria-hidden="true">${STATUS[k].icon}</span>${STATUS[k].label}</li>`)
+      .join('');
+    return `<div class="side-card">
+      <div class="side-stats rv-side-stats">
+        <span><strong>${sum.ok}</strong> ${sum.ok === 1 ? 'certa' : 'certas'}</span>
+        ${sum.retried ? `<span><strong>${sum.fixed}</strong> ${sum.fixed === 1 ? 'corrigida' : 'corrigidas'}</span>` : ''}
+        <span><strong>${sum.wrong}</strong> ${sum.wrong === 1 ? 'errada' : 'erradas'}</span>
+      </div>
+      <details class="qgrid-wrap rv-mapwrap"${open ? ' open' : ''}>
+        <summary>Mapa das questões${list.length !== view.rows.length ? ` (${list.length} no filtro)` : ''}</summary>
+        <div class="qgrid rv-map">${cells}</div>
+        <ul class="legend">${legend}</ul>
+      </details>
+    </div>`;
   }
 
   /* ---------- Copiar / baixar Markdown ---------- */

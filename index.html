@@ -13,7 +13,7 @@
     // Aplica o tema salvo antes de desenhar a página (evita "piscar").
     (function () {
       try {
-        var t = localStorage.getItem('clf02.theme');
+        var t = localStorage.getItem('simulado_aws_practitioner.theme');
         if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
       } catch (e) { /* sem localStorage: segue o tema do sistema */ }
     })();
@@ -41,6 +41,9 @@
   <main id="app" class="container" tabindex="-1">
     <p class="muted">Carregando questões…</p>
   </main>
+  <footer class="sitefoot">
+    <p>Independent project, not affiliated with or endorsed by AWS. All questions are original.</p>
+  </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <dialog id="dlg" class="dialog" aria-labelledby="dlg-title"></dialog>

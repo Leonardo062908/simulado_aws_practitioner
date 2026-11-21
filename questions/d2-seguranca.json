@@ -120,10 +120,10 @@
     "type": "single",
     "question": "Qual opção é um exemplo de controle compartilhado entre a AWS e o cliente?",
     "options": [
-      { "key": "A", "text": "Descarte de mídias de armazenamento", "explanation": "Incorreta. É feito apenas pela AWS." },
-      { "key": "B", "text": "Controles físicos e ambientais", "explanation": "Incorreta. São herdados da AWS pelo cliente." },
+      { "key": "A", "text": "Descarte de mídias de armazenamento", "explanation": "Incorreta. O descarte seguro de mídias de armazenamento é feito só pela AWS (segurança da nuvem); a pergunta pede um controle em que cada lado cuida da sua camada." },
+      { "key": "B", "text": "Controles físicos e ambientais", "explanation": "Incorreta. Controles físicos e ambientais são herdados: a AWS os mantém integralmente e o cliente os herda, sem parte nenhuma dele; não são compartilhados." },
       { "key": "C", "text": "Gerenciamento de configuração", "explanation": "Correta. A AWS configura os dispositivos da infraestrutura dela e o cliente configura seus sistemas operacionais convidados, bancos de dados e aplicações." },
-      { "key": "D", "text": "Segurança de zona (rotear dados em ambientes de segurança específicos)", "explanation": "Incorreta. É um controle específico do cliente." }
+      { "key": "D", "text": "Segurança de zona (rotear dados em ambientes de segurança específicos)", "explanation": "Incorreta. Segurança de zona é um controle específico do cliente: só ele decide como rotear e segmentar os próprios dados, sem parte da AWS." }
     ],
     "correct": ["C"],
     "trigger": "'controle compartilhado' → patches, configuração, conscientização e treinamento (cada lado cuida da sua camada)",
@@ -153,10 +153,10 @@
     "question": "Quais itens são exemplos de controles compartilhados no modelo de responsabilidade compartilhada? (Escolha DUAS.)",
     "options": [
       { "key": "A", "text": "Gerenciamento de patches", "explanation": "Correta. A AWS corrige a infraestrutura; o cliente corrige o sistema operacional convidado e as aplicações." },
-      { "key": "B", "text": "Controles físicos e ambientais", "explanation": "Incorreta. São controles herdados da AWS." },
+      { "key": "B", "text": "Controles físicos e ambientais", "explanation": "Incorreta. Controles físicos e ambientais são herdados: a AWS os mantém integralmente, e o cliente não tem parte neles." },
       { "key": "C", "text": "Conscientização e treinamento", "explanation": "Correta. A AWS treina os funcionários dela e o cliente treina os seus." },
-      { "key": "D", "text": "Segurança de zona", "explanation": "Incorreta. É um controle específico do cliente." },
-      { "key": "E", "text": "Destruição de discos ao fim da vida útil", "explanation": "Incorreta. É feita pela AWS." }
+      { "key": "D", "text": "Segurança de zona", "explanation": "Incorreta. Segurança de zona é específica do cliente: ele decide como rotear e segmentar os dados; não há parte da AWS nesse controle." },
+      { "key": "E", "text": "Destruição de discos ao fim da vida útil", "explanation": "Incorreta. A destruição de discos ao fim da vida útil é feita só pela AWS; o cliente não participa, então não é um controle compartilhado." }
     ],
     "correct": ["A", "C"],
     "trigger": "'controle compartilhado' → patches, configuração, conscientização e treinamento",
@@ -496,7 +496,7 @@
       { "key": "A", "text": "O relatório de credenciais do IAM", "explanation": "Correta. O relatório de credenciais lista todos os usuários da conta e o status das senhas, chaves de acesso e dispositivos MFA." },
       { "key": "B", "text": "AWS CloudTrail", "explanation": "Incorreta. O CloudTrail registra chamadas de API (quem fez o quê); não gera um inventário do status das credenciais." },
       { "key": "C", "text": "Amazon Inspector", "explanation": "Incorreta. O Inspector verifica vulnerabilidades de software em cargas de trabalho, não credenciais do IAM." },
-      { "key": "D", "text": "AWS Cost Explorer", "explanation": "Incorreta. O Cost Explorer analisa custos e uso." }
+      { "key": "D", "text": "AWS Cost Explorer", "explanation": "Incorreta. Não é ele, pois o Cost Explorer analisa custos e uso da conta; não lista os usuários nem o status de senhas, chaves de acesso e MFA." }
     ],
     "correct": ["A"],
     "trigger": "'status das credenciais de todos os usuários' (MFA, rotação de chaves) → relatório de credenciais do IAM",
@@ -509,10 +509,10 @@
     "type": "single",
     "question": "Uma empresa precisa criar e gerenciar chaves de criptografia para proteger dados em repouso no Amazon S3 e no Amazon EBS, com integração nativa a esses serviços, controle de uso pelo IAM e rotação automática das chaves. Qual serviço atende a esse requisito?",
     "options": [
-      { "key": "A", "text": "AWS CloudHSM", "explanation": "Incorreta. O CloudHSM fornece HSMs dedicados de locatário único, em que o próprio cliente gerencia as chaves; é indicado quando há exigência de hardware dedicado e controle exclusivo." },
+      { "key": "A", "text": "AWS CloudHSM", "explanation": "Incorreta. Não é ele, pois o CloudHSM fornece HSMs dedicados de locatário único em que o próprio cliente gerencia as chaves, para quando se exige hardware dedicado e controle exclusivo; a integração nativa com S3 e EBS, o controle pelo IAM e a rotação automática pedidos aqui são do KMS." },
       { "key": "B", "text": "AWS Key Management Service (AWS KMS)", "explanation": "Correta. O KMS cria e controla chaves de criptografia, integra-se nativamente a muitos serviços (S3, EBS, RDS etc.), usa o IAM para controlar o uso e pode rotacionar chaves automaticamente." },
-      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. O ACM provisiona certificados SSL/TLS para criptografia em trânsito." },
-      { "key": "D", "text": "AWS Secrets Manager", "explanation": "Incorreta. O Secrets Manager armazena e rotaciona segredos, como senhas de banco de dados e chaves de API." }
+      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. Não é ele, pois o ACM provisiona certificados SSL/TLS para criptografia em trânsito; o enunciado pede chaves para dados em repouso no S3 e no EBS." },
+      { "key": "D", "text": "AWS Secrets Manager", "explanation": "Incorreta. Não é ele, pois o Secrets Manager armazena e rotaciona segredos de aplicações (senhas de banco, chaves de API); não cria as chaves de criptografia integradas ao S3 e ao EBS." }
     ],
     "correct": ["B"],
     "trigger": "'chaves de criptografia' + 'em repouso' + 'integração nativa com serviços' → AWS KMS",
@@ -544,7 +544,7 @@
       { "key": "A", "text": "AWS Certificate Manager (ACM)", "explanation": "Correta. O ACM provisiona, gerencia e implanta certificados SSL/TLS em serviços integrados, como ELB, CloudFront e API Gateway, e renova automaticamente os certificados que emite." },
       { "key": "B", "text": "AWS KMS", "explanation": "Incorreta. O KMS gerencia chaves de criptografia (principalmente para dados em repouso); não emite certificados TLS públicos." },
       { "key": "C", "text": "AWS CloudHSM", "explanation": "Incorreta. Fornece HSMs dedicados; não emite nem renova certificados públicos automaticamente." },
-      { "key": "D", "text": "AWS Secrets Manager", "explanation": "Incorreta. Armazena e rotaciona segredos de aplicações." }
+      { "key": "D", "text": "AWS Secrets Manager", "explanation": "Incorreta. Não é ele, pois o Secrets Manager armazena e rotaciona segredos de aplicações (senhas, chaves de API); não emite nem instala certificados TLS para HTTPS." }
     ],
     "correct": ["A"],
     "trigger": "'HTTPS' / 'certificado SSL/TLS' / 'em trânsito' → ACM",
@@ -559,7 +559,7 @@
     "options": [
       { "key": "A", "text": "AWS KMS", "explanation": "Incorreta. O KMS gerencia chaves de criptografia; não armazena nem rotaciona senhas de banco de dados." },
       { "key": "B", "text": "AWS Secrets Manager", "explanation": "Correta. O Secrets Manager armazena segredos criptografados e pode rotacioná-los automaticamente (por exemplo, credenciais do Amazon RDS); a aplicação busca o valor atual pela API." },
-      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. O ACM gerencia certificados SSL/TLS." },
+      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. Não é ele, pois o ACM gerencia certificados SSL/TLS para HTTPS; não guarda nem rotaciona a senha do banco de dados." },
       { "key": "D", "text": "AWS Systems Manager Parameter Store", "explanation": "Incorreta. O Parameter Store pode guardar valores criptografados, mas não tem a rotação automática nativa de segredos que o Secrets Manager oferece." }
     ],
     "correct": ["B"],
@@ -574,9 +574,9 @@
     "question": "Quais recursos ajudam a proteger dados EM TRÂNSITO? (Escolha DUAS.)",
     "options": [
       { "key": "A", "text": "Certificados TLS emitidos pelo AWS Certificate Manager", "explanation": "Correta. Certificados TLS permitem conexões HTTPS criptografadas entre os clientes e a aplicação." },
-      { "key": "B", "text": "Criptografia de volumes do Amazon EBS", "explanation": "Incorreta. Protege dados em repouso nos volumes." },
+      { "key": "B", "text": "Criptografia de volumes do Amazon EBS", "explanation": "Incorreta. A criptografia do EBS protege dados em repouso nos volumes; a pergunta pede proteção dos dados em trânsito." },
       { "key": "C", "text": "Uma conexão AWS Site-to-Site VPN", "explanation": "Correta. A Site-to-Site VPN cria túneis IPsec criptografados entre a rede local e a AWS." },
-      { "key": "D", "text": "Criptografia do lado do servidor do S3 com chaves gerenciadas pelo S3 (SSE-S3)", "explanation": "Incorreta. Protege objetos em repouso no S3." },
+      { "key": "D", "text": "Criptografia do lado do servidor do S3 com chaves gerenciadas pelo S3 (SSE-S3)", "explanation": "Incorreta. A SSE-S3 protege objetos em repouso no S3; não criptografa os dados enquanto trafegam." },
       { "key": "E", "text": "Amazon Macie", "explanation": "Incorreta. O Macie descobre e classifica dados sensíveis no S3; não criptografa tráfego." }
     ],
     "correct": ["A", "C"],
@@ -592,7 +592,7 @@
     "options": [
       { "key": "A", "text": "Não são criptografados até que o cliente habilite a criptografia em cada bucket", "explanation": "Incorreta. Desde janeiro de 2023, o S3 aplica criptografia do lado do servidor a todos os novos objetos por padrão." },
       { "key": "B", "text": "São criptografados no servidor com chaves gerenciadas pelo Amazon S3 (SSE-S3)", "explanation": "Correta. O S3 aplica SSE-S3 automaticamente a todo objeto novo, sem custo adicional; o cliente pode escolher outras opções, como SSE-KMS." },
-      { "key": "C", "text": "São criptografados com chaves de um HSM do AWS CloudHSM do cliente", "explanation": "Incorreta. Isso exigiria configuração específica do cliente; não é o padrão." },
+      { "key": "C", "text": "São criptografados com chaves de um HSM do AWS CloudHSM do cliente", "explanation": "Incorreta. Usar chaves de um HSM do CloudHSM exige configuração específica do cliente (por exemplo, um armazenamento de chaves personalizado no KMS); o padrão do S3 é a SSE-S3, sem nenhuma configuração." },
       { "key": "D", "text": "São criptografados apenas no lado do cliente, pelo SDK", "explanation": "Incorreta. A criptografia no lado do cliente é opcional e feita pelo próprio cliente antes do envio." }
     ],
     "correct": ["B"],
@@ -623,10 +623,10 @@
     "question": "Quais afirmações sobre o AWS Key Management Service (AWS KMS) estão corretas? (Escolha DUAS.)",
     "options": [
       { "key": "A", "text": "Integra-se nativamente a serviços como Amazon S3, Amazon EBS e Amazon RDS para criptografar dados em repouso", "explanation": "Correta. A integração nativa permite habilitar a criptografia com chaves do KMS com poucas configurações." },
-      { "key": "B", "text": "Fornece HSMs dedicados de locatário único sob controle exclusivo do cliente", "explanation": "Incorreta. Isso descreve o AWS CloudHSM." },
+      { "key": "B", "text": "Fornece HSMs dedicados de locatário único sob controle exclusivo do cliente", "explanation": "Incorreta. HSMs dedicados de locatário único, sob controle exclusivo do cliente, são do AWS CloudHSM; o KMS é um serviço gerenciado em que a AWS opera os HSMs." },
       { "key": "C", "text": "Pode rotacionar automaticamente as chaves gerenciadas pelo cliente, quando a rotação é habilitada", "explanation": "Correta. A rotação automática pode ser habilitada para chaves gerenciadas pelo cliente; as chaves gerenciadas pela AWS são rotacionadas pela própria AWS." },
-      { "key": "D", "text": "Emite certificados SSL/TLS públicos para sites", "explanation": "Incorreta. Isso é função do AWS Certificate Manager." },
-      { "key": "E", "text": "Armazena e rotaciona senhas de bancos de dados", "explanation": "Incorreta. Isso é função do AWS Secrets Manager." }
+      { "key": "D", "text": "Emite certificados SSL/TLS públicos para sites", "explanation": "Incorreta. Emitir certificados SSL/TLS públicos é função do AWS Certificate Manager; o KMS cria e controla chaves de criptografia." },
+      { "key": "E", "text": "Armazena e rotaciona senhas de bancos de dados", "explanation": "Incorreta. Armazenar e rotacionar senhas de bancos de dados é função do AWS Secrets Manager; o KMS gerencia as chaves que criptografam os dados (inclusive os segredos)." }
     ],
     "correct": ["A", "C"],
     "trigger": "'chaves gerenciadas + integração nativa + rotação' → KMS (HSM dedicado → CloudHSM; certificados → ACM; senhas → Secrets Manager)",
@@ -641,7 +641,7 @@
     "options": [
       { "key": "A", "text": "AWS Secrets Manager", "explanation": "Incorreta. Também guarda valores sensíveis, mas é cobrado por segredo e seu diferencial é a rotação automática, que não é exigida aqui." },
       { "key": "B", "text": "AWS Systems Manager Parameter Store", "explanation": "Correta. O Parameter Store armazena parâmetros de configuração em hierarquia, inclusive valores criptografados com o KMS (SecureString); os parâmetros padrão não têm cobrança adicional." },
-      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. Gerencia certificados SSL/TLS." },
+      { "key": "C", "text": "AWS Certificate Manager (ACM)", "explanation": "Incorreta. Não é ele, pois o ACM gerencia certificados SSL/TLS para HTTPS; não armazena parâmetros de configuração." },
       { "key": "D", "text": "AWS CloudHSM", "explanation": "Incorreta. Fornece HSMs dedicados para chaves criptográficas; não é um repositório de parâmetros de configuração." }
     ],
     "correct": ["B"],
@@ -704,7 +704,7 @@
     "question": "Uma empresa quer avaliar continuamente se todos os volumes do Amazon EBS estão criptografados e manter um histórico das alterações de configuração dos recursos ao longo do tempo. Qual serviço atende a esse requisito?",
     "options": [
       { "key": "A", "text": "AWS CloudTrail", "explanation": "Incorreta. Registra chamadas de API, mas não avalia continuamente a conformidade das configurações com regras." },
-      { "key": "B", "text": "Amazon Inspector", "explanation": "Incorreta. Procura vulnerabilidades de software e exposição de rede em cargas de trabalho." },
+      { "key": "B", "text": "Amazon Inspector", "explanation": "Incorreta. Não é ele, pois o Inspector procura vulnerabilidades de software e exposição de rede em cargas de trabalho; não avalia se os volumes EBS estão criptografados nem guarda o histórico de configuração." },
       { "key": "C", "text": "AWS Config", "explanation": "Correta. O Config registra a configuração dos recursos e o histórico de mudanças e avalia continuamente a conformidade com regras (por exemplo, volumes EBS criptografados)." },
       { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Faz verificações pré-definidas de boas práticas, mas não mantém o histórico de configuração de cada recurso nem avalia regras personalizadas." }
     ],
@@ -722,7 +722,7 @@
       { "key": "A", "text": "AWS Trusted Advisor", "explanation": "Correta. O Trusted Advisor inspeciona a conta e recomenda ações em categorias como otimização de custos, segurança, tolerância a falhas, desempenho, cotas de serviço e excelência operacional." },
       { "key": "B", "text": "AWS Compute Optimizer", "explanation": "Incorreta. O Compute Optimizer recomenda tamanhos de recursos de computação; não verifica security groups nem cotas de serviço." },
       { "key": "C", "text": "AWS Config", "explanation": "Incorreta. O Config avalia configurações contra regras definidas e mantém histórico; não é o painel de recomendações de boas práticas da AWS." },
-      { "key": "D", "text": "AWS Health Dashboard", "explanation": "Incorreta. Informa eventos da AWS que afetam os recursos da conta." }
+      { "key": "D", "text": "AWS Health Dashboard", "explanation": "Incorreta. Não é ele, pois o AWS Health Dashboard informa eventos da AWS (incidentes, manutenções) que afetam os recursos da conta; não recomenda ações sobre instâncias ociosas, portas abertas ou cotas." }
     ],
     "correct": ["A"],
     "trigger": "'recomendações de boas práticas' (custo, segurança, cotas, tolerância a falhas) → AWS Trusted Advisor",
@@ -737,7 +737,7 @@
     "options": [
       { "key": "A", "text": "Amazon CloudWatch", "explanation": "Incorreta. Mostra métricas e logs dos seus recursos, não eventos da AWS que os afetam." },
       { "key": "B", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda boas práticas; não notifica sobre incidentes e manutenções da AWS." },
-      { "key": "C", "text": "AWS CloudTrail", "explanation": "Incorreta. Registra chamadas de API feitas na conta." },
+      { "key": "C", "text": "AWS CloudTrail", "explanation": "Incorreta. Não é ele, pois o CloudTrail registra as chamadas de API feitas na conta (quem fez o quê); não informa problemas nem manutenções dos serviços da AWS." },
       { "key": "D", "text": "AWS Health Dashboard", "explanation": "Correta. O AWS Health Dashboard mostra eventos que afetam a sua conta e os seus recursos (problemas de serviço, manutenções programadas) com orientações, além do status geral dos serviços." }
     ],
     "correct": ["D"],
@@ -753,8 +753,8 @@
     "options": [
       { "key": "A", "text": "AWS Audit Manager", "explanation": "Incorreta. O Audit Manager coleta evidências do uso que a própria empresa faz da AWS; não fornece os relatórios de conformidade da AWS." },
       { "key": "B", "text": "AWS Artifact", "explanation": "Correta. O AWS Artifact oferece acesso sob demanda aos relatórios de segurança e conformidade da AWS (SOC, PCI, ISO) e a acordos como o BAA." },
-      { "key": "C", "text": "AWS Config", "explanation": "Incorreta. Avalia a configuração dos recursos da conta." },
-      { "key": "D", "text": "AWS Security Hub", "explanation": "Incorreta. Centraliza achados e verificações de segurança da conta do cliente." }
+      { "key": "C", "text": "AWS Config", "explanation": "Incorreta. Não é ele, pois o Config avalia a configuração dos recursos da conta do cliente; não fornece os relatórios SOC e ISO da AWS." },
+      { "key": "D", "text": "AWS Security Hub", "explanation": "Incorreta. Não é ele, pois o Security Hub centraliza achados e verificações de segurança da conta do cliente; os relatórios de conformidade da própria AWS ficam no AWS Artifact." }
     ],
     "correct": ["B"],
     "trigger": "'relatórios de conformidade da AWS' (SOC, ISO, PCI) → AWS Artifact",
@@ -784,9 +784,9 @@
     "question": "Quais afirmações sobre serviços de monitoramento e auditoria estão corretas? (Escolha DUAS.)",
     "options": [
       { "key": "A", "text": "O AWS CloudTrail registra chamadas de API e a atividade de usuários na conta", "explanation": "Correta. O CloudTrail responde quem fez o quê, quando e de onde." },
-      { "key": "B", "text": "O AWS Config fornece os relatórios SOC e ISO da AWS", "explanation": "Incorreta. Os relatórios de conformidade da AWS ficam no AWS Artifact." },
+      { "key": "B", "text": "O AWS Config fornece os relatórios SOC e ISO da AWS", "explanation": "Incorreta. O Config registra e avalia a configuração dos recursos da conta; os relatórios SOC e ISO da AWS ficam no AWS Artifact." },
       { "key": "C", "text": "O Amazon CloudWatch coleta métricas e logs e permite criar alarmes", "explanation": "Correta. O CloudWatch é o serviço de observabilidade de desempenho e operação: métricas, logs, painéis e alarmes." },
-      { "key": "D", "text": "O AWS Trusted Advisor registra quem alterou um security group", "explanation": "Incorreta. Quem fez cada alteração é registrado pelo CloudTrail." },
+      { "key": "D", "text": "O AWS Trusted Advisor registra quem alterou um security group", "explanation": "Incorreta. O Trusted Advisor recomenda boas práticas (custo, segurança, cotas); quem alterou um security group, e quando, é registrado pelo CloudTrail." },
       { "key": "E", "text": "O AWS Health Dashboard mede a utilização de CPU das instâncias", "explanation": "Incorreta. Métricas de utilização são do CloudWatch; o Health informa eventos da AWS." }
     ],
     "correct": ["A", "C"],
@@ -801,9 +801,9 @@
     "question": "Uma empresa de saúde dos Estados Unidos precisa revisar e aceitar o Business Associate Addendum (BAA) com a AWS para tratar dados protegidos pela HIPAA. Qual serviço permite isso?",
     "options": [
       { "key": "A", "text": "AWS Organizations", "explanation": "Incorreta. Gerencia várias contas e políticas; não é onde se aceitam acordos de conformidade." },
-      { "key": "B", "text": "AWS Audit Manager", "explanation": "Incorreta. Coleta evidências de auditoria do uso da AWS." },
+      { "key": "B", "text": "AWS Audit Manager", "explanation": "Incorreta. Não é ele, pois o Audit Manager coleta evidências de auditoria do uso que a empresa faz da AWS; não é onde se revisam e aceitam acordos como o BAA." },
       { "key": "C", "text": "AWS Artifact", "explanation": "Correta. Além dos relatórios, o AWS Artifact permite revisar, aceitar e gerenciar acordos com a AWS, como o BAA." },
-      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Recomenda boas práticas de custo, segurança e desempenho." }
+      { "key": "D", "text": "AWS Trusted Advisor", "explanation": "Incorreta. Não é ele, pois o Trusted Advisor recomenda boas práticas de custo, segurança e desempenho; não gerencia acordos com a AWS." }
     ],
     "correct": ["C"],
     "trigger": "'aceitar acordo com a AWS' (BAA, NDA) → AWS Artifact",
@@ -849,10 +849,10 @@
     "question": "Quais são categorias de verificação do AWS Trusted Advisor? (Escolha DUAS.)",
     "options": [
       { "key": "A", "text": "Otimização de custos", "explanation": "Correta. As categorias incluem otimização de custos, desempenho, segurança, tolerância a falhas, cotas de serviço e excelência operacional." },
-      { "key": "B", "text": "Gerenciamento de identidades de clientes de aplicativos", "explanation": "Incorreta. Login de clientes de aplicações é função do Amazon Cognito." },
+      { "key": "B", "text": "Gerenciamento de identidades de clientes de aplicativos", "explanation": "Incorreta. O Trusted Advisor não verifica identidades de clientes de aplicativos (isso é o Amazon Cognito); suas verificações cobrem custos, desempenho, segurança, tolerância a falhas, cotas e excelência operacional." },
       { "key": "C", "text": "Tolerância a falhas", "explanation": "Correta. Verifica, por exemplo, recursos sem redundância entre Zonas de Disponibilidade e a falta de backups." },
-      { "key": "D", "text": "Previsão de demanda de vendas", "explanation": "Incorreta. Não é uma categoria do Trusted Advisor." },
-      { "key": "E", "text": "Emissão de relatórios de conformidade da AWS", "explanation": "Incorreta. Relatórios de conformidade ficam no AWS Artifact." }
+      { "key": "D", "text": "Previsão de demanda de vendas", "explanation": "Incorreta. O Trusted Advisor verifica a conta AWS (custos, desempenho, segurança, tolerância a falhas, cotas e excelência operacional); previsão de vendas não faz parte disso." },
+      { "key": "E", "text": "Emissão de relatórios de conformidade da AWS", "explanation": "Incorreta. O Trusted Advisor não emite relatórios de conformidade; os relatórios da AWS (SOC, ISO, PCI) ficam no AWS Artifact." }
     ],
     "correct": ["A", "C"],
     "trigger": "'categorias do Trusted Advisor' → custos, desempenho, segurança, tolerância a falhas, cotas de serviço, excelência operacional",
@@ -867,8 +867,8 @@
     "options": [
       { "key": "A", "text": "Amazon Inspector", "explanation": "Incorreta. O Inspector procura vulnerabilidades de software e exposição de rede em cargas de trabalho, não comportamento malicioso em logs." },
       { "key": "B", "text": "Amazon GuardDuty", "explanation": "Correta. O GuardDuty é o serviço de detecção inteligente de ameaças que analisa fontes como CloudTrail, VPC Flow Logs e logs de DNS para encontrar atividades suspeitas." },
-      { "key": "C", "text": "Amazon Macie", "explanation": "Incorreta. O Macie descobre e protege dados sensíveis no S3." },
-      { "key": "D", "text": "AWS Shield", "explanation": "Incorreta. O Shield protege contra ataques DDoS." }
+      { "key": "C", "text": "Amazon Macie", "explanation": "Incorreta. Não é ele, pois o Macie descobre e classifica dados sensíveis no S3; não analisa CloudTrail, VPC Flow Logs e DNS em busca de atividade maliciosa." },
+      { "key": "D", "text": "AWS Shield", "explanation": "Incorreta. Não é ele, pois o Shield protege contra ataques DDoS; não analisa logs para detectar acessos suspeitos ou mineração de criptomoedas." }
     ],
     "correct": ["B"],
     "trigger": "'detecção de ameaças' + 'analisa CloudTrail, VPC Flow Logs, DNS' → Amazon GuardDuty",
@@ -884,7 +884,7 @@
       { "key": "A", "text": "Amazon Inspector", "explanation": "Correta. O Inspector faz o gerenciamento automatizado de vulnerabilidades, verificando continuamente EC2, imagens no ECR e funções Lambda." },
       { "key": "B", "text": "Amazon GuardDuty", "explanation": "Incorreta. O GuardDuty detecta comportamento malicioso a partir de logs; não faz varredura de vulnerabilidades de software." },
       { "key": "C", "text": "AWS Config", "explanation": "Incorreta. Avalia configurações de recursos contra regras; não procura CVEs em pacotes de software." },
-      { "key": "D", "text": "Amazon Detective", "explanation": "Incorreta. Ajuda a investigar a causa raiz de achados de segurança." }
+      { "key": "D", "text": "Amazon Detective", "explanation": "Incorreta. Não é ele, pois o Detective ajuda a investigar a causa raiz de achados de segurança; não procura CVEs em EC2, ECR e Lambda." }
     ],
     "correct": ["A"],
     "trigger": "'vulnerabilidades de software / CVEs' em EC2, ECR, Lambda → Amazon Inspector",
@@ -899,7 +899,7 @@
     "options": [
       { "key": "A", "text": "Amazon GuardDuty", "explanation": "Incorreta. Detecta ameaças a partir de logs; não classifica o conteúdo dos objetos." },
       { "key": "B", "text": "AWS Config", "explanation": "Incorreta. Avalia a configuração dos buckets, não o conteúdo dos objetos." },
-      { "key": "C", "text": "Amazon Inspector", "explanation": "Incorreta. Procura vulnerabilidades de software em cargas de trabalho." },
+      { "key": "C", "text": "Amazon Inspector", "explanation": "Incorreta. Não é ele, pois o Inspector procura vulnerabilidades de software em cargas de trabalho (EC2, ECR, Lambda); não examina o conteúdo dos objetos do S3." },
       { "key": "D", "text": "Amazon Macie", "explanation": "Correta. O Macie usa aprendizado de máquina e correspondência de padrões para descobrir e classificar dados sensíveis (como PII) no Amazon S3." }
     ],
     "correct": ["D"],
@@ -914,7 +914,7 @@
     "question": "Qual serviço protege automaticamente, sem custo adicional, todos os clientes da AWS contra os ataques DDoS mais comuns nas camadas de rede e de transporte?",
     "options": [
       { "key": "A", "text": "AWS Shield Standard", "explanation": "Correta. O Shield Standard é ativado automaticamente para todos os clientes, sem custo adicional, e protege contra os ataques DDoS de rede e de transporte mais comuns." },
-      { "key": "B", "text": "AWS Shield Advanced", "explanation": "Incorreta. É um serviço pago, com proteções adicionais, equipe de resposta especializada e proteção de custos." },
+      { "key": "B", "text": "AWS Shield Advanced", "explanation": "Incorreta. Não é ele, pois o Shield Advanced é pago (assinatura), com proteções ampliadas, equipe de resposta e proteção de custos; o enunciado pede a proteção automática e sem custo adicional." },
       { "key": "C", "text": "AWS WAF", "explanation": "Incorreta. O WAF filtra requisições web (camada de aplicação) com regras configuradas pelo cliente e é cobrado pelo uso." },
       { "key": "D", "text": "Amazon GuardDuty", "explanation": "Incorreta. Detecta ameaças a partir de logs; não é a proteção DDoS automática da AWS." }
     ],
@@ -932,7 +932,7 @@
       { "key": "A", "text": "AWS Shield Standard", "explanation": "Incorreta. Oferece proteção básica automática, sem equipe de resposta dedicada nem proteção de custos." },
       { "key": "B", "text": "AWS Firewall Manager", "explanation": "Incorreta. Gerencia centralmente regras de firewall em várias contas; não fornece a equipe de resposta a DDoS." },
       { "key": "C", "text": "AWS Shield Advanced", "explanation": "Correta. O Shield Advanced adiciona detecção e mitigação ampliadas, acesso à Shield Response Team (SRT) e proteção de custos para picos de uso causados por DDoS." },
-      { "key": "D", "text": "Amazon Inspector", "explanation": "Incorreta. Procura vulnerabilidades de software." }
+      { "key": "D", "text": "Amazon Inspector", "explanation": "Incorreta. Não é ele, pois o Inspector procura vulnerabilidades de software; não oferece proteção contra DDoS." }
     ],
     "correct": ["C"],
     "trigger": "'DDoS' + 'equipe de resposta 24/7' + 'proteção de custos' → AWS Shield Advanced",
@@ -977,10 +977,10 @@
     "type": "single",
     "question": "Após receber um alerta do Amazon GuardDuty, a equipe de segurança precisa investigar a causa raiz, visualizando as relações entre usuários, endereços IP e recursos envolvidos ao longo do tempo. Qual serviço facilita essa investigação?",
     "options": [
-      { "key": "A", "text": "Amazon Macie", "explanation": "Incorreta. Descobre dados sensíveis no S3." },
+      { "key": "A", "text": "Amazon Macie", "explanation": "Incorreta. Não é ele, pois o Macie descobre dados sensíveis no S3; não investiga a causa raiz de um alerta do GuardDuty." },
       { "key": "B", "text": "AWS Security Hub", "explanation": "Incorreta. Agrega e prioriza achados, mas a análise aprofundada de causa raiz é o foco do Detective." },
       { "key": "C", "text": "Amazon Detective", "explanation": "Correta. O Detective coleta e organiza dados de logs em gráficos de comportamento, facilitando a investigação da causa raiz de achados de segurança." },
-      { "key": "D", "text": "Amazon Inspector", "explanation": "Incorreta. Procura vulnerabilidades de software." }
+      { "key": "D", "text": "Amazon Inspector", "explanation": "Incorreta. Não é ele, pois o Inspector procura vulnerabilidades de software; não mostra as relações entre usuários, IPs e recursos ao longo do tempo." }
     ],
     "correct": ["C"],
     "trigger": "'investigar a causa raiz' de um achado → Amazon Detective",
@@ -1045,7 +1045,7 @@
       { "key": "A", "text": "Permite todo o tráfego de entrada e de saída", "explanation": "Incorreta. Esse é o comportamento da network ACL padrão da VPC, não de um security group novo." },
       { "key": "B", "text": "Nega todo o tráfego de entrada e de saída", "explanation": "Incorreta. Um security group novo permite todo o tráfego de saída por padrão." },
       { "key": "C", "text": "Nega todo o tráfego de entrada e permite todo o tráfego de saída", "explanation": "Correta. Um security group começa sem regras de entrada (nada entra) e com uma regra que permite toda a saída." },
-      { "key": "D", "text": "Permite todo o tráfego de entrada e nega todo o tráfego de saída", "explanation": "Incorreta. É o inverso do comportamento padrão." }
+      { "key": "D", "text": "Permite todo o tráfego de entrada e nega todo o tráfego de saída", "explanation": "Incorreta. É o inverso do padrão: um security group novo não tem regras de entrada (nada entra) e tem uma regra que libera toda a saída." }
     ],
     "correct": ["C"],
     "trigger": "'security group novo' → entrada negada, saída liberada",

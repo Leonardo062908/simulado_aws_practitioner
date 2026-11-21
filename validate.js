@@ -36,6 +36,15 @@ const warn = (where, msg) => warnings.push(`${where}: ${msg}`);
 const norm = (s) => String(s).toLowerCase().replace(/\s+/g, ' ').trim();
 const isNonEmptyString = (v) => typeof v === 'string' && v.trim().length > 0;
 
+// Justificativa que não diz o que o serviço/conceito faz nem liga ao cenário (aviso, não erro).
+// (\b do JavaScript não entende letras acentuadas: o fim de palavra usa (?!\p{L}) com a flag u.)
+const GENERIC = [
+  /^(essa|esta|isso|isto)\s+(é|descreve|define|seria)(?!\p{L})/iu,
+  /não é a (resposta|alternativa|opção) (certa|correta)(?!\p{L})/iu,
+  /^(está|esta) (errada|incorreta)(?!\p{L})/iu,
+  /^(é a )?(resposta |alternativa |opção )?correta\.?$/iu,
+];
+
 function loadFile(entry) {
   const full = path.join(__dirname, entry.file);
   if (!fs.existsSync(full)) {
@@ -116,6 +125,9 @@ function validateQuestion(q, entry, index) {
       const startsWrong = /^Incorreta\b/.test(o.explanation.trim());
       if (isRight && !startsRight) err(ow, 'é a resposta correta, mas a explicação não começa com "Correta."');
       if (!isRight && !startsWrong) err(ow, 'não é a resposta correta, mas a explicação não começa com "Incorreta."');
+      const body = o.explanation.trim().replace(/^(?:Correta|Incorreta)\b\s*[.:!–—-]?\s*/, '');
+      if (!body) err(ow, 'sem justificativa (a explicação tem só "Correta."/"Incorreta.")');
+      else if (GENERIC.some((re) => re.test(body))) warn(ow, 'justificativa genérica: diga o que o serviço/conceito faz e ligue ao cenário do enunciado');
       // As opções são embaralhadas: a explicação não pode citar letras.
       if (/\b(op[çc][ãa]o|alternativa|letra)\s+[A-E]\b/i.test(o.explanation)) warn(ow, 'explicação cita letra de opção (as opções são embaralhadas)');
     }
@@ -218,4 +230,14 @@ function main() {
   console.log('\nResultado: OK');
 }
 
-main();
+// Valida uma questão isolada (usado pelos testes): devolve os erros e avisos dela.
+function checkQuestion(q) {
+  const entry = FILES.find((f) => f.domain === (q && q.domain)) || FILES[0];
+  const e0 = errors.length;
+  const w0 = warnings.length;
+  validateQuestion(q, entry, 0);
+  return { errors: errors.splice(e0), warnings: warnings.splice(w0) };
+}
+
+if (require.main === module) main();
+else module.exports = { checkQuestion, FILES };

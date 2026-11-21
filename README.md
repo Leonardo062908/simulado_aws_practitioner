@@ -1,60 +1,45 @@
-# Simulado AWS Certified Cloud Practitioner (CLF-C02)
+# CLF-C02 practice exam in Brazilian Portuguese
 
-Simulador local no estilo da prova, com **235 questões originais em PT-BR** (nomes dos serviços em inglês, como na prova).
-HTML + CSS + JavaScript puro: sem framework, sem backend e sem dependências.
+A free practice exam for the **AWS Certified Cloud Practitioner (CLF-C02)**: 235 original questions in Brazilian Portuguese, with AWS service names kept in English, as in the real exam.
 
-## Como rodar
+> Independent project, not affiliated with or endorsed by AWS. All questions are original.
 
-Na pasta `AWS_practitioner`:
+**Live site:** https://leonardo062908.github.io/simulado_aws_practitioner/
+
+![Full answers screen: the correct option highlighted, why each option is right or wrong, what you marked and the keyword in the question that points to the answer](docs/screenshot-answers.png)
+
+## What it does
+
+- **Full exam:** 65 questions in 90 minutes, split by the official domain weights (D1 16 · D2 20 · D3 22 · D4 7). Timer, flag for review, and no answers shown while you take it.
+- **Quick practice:** pick a domain and/or topic and 10, 20 or 30 questions.
+- **Retry the ones you missed:** after each attempt, retry only the wrong questions, as many rounds as you need. Your first-attempt score is kept.
+- **Full answers:** every question with the correct option highlighted and the reason, why each wrong option is wrong, what you marked, and the keyword in the question that leads to the answer. Filter by wrong, right or domain. Works on phones.
+
+Your progress stays in your browser (`localStorage`). No account, no backend, no tracking.
+
+## Stack
+
+Plain HTML, CSS and JavaScript: no framework, no build step and no runtime dependencies. Node.js is only used for the validation and test scripts. Deployed to GitHub Pages with GitHub Actions.
+
+## Run locally
 
 ```bash
-npx serve .
+git clone https://github.com/Leonardo062908/simulado_aws_practitioner.git
+cd simulado_aws_practitioner
+npx serve .            # or: python -m http.server 3000
 ```
 
-Abra **http://localhost:3000**.
+Open http://localhost:3000. Opening `index.html` straight from disk does not work: browsers block loading the JSON files over `file://`.
 
-- **No celular (mesma rede Wi-Fi):** use o endereço `Network` que o `serve` mostra no terminal (ex.: `http://192.168.0.10:3000`). Se o Windows perguntar, permita o Node.js no firewall para redes privadas.
-- **Sem npx:** `python -m http.server 3000` e abra `http://localhost:3000`.
-- Não abra o `index.html` com duplo clique: em `file://` o navegador bloqueia a leitura dos JSON.
+## Question bank
 
-## Validar o banco de questões
+The questions live in `questions/d1-conceitos.json` to `questions/d4-precos.json`. Each option has its own explanation: the correct one says why it answers the question, and each wrong one says what that service actually does and why it doesn't fit. The `trigger` field holds the keyword that points to the answer. Support plan questions follow the plans listed in the CLF-C02 exam guide (Basic, Developer, Business, Enterprise On-Ramp and Enterprise).
 
 ```bash
-node validate.js                               # banco completo
-node validate.js questions/d2-seguranca.json   # um arquivo
+node validate.js        # checks the bank: unique IDs, option and answer counts, an explanation for every option
+node test.js            # unit tests for the exam logic, the validator and broken links
 ```
 
-Confere: IDs únicos; `single` com 4 opções e 1 correta; `multiple` com 5 opções e 2 corretas (e "Escolha DUAS" no enunciado); `explanation` em todas as opções; `correct` apontando para opções que existem e coerente com o "Correta."/"Incorreta." das explicações; tópicos válidos; totais por domínio e por tópico.
+## License
 
-## Modos
-
-- **Prova completa:** 65 questões (D1 16 · D2 20 · D3 22 · D4 7), 90 minutos, aviso nos 10 minutos finais e envio automático quando o tempo acaba.
-- **Treino rápido:** domínio e/ou tópico + 10, 20 ou 30 questões, com ~1 min 23 s por questão.
-- **Refazer só os erros:** botão na tela de resultado.
-
-Nenhuma resposta aparece durante a tentativa. Atalhos no notebook: `A`–`E` responde, `←` `→` navega, `M` marca para revisão.
-
-## Dados salvos
-
-Tudo fica no `localStorage` do navegador: histórico de tentativas, questões já vistas (para priorizar as novas) e a tentativa em andamento (se a página recarregar, o simulado continua e o cronômetro não para). Cada navegador/dispositivo tem o próprio histórico. "Limpar histórico", na tela inicial, apaga tudo.
-
-## Estrutura
-
-```
-AWS_practitioner/
-├── index.html          página única
-├── style.css           tema claro/escuro, responsivo
-├── app.js              lógica do simulado
-├── validate.js         validação do banco
-└── questions/
-    ├── d1-conceitos.json    Domínio 1 · Conceitos de nuvem (24%)
-    ├── d2-seguranca.json    Domínio 2 · Segurança e conformidade (30%)
-    ├── d3-tecnologia.json   Domínio 3 · Tecnologia e serviços (34%)
-    └── d4-precos.json       Domínio 4 · Cobrança, preços e suporte (12%)
-```
-
-## Observações
-
-- A meta de aprovação aqui é **80%**, para ter margem: a prova real usa nota escalonada de 100 a 1000, com corte em 700, e essa escala não é linear.
-- As questões de planos de suporte seguem os planos citados no guia do exame CLF-C02 (Basic, Developer, Business, Enterprise On-Ramp e Enterprise). Se o site da AWS mostrar nomes ou planos diferentes, vale o guia do exame.
-- Para incluir questões novas, siga o formato dos arquivos JSON e rode `node validate.js`.
+[MIT](LICENSE)
