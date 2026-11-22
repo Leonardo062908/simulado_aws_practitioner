@@ -78,6 +78,34 @@ test('o deploy (GitHub Pages) roda os testes e só copia arquivos que existem', 
   cps.forEach((l) => l.split(/\s+/).slice(1, -1).forEach((f) => assert.ok(fs.existsSync(path.join(ROOT, f)), `pages.yml copia ${f}, que não existe`)));
 });
 
+console.log('Site · preview do link (Open Graph)');
+
+const SITE_URL = 'https://leonardo062908.github.io/simulado_aws_practitioner/';
+function metaTag(html, attr, name) {
+  const m = html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)">`));
+  return m ? m[1] : null;
+}
+
+test('index.html tem Open Graph e twitter:card, com URLs absolutas do Pages', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  ['og:title', 'og:description', 'og:image:alt'].forEach((p) => assert.ok(metaTag(html, 'property', p), p));
+  assert.strictEqual(metaTag(html, 'property', 'og:type'), 'website');
+  assert.strictEqual(metaTag(html, 'property', 'og:url'), SITE_URL);
+  assert.strictEqual(metaTag(html, 'property', 'og:image'), `${SITE_URL}og-image.png`);
+  assert.strictEqual(metaTag(html, 'property', 'og:image:width'), '1200');
+  assert.strictEqual(metaTag(html, 'property', 'og:image:height'), '627');
+  assert.strictEqual(metaTag(html, 'name', 'twitter:card'), 'summary_large_image');
+});
+
+test('a imagem do preview é um PNG de 1200×627 e o deploy a publica', () => {
+  const png = fs.readFileSync(path.join(ROOT, 'og-image.png'));
+  assert.strictEqual(png.toString('ascii', 1, 4), 'PNG');
+  assert.deepStrictEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 627]);
+  assert.ok(png.length < 1024 * 1024, `imagem com ${png.length} bytes (limite: 1 MB)`);
+  const wf = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'pages.yml'), 'utf8');
+  assert.ok(/cp [^\n]*og-image\.png[^\n]* _site\//.test(wf), 'pages.yml copia og-image.png para o site');
+});
+
 console.log('Simulado · conclusão e refazer');
 
 const app = require('./app.js');

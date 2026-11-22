@@ -34,7 +34,7 @@ jobs:
       - name: Assemble the site
         run: |
           mkdir -p _site/questions
-          cp index.html style.css app.js _site/
+          cp index.html style.css app.js og-image.png _site/
           cp questions/d1-conceitos.json questions/d2-seguranca.json questions/d3-tecnologia.json questions/d4-precos.json _site/questions/
 
       - uses: actions/configure-pages@v6
