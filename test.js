@@ -320,5 +320,42 @@ test('avisa justificativa genérica ("Essa é a definição de X")', () => {
   assert.ok(r.warnings.some((w) => /genérica/.test(w)));
 });
 
-console.log(`\n${passed} passaram, ${failures.length} falharam.`);
-process.exit(failures.length ? 1 : 0);
+async function testAsync(name, fn) {
+  try {
+    await fn();
+    passed += 1;
+    console.log(`  ✓ ${name}`);
+  } catch (e) {
+    failures.push(name);
+    console.log(`  ✗ ${name}\n      ${e.message}`);
+  }
+}
+
+(async () => {
+  console.log('Site · carregamento das questões');
+
+  await testAsync('quando a conexão falha, tenta de novo e carrega', async () => {
+    let calls = 0;
+    const flaky = async () => {
+      calls += 1;
+      if (calls < 3) throw new TypeError('Failed to fetch');
+      return { ok: true, status: 200, json: async () => [{ id: 'x' }] };
+    };
+    const data = await app.fetchJsonWithRetry('questions/d1-conceitos.json', { fetch: flaky, wait: async () => {} });
+    assert.deepStrictEqual(data, [{ id: 'x' }]);
+    assert.strictEqual(calls, 3);
+  });
+
+  await testAsync('depois de 3 falhas, desiste com uma mensagem que diz o arquivo e o motivo', async () => {
+    let calls = 0;
+    const down = async () => {
+      calls += 1;
+      return { ok: false, status: 503, json: async () => null };
+    };
+    await assert.rejects(app.fetchJsonWithRetry('questions/d1-conceitos.json', { fetch: down, wait: async () => {} }), /d1-conceitos\.json.*HTTP 503/);
+    assert.strictEqual(calls, 3);
+  });
+
+  console.log(`\n${passed} passaram, ${failures.length} falharam.`);
+  process.exit(failures.length ? 1 : 0);
+})();

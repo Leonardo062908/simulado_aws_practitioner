@@ -404,6 +404,30 @@
     return out + esc(src.slice(pos));
   }
 
+  // Baixa um JSON tentando de novo quando a conexão falha (redes móveis e CDN às vezes derrubam o pedido).
+  // Cada tentativa tem limite de tempo; depois de `tries` falhas, desiste com o arquivo e o motivo.
+  async function fetchJsonWithRetry(url, opts) {
+    const o = Object.assign({ tries: 3, timeoutMs: 15000, wait: (ms) => new Promise((r) => setTimeout(r, ms)) }, opts || {});
+    const doFetch = o.fetch || ((u, init) => globalThis.fetch(u, init));
+    let lastErr = null;
+    for (let i = 0; i < o.tries; i++) {
+      if (i) await o.wait(700 * i);
+      const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), o.timeoutMs) : null;
+      try {
+        const res = await doFetch(url, { cache: i ? 'reload' : 'no-cache', signal: ctrl ? ctrl.signal : undefined });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (e) {
+        lastErr = e;
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
+    }
+    const why = lastErr && lastErr.name === 'AbortError' ? 'tempo esgotado' : lastErr && lastErr.message ? lastErr.message : String(lastErr);
+    throw new Error(`Não foi possível carregar ${url} (${why}).`);
+  }
+
   const Logic = {
     CONFIG,
     shuffle,
@@ -430,6 +454,7 @@
     reviewSummary,
     filterReviewRows,
     markKeywords,
+    fetchJsonWithRetry,
   };
 
   // Permite testar a lógica no Node: require('./app.js')
@@ -553,9 +578,7 @@
   async function loadBank() {
     const lists = await Promise.all(
       CONFIG.files.map(async (file) => {
-        const res = await fetch(file, { cache: 'no-cache' });
-        if (!res.ok) throw new Error(`Não foi possível carregar ${file} (HTTP ${res.status}).`);
-        const data = await res.json();
+        const data = await fetchJsonWithRetry(file);
         if (!Array.isArray(data)) throw new Error(`${file} não contém uma lista de questões.`);
         return data;
       })
@@ -563,16 +586,24 @@
     return lists.flat();
   }
 
+  // Quem visita o site vê só "verifique a conexão" + "Tentar de novo"; a dica do servidor local
+  // aparece apenas para quem abriu o arquivo direto do disco (file://).
   function renderLoadError(err) {
     const isFile = window.location.protocol === 'file:';
-    $app.innerHTML = `
-      <div class="banner banner--error">
-        <h1>Não foi possível carregar as questões</h1>
-        <p>${esc(err && err.message ? err.message : String(err))}</p>
-        ${isFile ? '<p>Você abriu o arquivo direto do disco (file://). O navegador bloqueia a leitura dos JSON nesse modo.</p>' : ''}
-        <p>Inicie um servidor local na pasta <strong>AWS_practitioner</strong> e abra o endereço que ele mostrar:</p>
-        <p><kbd>npx serve .</kbd> &nbsp;ou&nbsp; <kbd>python -m http.server 3000</kbd></p>
-      </div>`;
+    const detail = esc(err && err.message ? err.message : String(err));
+    $app.innerHTML = isFile
+      ? `<div class="banner banner--error">
+          <h1>Não foi possível carregar as questões</h1>
+          <p>Você abriu o arquivo direto do disco (file://), e o navegador bloqueia a leitura dos JSON nesse modo.</p>
+          <p>Inicie um servidor local na pasta do projeto e abra o endereço que ele mostrar: <kbd>npx serve .</kbd> ou <kbd>python -m http.server 3000</kbd></p>
+          <p class="muted small">${detail}</p>
+        </div>`
+      : `<div class="banner banner--error">
+          <h1>Não foi possível carregar as questões</h1>
+          <p>Verifique sua conexão com a internet e tente de novo.</p>
+          <p><button type="button" class="btn btn--primary" data-action="reload">Tentar de novo</button></p>
+          <p class="muted small">Detalhe: ${detail}</p>
+        </div>`;
   }
 
   function bindGlobalEvents() {
@@ -657,6 +688,7 @@
       case 'open-attempt': openReview(el.dataset.id, 'conclusion'); break;
       case 'clear-history': clearHistory(); break;
       case 'close-dialog': closeDialog(); break;
+      case 'reload': window.location.reload(); break;
       default: break;
     }
   }
