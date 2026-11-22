@@ -1105,6 +1105,7 @@
     const isLast = idx === total - 1;
     $app.innerHTML = `
       <section class="exam">
+        <h1 class="sr-only">${esc(s.label)}</h1>
         <div class="exam__main">
           <div class="qhead">
             <span class="qhead__count">Questão <strong>${idx + 1}</strong> de ${total}</span>
