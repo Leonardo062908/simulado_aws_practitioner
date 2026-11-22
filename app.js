@@ -564,15 +564,89 @@
     showHome();
   }
 
-  // Só a conclusão (#resumo/<id>) e as respostas (#respostas/<id>) têm endereço; as outras telas limpam o hash.
+  /* ---------- Rotas e botão "voltar" ----------
+   * Cada tela tem um endereço: início (sem hash), #prova, #revisar, #resumo/<id> e #respostas/<id>.
+   * Ir para outra tela cria uma entrada no histórico (o "voltar" do navegador e do celular volta uma tela);
+   * cada entrada guarda de onde veio (state.from), para um botão "voltar" da própria tela não duplicar o histórico.
+   */
+  function routeUrl(hash) {
+    return `${window.location.pathname}${window.location.search}${hash ? `#${hash}` : ''}`;
+  }
+
+  function currentHash() {
+    return window.location.hash.replace(/^#/, '');
+  }
+
+  // Atualiza o endereço da tela atual sem criar entrada (mantém o "de onde veio").
   function setRoute(hash) {
-    const want = hash ? `#${hash}` : '';
-    if (window.location.hash === want) return;
+    if (currentHash() === hash) return;
     try {
-      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${want}`);
+      window.history.replaceState(window.history.state, '', routeUrl(hash));
     } catch (e) {
       /* ignora */
     }
+  }
+
+  function pushRoute(hash) {
+    try {
+      window.history.pushState({ app: 'clf02', from: currentHash() }, '', routeUrl(hash));
+    } catch (e) {
+      /* ignora */
+    }
+  }
+
+  // Vai para outra tela. Se a entrada anterior do histórico já é o destino, volta para ela em vez de empilhar.
+  function navigate(hash, render) {
+    const st = window.history.state;
+    if (st && st.app === 'clf02' && st.from === hash) {
+      window.history.back(); // o popstate desenha a tela
+      return;
+    }
+    pushRoute(hash);
+    render();
+  }
+
+  function onPopState() {
+    const hash = currentHash();
+    if (session) {
+      if (hash === 'revisar') {
+        showReview();
+        return;
+      }
+      if (hash !== 'prova') {
+        // Tentativa em andamento: o "voltar" não sai da prova (o cronômetro continua correndo).
+        pushRoute('prova');
+        toast('A tentativa continua em andamento. Para sair, envie ou descarte.');
+      }
+      showExam();
+      return;
+    }
+    // Entrada de uma prova já encerrada: pula para a tela anterior a ela.
+    if ((hash === 'prova' || hash === 'revisar') && window.history.state && window.history.state.app === 'clf02') {
+      window.history.back();
+      return;
+    }
+    const m = hash.match(/^(resumo|respostas)\/(.+)$/);
+    const rv = m && reviewFor(decodeURIComponent(m[2]));
+    if (rv) {
+      if (m[1] === 'respostas') showAnswers(rv);
+      else showConclusion(rv);
+      return;
+    }
+    showHome();
+  }
+
+  function goHome() {
+    if (session) {
+      toast('Envie ou descarte a tentativa atual antes de voltar ao início.');
+      return;
+    }
+    if (!BANK.length) return;
+    if (view.name === 'home') {
+      window.scrollTo(0, 0);
+      return;
+    }
+    navigate('', showHome);
   }
 
   async function loadBank() {
@@ -610,12 +684,9 @@
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     document.getElementById('brand').addEventListener('click', (e) => {
       e.preventDefault();
-      if (session) {
-        toast('Envie ou descarte a tentativa atual antes de voltar ao início.');
-        return;
-      }
-      if (BANK.length) showHome();
+      goHome();
     });
+    window.addEventListener('popstate', onPopState);
     document.addEventListener('click', onClick);
     document.addEventListener('change', onChange);
     document.addEventListener('keydown', onKey);
@@ -671,11 +742,11 @@
       case 'next': go(session.current + 1); break;
       case 'goto': go(Number(el.dataset.index)); break;
       case 'toggle-mark': toggleMark(); break;
-      case 'review': showReview(); break;
-      case 'back-to-exam': showExam(); break;
+      case 'review': navigate('revisar', showReview); break;
+      case 'back-to-exam': navigate('prova', showExam); break;
       case 'submit': finishSession('manual'); break;
       case 'discard': discardSession(); break;
-      case 'home': showHome(); break;
+      case 'home': goHome(); break;
       case 'copy-md': copyMarkdown(); break;
       case 'download-md': downloadMarkdown(); break;
       case 'retry': startRetry(); break;
@@ -1012,6 +1083,9 @@
   function beginSession(questions, meta) {
     session = createSession(questions, meta);
     saveSession();
+    // O refazer substitui a conclusão no histórico: ao terminar, a nova conclusão ocupa o mesmo lugar.
+    if (meta.mode === 'retry') setRoute('prova');
+    else pushRoute('prova');
     showExam();
   }
 
@@ -1037,7 +1111,7 @@
       return;
     }
     view = { name: 'exam' };
-    setRoute('');
+    setRoute('prova');
     renderTimerSlot();
     renderExam();
     startTimer();
@@ -1049,6 +1123,11 @@
     if (i === session.current && view.name === 'exam') return;
     session.current = i;
     saveSession();
+    // Da revisão antes de enviar, abrir uma questão é voltar para a prova.
+    if (view.name === 'review') {
+      navigate('prova', showExam);
+      return;
+    }
     view = { name: 'exam' };
     renderExam();
     window.scrollTo(0, 0);
@@ -1276,6 +1355,7 @@
   function showReview() {
     if (!session) return;
     view = { name: 'review' };
+    setRoute('revisar');
     const s = session;
     const unanswered = [];
     const marked = [];
@@ -1450,8 +1530,9 @@
       toast('Os detalhes desta tentativa não estão mais disponíveis.');
       return;
     }
-    if (screen === 'answers') showAnswers(rv);
-    else showConclusion(rv);
+    const id64 = encodeURIComponent(rv.id);
+    if (screen === 'answers') navigate(`respostas/${id64}`, () => showAnswers(rv));
+    else navigate(`resumo/${id64}`, () => showConclusion(rv));
   }
 
   function bars(groups) {
