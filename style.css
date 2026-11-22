@@ -869,6 +869,7 @@ mark.kw {
   color: var(--muted);
 }
 .sitefoot p { margin: 0; }
+.sitefoot p + p { margin-top: 6px; }
 
 .trigger {
   padding: 10px 12px;

@@ -64,6 +64,16 @@ test('todo link e script local do index.html aponta para um arquivo que existe',
   refs.forEach((u) => assert.ok(fs.existsSync(path.join(ROOT, u.split(/[?#]/)[0])), `index.html → ${u} não existe`));
 });
 
+test('rodapé tem o link para reportar erro (Issues do GitHub, com modelo que pede o ID da questão)', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const m = html.match(/<a href="(https:\/\/github\.com\/Leonardo062908\/simulado_aws_practitioner\/issues\/new\?[^"]+)"([^>]*)>([^<]+)<\/a>/);
+  assert.ok(m, 'link para issues/new no index.html');
+  const url = new URL(m[1].replace(/&amp;/g, '&'));
+  assert.ok(/ID da questão/.test(url.searchParams.get('body') || ''), 'o modelo pede o ID da questão');
+  assert.ok(/rel="noopener noreferrer"/.test(m[2]) && /target="_blank"/.test(m[2]), 'abre em outra aba, com noopener');
+  assert.ok(/Reporte/.test(m[3]), m[3]);
+});
+
 test('o simulado carrega só os 4 arquivos de questões, e eles existem', () => {
   const app = require('./app.js');
   assert.deepStrictEqual(app.CONFIG.files, ['d1-conceitos', 'd2-seguranca', 'd3-tecnologia', 'd4-precos'].map((f) => `questions/${f}.json`));

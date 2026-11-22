@@ -1734,6 +1734,7 @@
         <span class="chip">D${q.domain} · ${esc(q.topic)}</span>
         ${q.type === 'multiple' ? '<span class="chip">Escolha DUAS</span>' : ''}
         ${filtered ? `<span class="muted small">${pos + 1} de ${n} no filtro</span>` : ''}
+        <span class="muted small rv-id" title="Use este ID para reportar um erro nesta questão">ID ${esc(q.id)}</span>
       </div>
       <p class="qtext">${markKeywords(q.question, q.trigger)}</p>
       ${notes.map((t) => `<p class="ans-note">${t}</p>`).join('')}
